@@ -67,13 +67,6 @@
     <!-- ### about page ### -->
 
     <section class="about container">
-        <div class="title">
-            <h2>About</h2>
-            <div>
-                <h2>About Me</h2>
-            </div>
-        </div>
-
         <!-- Profile header -->
         <div class="about-header">
             <div class="about-header-photo">
@@ -95,6 +88,7 @@
 
         <!-- Bio narrative -->
         <div class="about-narrative">
+            <p class="text" style="color: var(--green); font-weight: 600;">AI Quality Engineer building evaluation infrastructure for AI systems: LLM evaluation, RAG pipeline testing, and production monitoring using DeepEval, RAGAS, and custom instrumentation.</p>
             <p class="text">I started in QA directly out of college because testing genuinely interested me. The discipline of understanding a system well enough to find where it breaks, and the challenge of making that process repeatable and fast, drew me in from my first project as an intern in January 2022.</p>
             <p class="text">Starting out at Jeavio, the work involved Selenium UI automation, JMeter load testing, and OWASP ZAP security scans, alongside manual regression cycles with a small team and no automation baseline.</p>
             <p class="text">Over 4+ years, built QA capability from scratch on a live production platform. Moved from writing scripts to owning QA strategy for a conversational AI health application serving users across India, Kenya, and Nigeria. That meant building Botium regression suites, cloud health-check pipelines, AI response classification test suites, and API automation that runs on every release cycle, spanning web, REST API, conversational AI, cloud infrastructure, and database layers.</p>
@@ -106,8 +100,8 @@
             <div class="about-quotes-card">
                 <p class="about-card-label">Principles</p>
                 <p class="about-card-sub">How I think about QA</p>
-                <blockquote>"QA isn't a gate at the end of a sprint; it's a signal that runs through every layer of the system."</blockquote>
-                <p class="about-quote-sub">Applied this by embedding health checks, CI quality gates, and release-level performance tracking directly into the delivery pipeline, not as a final sign-off, but as continuous signal.</p>
+                <blockquote>"AI systems don't have a correct answer to assert against; they have a distribution of acceptable outputs. That's not a reason to skip evaluation; it's a reason to build better evaluation infrastructure."</blockquote>
+                <p class="about-quote-sub">Applied this by building DeepEval and RAGAS pipelines with golden datasets, multi-dimensional scoring, and trace instrumentation, treating the eval framework itself as a production system that needs versioning and maintenance.</p>
                 <blockquote>"Automation should reduce toil, not replace judgment."</blockquote>
                 <p class="about-quote-sub">Built 140+ automated conversational flows to eliminate repetitive regression cycles, while keeping manual judgment for AI response quality, edge case triage, and platform-specific rendering.</p>
             </div>
@@ -123,7 +117,7 @@
                     </li>
                     <li class="text">
                         <span><i class="fas fa-cogs"></i></span>
-                        <span>Automation Architecture &bull; AI/LLM Testing &bull; Release Quality Engineering</span>
+                        <span>LLM Evaluation &bull; RAG Pipeline Testing &bull; Production AI Monitoring</span>
                     </li>
                     <li class="text">
                         <span><i class="fas fa-graduation-cap"></i></span>
@@ -278,7 +272,7 @@
             </div>
         </div>
 
-        <h3 class="about-tagline">QA done right touches every layer: <span>the code, the pipeline, the people and the process.</span></h3>
+        <h3 class="about-tagline">Quality for AI means measuring what <span>can't be unit tested.</span></h3>
         <div class="home-pg-btn">
             <button type="button" class="btn"><a href="assets/Resume.pdf" target="_blank">Download Resume</a></button>
             <button type="button" class="btn btn-outline"><a href="qa-portfolio.html" style="color: inherit;">View QA Work</a></button>

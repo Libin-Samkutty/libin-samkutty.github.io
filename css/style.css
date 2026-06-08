@@ -1868,6 +1868,11 @@
     flex: 1;
 }
 
+.system-card--featured {
+    border-left: 3px solid var(--green);
+    background: #141a0e;
+}
+
 .system-card-result {
     font-family: var(--sans);
     font-size: 0.82rem;
