@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="QA automation systems by Libin Samkutty - Robot Framework regression suite, pytest API framework, Botium chatbot testing (140+ flows), performance and security testing.">
+    <meta name="description" content="QA automation systems by Libin Samkutty - LLM evaluation pipelines (DeepEval, RAGAS), Playwright regression suite, Robot Framework, pytest API framework, Botium chatbot testing, performance and security testing.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Automation Projects | Libin Samkutty">
-    <meta property="og:description" content="QA automation systems by Libin Samkutty - Robot Framework regression suite, pytest API framework, Botium chatbot testing (140+ flows), performance and security testing.">
+    <meta property="og:description" content="QA automation systems by Libin Samkutty - LLM evaluation pipelines (DeepEval, RAGAS), Playwright regression suite, Robot Framework, pytest API framework, Botium chatbot testing, performance and security testing.">
     <meta property="og:url" content="https://libin-samkutty.github.io/automation-projects.html">
     <meta property="og:image" content="https://libin-samkutty.github.io/assets/og-preview.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Automation Projects | Libin Samkutty">
-    <meta name="twitter:description" content="QA automation systems by Libin Samkutty - Robot Framework regression suite, pytest API framework, Botium chatbot testing (140+ flows), performance and security testing.">
+    <meta name="twitter:description" content="QA automation systems by Libin Samkutty - LLM evaluation pipelines (DeepEval, RAGAS), Playwright regression suite, Robot Framework, pytest API framework, Botium chatbot testing, performance and security testing.">
     <meta name="twitter:image" content="https://libin-samkutty.github.io/assets/og-preview.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/utility.css">
@@ -73,9 +73,44 @@
                 <h2>My Automation Work</h2>
             </div>
         </div>
-        <p class="text">Production QA systems built at Jeavio India - each covering a distinct failure surface, with defined scope, stack, and measurable outcome. These systems run on each release cycle to protect real users.</p>
+        <p class="text">Production QA systems built at Jeavio India, each covering a distinct failure surface, with defined scope, stack, and measurable outcome. From LLM evaluation pipelines and production AI monitoring through to regression automation, chatbot testing, and security scanning.</p>
 
         <div class="row">
+            <div class="item">
+                <div class="icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <span>Python · DeepEval · RAGAS</span>
+                <h2>AI Evaluation Pipeline</h2>
+                <span class="op-badge"><i class="fas fa-sync-alt"></i>&nbsp; Continuous evaluation in production</span>
+                <p class="text">
+                    <strong>Problem:</strong> No structured evaluation infrastructure existed for production LLM outputs across 6 healthcare AI product lines. Hallucinations, prompt regressions, and retrieval quality degradation had no automated detection mechanism.<br><br>
+                    • Custom evaluation frameworks using <strong>DeepEval</strong> and <strong>RAGAS</strong> for answer relevancy, faithfulness, context precision and context recall, validated against curated golden datasets across 6 healthcare AI product lines serving 50,000+ monthly users across 6 countries.<br>
+                    • Automated production monitoring with trace instrumentation enabling continuous detection of prompt regressions, hallucinations, routing failures, intent misclassification and response quality degradation.<br>
+                    • End-to-end validation suites for semantic caching, RAG retrieval and LLM routing workflows, validating response consistency, retrieval accuracy, routing correctness and fallback inference behaviour.<br>
+                    • Risk-based regression suites covering multilingual conversational AI flows across 9 intent types and 17 routing labels, including edge cases and boundary conditions.<br>
+                    • Performance benchmarking and root-cause analysis across AI pipeline components: response time <strong>12–18s → 4–7s</strong>, classification latency <strong>2–3s → ~900ms</strong>, RAG retrieval <strong>8–12s → 1.5–3.5s</strong>.<br><br>
+                    <strong>Result: Automated LLM evaluation and production monitoring across 6 healthcare AI product lines. Continuous hallucination and faithfulness detection in production. 60–70% improvement across pipeline response metrics through benchmarking and RCA.</strong>
+                </p>
+            </div>
+
+            <div class="item">
+                <div class="icon">
+                    <i class="fas fa-theater-masks"></i>
+                </div>
+                <span>Playwright + Python</span>
+                <h2>Web &amp; API Automation Framework</h2>
+                <span class="op-badge"><i class="fas fa-sync-alt"></i>&nbsp; Runs on every release</span>
+                <p class="text">
+                    <strong>Problem:</strong> Manual regression cycles covered web and API validation inconsistently, with no parallel execution capability and no structured CI/CD integration.<br><br>
+                    • Playwright-based automation framework covering web UI validation and REST API assertion across core application flows.<br>
+                    • 225+ automated regression scenarios with parallel execution support across staging and production environments.<br>
+                    • CI/CD integration via GitHub Actions for automated execution triggered on every release cycle.<br>
+                    • Schema validation and negative test coverage for API endpoints alongside UI flow automation.<br><br>
+                    <strong>Result: 60% reduction in manual regression effort. 225+ automated scenarios executing in parallel on every release.</strong>
+                </p>
+            </div>
+
             <div class="item">
                 <div class="icon">
                     <i class="fas fa-robot"></i>
@@ -164,7 +199,7 @@
         <div class="row">
             <div class="col">
                 <h3 class="footer-title">About</h3>
-                <p class="text">Senior QA Engineer delivering measurable quality outcomes - 60% regression effort reduction, 75% automated test coverage and production reliability for 50,000+ monthly users.</p>
+                <p class="text">AI Quality Engineer delivering measurable quality outcomes: LLM evaluation frameworks with DeepEval and RAGAS, production monitoring, and reliability for 50,000+ monthly users across 6 countries.</p>
                 <div class="social-links">
                     <a href="mailto:samlibin2001@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
                     <a href="https://www.linkedin.com/in/libin-samkutty/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
