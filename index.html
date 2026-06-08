@@ -70,13 +70,13 @@
         <div class="row">
             <div class="row-left">
                 <h3>Libin Samkutty</h3>
-                <h1>I build QA systems that catch failures before users do.</h1>
-                <h2>AI Quality Engineer specializing in LLM evaluation, RAG testing, and production AI reliability</h2>
+                <h1>I build evaluation systems that catch what AI gets wrong before users do.</h1>
+                <h2>AI Quality Engineer specializing in LLM evaluation, RAG pipeline testing, and production monitoring using DeepEval, RAGAS, and custom instrumentation</h2>
                 <div class="home-specialties">
-                    <span><i class="fas fa-sitemap"></i>&nbsp; Test Strategy</span>
-                    <span><i class="fas fa-code-branch"></i>&nbsp; CI/CD Quality Gates</span>
-                    <span><i class="fas fa-layer-group"></i>&nbsp; Automation Architecture</span>
-                    <span><i class="fas fa-robot"></i>&nbsp; AI/LLM Testing</span>
+                    <span><i class="fas fa-brain"></i>&nbsp; LLM Evaluation</span>
+                    <span><i class="fas fa-project-diagram"></i>&nbsp; RAG Pipeline Testing</span>
+                    <span><i class="fas fa-heartbeat"></i>&nbsp; Production AI Monitoring</span>
+                    <span><i class="fas fa-comments"></i>&nbsp; Conversational AI QA</span>
                 </div>
                 <div class="home-pg-btn">
                     <button type="button" class="btn"><a href="contact.html">Hire me</a></button>
@@ -112,7 +112,7 @@
                     <i class="fab fa-python"></i>
                 </div>
                 <div class="oss-callout-text">
-                    <strong>api-test-data-generator &ndash; Published Python Package</strong>
+                    <strong>api-test-data-generator: Published Python Package</strong>
                     <p>Open-source PyPI package for generating schema-driven API test data. <a href="https://pypistats.org/packages/api-test-data-generator" target="_blank">View Download Stats</a>.</p>
                 </div>
             </div>
@@ -157,12 +157,11 @@
 
     <section class="why-exists container">
         <div class="why-exists-card">
-            <p class="text">Most teams automate the expected path and stop there. Failures happen outside expected paths - in edge cases, async flows, and AI responses that drift from their training distribution. QA that only verifies happy paths gives false confidence. The work is exposing unmodeled behavior before it reaches users.</p>
+            <p class="text">AI systems can't be tested the way regular software can. There's no pass/fail assertion for "did the LLM give a harmful answer" or "did the RAG pipeline retrieve the right context." You need evaluation infrastructure that can measure <strong>relevancy</strong>, <strong>faithfulness</strong>, <strong>context precision</strong> and <strong>context recall</strong> across a wide range of metrics, golden datasets, trace instrumentation, and continuous monitoring, not just a test suite.</p>
             <ul>
-                <li>Automate what is repeatable. Reserve judgment for what cannot be scripted. Writing Botium flows for AI responses made this concrete: automation verified routing; only a human could judge whether the response was actually appropriate.</li>
-                <li>Observability belongs inside quality engineering, not downstream of it.</li>
-                <li>A test suite that never fails isn't comprehensive - it's incomplete. The Nivi health pipeline caught silent production failures that infrastructure monitoring missed entirely.</li>
-                <li>AI systems need evaluation infrastructure, not just manual spot-checks.</li>
+                <li>Traditional QA catches regressions. AI quality engineering catches drifts when model behavior shifts without a code change, when retrieved context degrades silently, when a prompt that worked last month stops working now.</li>
+                <li>Observability belongs inside quality engineering, not downstream of it. The Nivi health pipeline caught silent production failures that infrastructure monitoring missed entirely.</li>
+                <li>Evaluation without ground truth is still evaluation. Relevancy, faithfulness, and context precision are measurable metrics, you just need the right framework and the discipline to track them over time.</li>
             </ul>
         </div>
     </section>
@@ -175,7 +174,7 @@
         <p class="systems-built-label">What I built</p>
         <h2 class="section-heading">Systems, not scripts</h2>
         <div class="systems-grid">
-            <div class="system-card">
+            <div class="system-card system-card--featured">
                 <div class="system-card-name">LLM Evaluation Framework</div>
                 <div class="system-card-stack">Python &middot; DeepEval &middot; RAGAS &middot; Trace Instrumentation</div>
                 <div class="system-card-desc">Custom AI evaluation pipelines for answer relevancy, faithfulness, context precision and context recall against golden datasets. Production monitoring and trace instrumentation for continuous hallucination and prompt regression detection across 6 healthcare AI product lines.</div>
@@ -223,22 +222,22 @@
         <h2 class="section-heading">Selected work</h2>
         <div class="featured-cases-grid">
             <div class="featured-case-card">
-                <h3>Scaling Chatbot Regression Testing with Botium</h3>
-                <div class="fc-problem">5 FTE-day manual regression cycle with no automated coverage across 140+ conversational flows.</div>
-                <div class="fc-result">60% effort reduction &middot; 75% automated coverage</div>
-                <a href="case-study-01.html" class="fc-link"><i class="fas fa-arrow-right"></i> Read case study</a>
+                <h3>Validating AI Classification for a Global Health Chatbot</h3>
+                <div class="fc-problem">AI-driven onboarding flows across 3 countries needed classification accuracy and multilingual QA at scale before rollout.</div>
+                <div class="fc-result">200K+ user onboarding validated &middot; 80–90% conversion improvement</div>
+                <a href="case-study-05.html" class="fc-link"><i class="fas fa-arrow-right"></i> Read case study</a>
             </div>
             <div class="featured-case-card">
                 <h3>Building an Automated Chatbot Health Monitoring System</h3>
-                <div class="fc-problem">Bot downtime discovered by users, not QA. No production monitoring in place.</div>
-                <div class="fc-result">Hourly checks &middot; 50K+ users protected from silent failures</div>
+                <div class="fc-problem">Bot downtime discovered by users, not QA. No production monitoring in place for a 50K+ user platform.</div>
+                <div class="fc-result">Hourly checks on AWS EC2 &middot; 50K+ users protected from silent failures</div>
                 <a href="case-study-03.html" class="fc-link"><i class="fas fa-arrow-right"></i> Read case study</a>
             </div>
             <div class="featured-case-card">
-                <h3>Validating Conversational Onboarding for a Global Health Chatbot</h3>
-                <div class="fc-problem">AI classification and multilingual onboarding flows needed validation at scale before rollout.</div>
-                <div class="fc-result">200K+ user onboarding QA across 3 countries</div>
-                <a href="case-study-05.html" class="fc-link"><i class="fas fa-arrow-right"></i> Read case study</a>
+                <h3>Scaling Chatbot Regression Testing with Botium</h3>
+                <div class="fc-problem">5 FTE-day manual regression cycle with zero automated coverage across 140+ conversational flows.</div>
+                <div class="fc-result">60% effort reduction &middot; 75% automated coverage</div>
+                <a href="case-study-01.html" class="fc-link"><i class="fas fa-arrow-right"></i> Read case study</a>
             </div>
         </div>
     </section>
