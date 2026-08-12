@@ -1,0 +1,14 @@
+{
+  "primary": [
+    { "label": "Home", "url": "/" },
+    { "label": "Work", "url": "/work/" },
+    { "label": "Writing", "url": "/writing/" },
+    { "label": "About", "url": "/about/" },
+    { "label": "Résumé", "url": "/resume/" },
+    { "label": "Contact", "url": "/contact/" }
+  ],
+  "secondary": [
+    { "label": "Stack", "url": "/skills/" },
+    { "label": "Feed", "url": "/feed.xml" }
+  ]
+}

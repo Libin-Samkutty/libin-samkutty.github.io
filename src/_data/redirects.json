@@ -1,0 +1,14 @@
+[
+  { "from": "/about.html",                "to": "/about/" },
+  { "from": "/skills.html",               "to": "/skills/" },
+  { "from": "/resume.html",               "to": "/resume/" },
+  { "from": "/contact.html",              "to": "/contact/" },
+  { "from": "/case-studies.html",         "to": "/work/" },
+  { "from": "/qa-portfolio.html",         "to": "/work/",                                       "fragments": ["oss"] },
+  { "from": "/automation-projects.html",  "to": "/work/" },
+  { "from": "/case-study-01.html",        "to": "/work/from-robot-to-playwright/" },
+  { "from": "/case-study-02.html",        "to": "/work/from-robot-to-playwright/" },
+  { "from": "/case-study-03.html",        "to": "/work/production-evaluation-pipeline/" },
+  { "from": "/case-study-04.html",        "to": "/writing/threshold-gates-vs-trend-views/" },
+  { "from": "/case-study-05.html",        "to": "/work/snapshot-testing-nondeterministic-ai/" }
+]

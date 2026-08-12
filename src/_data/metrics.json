@@ -1,0 +1,690 @@
+{
+  "_meta": {
+    "purpose": "Every number published anywhere on this site lives here and nowhere else. Prose renders numbers only via the {% metric %} shortcode, which throws at build on an unknown key. That is the point: a wrong number should be un-typeable, not merely discouraged.",
+    "source": "career-os/vault/metrics.md and projects.md. The `source` field on each entry cites the vault ID so a claim can be traced back in one hop.",
+    "confidenceRendering": {
+      "exact": "rendered bare",
+      "approximate": "prefixed 'roughly' (or '~' in tight contexts)",
+      "estimate": "prefixed 'approximately'; `basis` is rendered alongside",
+      "projection": "prefixed 'an estimated'; a visible `footnote` is MANDATORY and the build fails without one"
+    },
+    "displayRule": "`display` carries the bare figure with no hedging words. The shortcode adds the hedge from `confidence`. Do not pre-hedge a display string or it will read 'roughly roughly'.",
+    "attributionRendering": {
+      "self": "no credit clause",
+      "co-designed": "renders 'co-designed with <credit>'",
+      "team": "renders 'built by <credit>; my role was <role>' — never presentable as a personal achievement"
+    },
+    "publishRule": "`publish: false` means the number is recorded for provenance but must never reach built HTML. tests/content-consistency.spec.js greps the build for the literals in `_superseded`."
+  },
+
+  "items": {
+    "experience_years": {
+      "value": "4.5+",
+      "display": "4.5+ years",
+      "unit": "years",
+      "confidence": "exact",
+      "basis": "Continuous QA employment since May 2022.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "source": "vault://career.md",
+      "publish": true,
+      "note": "String, never a number. A build assertion enforces the type — a float here silently becomes '4.5' and drops the '+'."
+    },
+
+    "golden_dataset_india_mh": {
+      "value": 351,
+      "display": "351",
+      "unit": "curated golden-dataset cases",
+      "label": "Golden-dataset cases gating every India Maternal Health release",
+      "confidence": "exact",
+      "basis": "303 clinical (130 English + 98 Hindi + 75 Assamese) + 48 adversarial/safety. Counted from the versioned golden-dataset JSON in git.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-037",
+      "publish": true,
+      "scopeNote": "India Maternal Health only — the one RAG program. The HPV datasets evaluate intent classification and Smart Snippets, not retrieval, and are counted separately."
+    },
+
+    "golden_dataset_hpv": {
+      "value": { "indonesia": 184, "india": 125, "thailand": 161 },
+      "display": "184 · 125 · 161",
+      "unit": "curated cases per HPV program (Indonesia · India · Thailand)",
+      "confidence": "exact",
+      "basis": "Counted from the versioned golden-dataset JSON in git.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-037",
+      "publish": true
+    },
+
+    "nightly_eval_cost": {
+      "value": { "from": 9, "to": 2 },
+      "display": "$8–10 → $1.80–2.20",
+      "unit": "USD of judge-model API spend per nightly run",
+      "label": "Cost of the full nightly evaluation",
+      "confidence": "approximate",
+      "basis": "Derived from LLM API billing across judge-model configurations, not a reconciled invoice line item.",
+      "asOf": "2026-06-15",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-057",
+      "publish": true,
+      "scopeNote": "The saving is what paid for coverage: the nightly job went from a 60-case sample to the full 351-case dataset."
+    },
+
+    "prompt_review_time": {
+      "value": { "from": 12600, "to": 90 },
+      "display": "3–4 hours → under 90 seconds",
+      "unit": "reviewer time per prompt version bump",
+      "label": "Prompt-regression review per version",
+      "confidence": "exact",
+      "basis": "PR review timestamps before and after the snapshot suite landed.",
+      "asOf": "2025-03-01",
+      "attribution": "self",
+      "provenSlug": "snapshot-testing-nondeterministic-ai",
+      "source": "vault://projects.md#PROJ-025",
+      "publish": true,
+      "scopeNote": "Under 90 seconds is the automated canonical run. Flagged diffs still get human review — the suite removed the undifferentiated reading, not the judgement."
+    },
+
+    "regression_suite_runtime": {
+      "value": { "from": 195, "to": 23 },
+      "display": "195 → 23 minutes",
+      "unit": "minutes, full regression suite",
+      "label": "Full CI regression suite",
+      "confidence": "approximate",
+      "basis": "Stages 1–3 measured from execution reports; the current figure (22–24 min) is recalled from Allure observation rather than an archived report, so it is stated as ~23.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-018",
+      "publish": true,
+      "scopeNote": "Not one optimisation. Serial Robot → pabot with one-login-per-worker (39 min) → suite growth eroded it back to ~65 min → Playwright with 6-way sharding plus moving ~28% of UI scenarios to the API level."
+    },
+
+    "ci_smoke_runtime": {
+      "value": { "from": 62, "to": 11 },
+      "display": "62 → 11 minutes",
+      "unit": "minutes, CI smoke suite",
+      "confidence": "approximate",
+      "basis": "Jenkins build timestamps for the Robot stages; Playwright/Allure CI reports for the current figure.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-003",
+      "publish": true
+    },
+
+    "platform_scale": {
+      "value": { "countries": 6, "productLines": 6, "qaEngineers": 1 },
+      "display": "6 countries · 6+ AI product lines · 1 QA engineer",
+      "label": "What the evaluation systems cover",
+      "confidence": "exact",
+      "basis": "India, Indonesia, Thailand, Kenya, Nigeria, Uganda. QA consolidated to a single engineer in October 2025.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "source": "vault://projects.md, vault://career.md",
+      "publish": true,
+      "scopeNote": "This is scope of responsibility, not personal achievement. It is the honest way to carry the platform's user numbers: I am accountable for quality across them, I did not build them."
+    },
+
+    "countries": {
+      "value": 6,
+      "display": "6",
+      "unit": "country programs",
+      "confidence": "exact",
+      "basis": "India, Indonesia, Thailand, Kenya, Nigeria, Uganda.",
+      "asOf": "2026-08-01",
+      "attribution": "team",
+      "credit": "the Nivi platform",
+      "role": "quality and evaluation across all six",
+      "source": "vault://projects.md",
+      "publish": true,
+      "scopeNote": "The '3' that appears in older copy was an HPV market count (India, Indonesia, Thailand), not a country count. Where three is meant, say 'three HPV markets'."
+    },
+
+    "monthly_users": {
+      "value": 50000,
+      "display": "50,000+ monthly users",
+      "confidence": "approximate",
+      "basis": "Platform-reported monthly active users.",
+      "asOf": "2026-01-01",
+      "attribution": "team",
+      "credit": "the Nivi platform",
+      "role": "quality and evaluation",
+      "source": "vault://career.md",
+      "publish": true,
+      "scopeNote": "Scale of the system under test. Never framed as something I delivered."
+    },
+
+    "registered_users_2m": {
+      "value": 2000000,
+      "display": "2M registered users",
+      "confidence": "approximate",
+      "basis": "Cumulative registration count.",
+      "asOf": "2025-01-01",
+      "attribution": "team",
+      "source": "vault://career.md",
+      "publish": false,
+      "unpublishedReason": "A cumulative registration total next to a monthly-active figure invites the reader to treat them as the same quantity, and the larger number is the one that sticks. One scale figure sitewide: monthly users."
+    },
+
+    "coverage_zero_to_seventyfive": {
+      "value": { "from": 0, "to": 75 },
+      "display": "0 → 75% automation coverage",
+      "confidence": "approximate",
+      "basis": "Observed from suite growth against total test-case count over 2022–2025.",
+      "asOf": "2025-06-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-001",
+      "publish": false,
+      "unpublishedReason": "The single riskiest claim on the old site. 'Coverage' is undefined here — it is neither line coverage nor requirement coverage — the denominator moved constantly, and the figure has not been re-measured since the suite passed 225 scenarios. It reads as precise and is not. The coverage story is told qualitatively instead, or through suite size, which is countable."
+    },
+
+    "playwright_scenarios": {
+      "value": 300,
+      "display": "300+",
+      "unit": "Playwright end-to-end and integration scenarios",
+      "confidence": "exact",
+      "basis": "Suite size, counted. 225+ end-2024, 280+ early 2025, 300+ mid-2026.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-015",
+      "publish": true,
+      "scopeNote": "Growth came from new country variants, dashboard modules and visual regression — not a 1:1 port of the Robot suite."
+    },
+
+    "botium_flows": {
+      "value": 140,
+      "display": "140+",
+      "unit": "conversational flow scenarios",
+      "confidence": "exact",
+      "basis": "Suite size, counted.",
+      "asOf": "2025-12-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-016",
+      "publish": true
+    },
+
+    "api_endpoints": {
+      "value": 30,
+      "display": "30+",
+      "unit": "microservice endpoints across 5 backend services",
+      "confidence": "exact",
+      "basis": "Counted across conversation, user, session/state, NLP classifier and referral services.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-017",
+      "publish": true
+    },
+
+    "regression_effort_days": {
+      "value": { "from": 5, "to": 2 },
+      "display": "5 → 2 people-days of manual regression per release",
+      "confidence": "estimate",
+      "basis": "Team-level estimate across release cycles, self-tracked. Not drawn from a time-tracking system.",
+      "asOf": "2024-12-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-002",
+      "publish": true,
+      "scopeNote": "Stated with its base rather than as '60% reduction'. A percentage without a denominator is unfalsifiable; five days to two is checkable."
+    },
+
+    "post_release_defects": {
+      "value": { "from": 20, "to": 7 },
+      "display": "20 → 7 post-release defects per sprint",
+      "confidence": "approximate",
+      "basis": "Sprint retrospective defect records, comparing roughly a quarter of sprints before QA sign-off gates against roughly a quarter after. The exact sprint count in each window is not recalled.",
+      "asOf": "2024-06-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-004",
+      "publish": true
+    },
+
+    "e2e_latency_2026": {
+      "value": { "from": 28.3, "to": 3.2 },
+      "display": "28.3s → 3.2s median end-to-end latency",
+      "confidence": "exact",
+      "basis": "Release timing comparison across the 15 June 2026 release.",
+      "asOf": "2026-06-15",
+      "attribution": "team",
+      "credit": "the pipeline engineering team",
+      "role": "benchmarking and evaluation, not the retrieval architecture",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-056",
+      "publish": true,
+      "scopeNote": "The regression that produced the 28.3s figure lived in staging and never reached production users. Two changes shipped together — reranker removal and a generator-model upgrade — so the improvement cannot be attributed to either alone."
+    },
+
+    "rag_retrieval_latency": {
+      "value": { "from": 10, "to": 2.5 },
+      "display": "8–12s → 1.5–3.5s",
+      "unit": "RAG retrieval step latency",
+      "confidence": "exact",
+      "basis": "Production monitoring instrumentation.",
+      "asOf": "2026-06-01",
+      "attribution": "team",
+      "credit": "the pipeline engineering team",
+      "role": "measurement and validation",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-008",
+      "publish": true
+    },
+
+    "reranker_batching_share": {
+      "value": 83,
+      "display": "83–84%",
+      "unit": "share of the RAG retrieval latency reduction attributable to one fix",
+      "confidence": "exact",
+      "basis": "Component micro-benchmark (March 2026) put it at ~83%; a contemporaneous independent account put it at ~84%. The two agree within a percentage point.",
+      "asOf": "2026-03-01",
+      "attribution": "team",
+      "credit": "an engineer on the pipeline team",
+      "role": "I benchmarked and validated the improvement; I did not implement it",
+      "source": "vault://metrics.md#MET-047",
+      "publish": true,
+      "scopeNote": "Mandatory context wherever RAG latency improvement is mentioned. Collapsing 20 sequential cross-encoder inference calls into one batched tensor pass accounts for the overwhelming majority of it. Omitting this credit would make the latency work read as mine."
+    },
+
+    "pact_blast_radius": {
+      "value": 1800,
+      "display": "1,800+ event rows",
+      "unit": "BigQuery event rows that would have carried a fallback intent instead of a safety classification",
+      "confidence": "projection",
+      "basis": "Historical traffic replayed through the refactored classifier.",
+      "footnote": "This is a replay projection for a change that never shipped, not an observed production count. The contract verification stopped it before staging.",
+      "asOf": "2025-01-01",
+      "attribution": "self",
+      "provenSlug": "contract-testing-pact",
+      "source": "vault://metrics.md#MET-030",
+      "publish": true
+    },
+
+    "pact_provider_states": {
+      "value": { "failed": 2, "total": 9 },
+      "display": "2 of 9 provider states",
+      "confidence": "exact",
+      "basis": "Pact Broker verification run records. The two safety-category interactions failed; the other seven passed.",
+      "asOf": "2025-01-01",
+      "attribution": "self",
+      "provenSlug": "contract-testing-pact",
+      "source": "vault://metrics.md#MET-030",
+      "publish": true,
+      "scopeNote": "The precision is the argument: a schema diff passed this change because the JSON stayed valid. Only a consumer-expectation check could fail exactly the two interactions that mattered."
+    },
+
+    "security_scan_first_pass": {
+      "value": null,
+      "display": "two high-severity findings in the first authenticated scan, both fixed within the sprint",
+      "confidence": "exact",
+      "basis": "First structured DAST pass over the platform.",
+      "asOf": "2025-03-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-031",
+      "publish": true,
+      "scopeNote": "Deliberately qualitative. The full finding breakdown is a map of where to look at a client system and is not publishable; the finding classes are not named on the site either."
+    },
+
+    "judge_agreement_geval": {
+      "value": { "from": 71, "to": 88 },
+      "display": "71% → 88% agreement with human annotators",
+      "confidence": "exact",
+      "basis": "Tone Appropriateness criterion, measured against a 30-example annotated calibration set before and after adding concrete PASS/FAIL example pairs.",
+      "asOf": "2025-12-01",
+      "attribution": "co-designed",
+      "credit": "the health content team, who annotated the calibration set",
+      "provenSlug": "llm-judge-independence",
+      "source": "vault://metrics.md#MET-034",
+      "publish": true
+    },
+
+    "judge_calibration_set": {
+      "value": 40,
+      "display": "40 annotated examples, 20 good and 20 bad",
+      "confidence": "exact",
+      "basis": "Calibration set for the redesigned Smart Snippets judge. Rule: rewrite the criteria whenever disagreement exceeds 15%.",
+      "asOf": "2025-03-01",
+      "attribution": "co-designed",
+      "credit": "the health content team, who annotated the set",
+      "provenSlug": "llm-judge-independence",
+      "source": "vault://metrics.md#MET-035",
+      "publish": true
+    },
+
+    "ragas_embedding_swap_catch": {
+      "value": { "from": 0.79, "to": 0.51 },
+      "display": "0.79 → 0.51 Context Precision",
+      "confidence": "exact",
+      "basis": "Nightly RAGAS CI job results artefact. An embedding-model swap reached staging tested only for latency and memory; the danger-sign recognition category dropped before manual QA started for the sprint.",
+      "asOf": "2025-09-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-036",
+      "publish": true
+    },
+
+    "cache_eval_set": {
+      "value": 280,
+      "display": "280 hand-labelled production queries",
+      "confidence": "exact",
+      "basis": "Pulled from Indonesia and India production logs over a 14-day window and labelled by hand.",
+      "asOf": "2026-04-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-023",
+      "publish": true
+    },
+
+    "cache_precision_recall": {
+      "value": { "precision": 0.93, "recall": 0.71 },
+      "display": "0.93 precision / 0.71 recall",
+      "confidence": "exact",
+      "basis": "Measured against thresholds of ≥0.90 precision and ≥0.75 recall.",
+      "asOf": "2026-04-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-024",
+      "publish": true,
+      "scopeNote": "The asymmetric thresholds are the point: a cache miss falls through safely to live generation, a false cache hit serves a wrong answer. The two errors are not worth the same, so they are not gated the same."
+    },
+
+    "cache_regression_catch": {
+      "value": { "from": 0.81, "to": 0.94 },
+      "display": "0.81 → 0.94 precision",
+      "confidence": "exact",
+      "basis": "A staging run ahead of a classification-schema change dropped below the 0.90 gate and blocked the deploy; a re-run after the fix passed at 0.94.",
+      "asOf": "2026-04-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-025",
+      "publish": true
+    },
+
+    "anomaly_sampling_yield": {
+      "value": 3.5,
+      "display": "3–4× more judge-worthy edge cases per week at the same cost",
+      "confidence": "estimate",
+      "basis": "My own framing over the pipeline's first month of operation, comparing anomaly-triggered oversampling layered on 5% uniform hash sampling against uniform sampling alone. Not an instrumented measurement.",
+      "asOf": "2026-03-01",
+      "attribution": "co-designed",
+      "credit": "the platform engineering team",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-027",
+      "publish": true
+    },
+
+    "clinical_safety_pass": {
+      "value": 94,
+      "display": "94%",
+      "unit": "Clinical Safety PASS rate on the India Maternal Health production sample",
+      "confidence": "exact",
+      "basis": "Production monitoring evaluation pipeline, after the danger-sign fix shipped.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-026",
+      "publish": true
+    },
+
+    "danger_sign_fix_time": {
+      "value": 2,
+      "display": "two weeks from pipeline go-live to a shipped fix",
+      "confidence": "exact",
+      "basis": "Pipeline operational logs. The fix was retrieval query augmentation, a prompt rule, and 12 new golden-dataset cases.",
+      "asOf": "2026-03-01",
+      "attribution": "self",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-029",
+      "publish": true,
+      "scopeNote": "The failure mode was invisible to golden-dataset regression, the conversational suite, RAGAS Faithfulness and manual spot-checks — four independent layers. That is the finding, not the two weeks."
+    },
+
+    "annotation_override_rate": {
+      "value": 20,
+      "display": "20% of Clinical Safety FAIL verdicts overridden by human annotators",
+      "confidence": "approximate",
+      "basis": "First annotation cycle with the health content team, in progress at the time of writing.",
+      "asOf": "2026-06-01",
+      "attribution": "co-designed",
+      "credit": "the health content team",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-028",
+      "publish": true,
+      "scopeNote": "Published as a limitation, not a result. It says the judge is too conservative on non-urgent symptom mentions because the criteria do not distinguish severity."
+    },
+
+    "framework_reuse_velocity": {
+      "value": { "from": 5, "to": 1.5 },
+      "display": "4–6 sprints → 1–2 sprints",
+      "unit": "from 'chatbot ready for evaluation' to 'nightly evaluation job live'",
+      "confidence": "estimate",
+      "basis": "My own comparison across the three HPV launches, which reused the runner, judge, calibration pipeline, nightly job and results table and needed only dataset curation.",
+      "asOf": "2025-12-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-038",
+      "publish": true
+    },
+
+    "crisis_prompt_fp_testset": {
+      "value": { "from": 13, "to": 5 },
+      "display": "13 → 5 false positives across 32 fixed test cases",
+      "confidence": "exact",
+      "basis": "Before/after comparison on a fixed regression test set through the evaluation framework. True-positive detection stayed at 100% in both versions.",
+      "asOf": "2026-02-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-019",
+      "publish": true,
+      "scopeNote": "The unchanged true-positive rate is the load-bearing half. Cutting false positives on a safety classifier is worthless if it costs recall."
+    },
+
+    "crisis_prompt_fp_production": {
+      "value": 45,
+      "display": "45% reduction in the production false-positive rate",
+      "confidence": "approximate",
+      "basis": "Production monitoring over the two sprints following release.",
+      "asOf": "2026-03-20",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-020",
+      "publish": true
+    },
+
+    "unnecessary_llm_invocations": {
+      "value": 26,
+      "display": "26% of LLM invocations",
+      "confidence": "approximate",
+      "basis": "Manual analysis of input-classifier traffic logs, February 2026. Roughly 18 points of it was acknowledgement-type input with vocabulary gaps; the rest was gibberish, emoji and menu selections.",
+      "asOf": "2026-02-04",
+      "attribution": "self",
+      "provenSlug": "audit-your-own-traffic",
+      "source": "vault://metrics.md#MET-009",
+      "publish": true
+    },
+
+    "visual_regression": {
+      "value": { "scenarios": 28, "tolerance": 0.2, "caught": 3, "months": 6 },
+      "display": "28 scenarios at 0.2% pixel tolerance, 3 regressions caught in 6 months",
+      "confidence": "exact",
+      "basis": "Direct count and CI timing data. Overhead is roughly 200–400ms per scenario.",
+      "asOf": "2025-01-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-033",
+      "publish": true
+    },
+
+    "robot_retirement_ported": {
+      "value": 47,
+      "display": "47 API test cases",
+      "confidence": "exact",
+      "basis": "8 in a proof of concept, then 39 in the full port. Zero result divergence across a full parallel-run release cycle before the Robot job and image were decommissioned.",
+      "asOf": "2026-03-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-032",
+      "publish": true
+    },
+
+    "ci_flake_rate": {
+      "value": { "from": 18, "to": 3 },
+      "display": "18% → under 3% false-failure rate",
+      "confidence": "approximate",
+      "basis": "Jenkins build history, September to November 2022. Vue components became visible in the DOM before their content finished loading, so a visibility wait alone was insufficient.",
+      "asOf": "2022-11-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-041",
+      "publish": true
+    },
+
+    "docker_setup_time": {
+      "value": { "from": 240, "to": 12 },
+      "display": "half a day → 12 minutes",
+      "unit": "to stand up a test environment on a new machine",
+      "confidence": "estimate",
+      "basis": "My own before/after observation around Docker adoption. Not timed formally.",
+      "asOf": "2023-07-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-043",
+      "publish": true
+    },
+
+    "stt_latency": {
+      "value": { "sarvam": 1.0, "gnani": 1.51 },
+      "display": "1.00s versus 1.51s average transcription latency",
+      "confidence": "exact",
+      "basis": "Benchmarked across the same Assamese audio set through both providers.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "provenSlug": "aggregate-metrics-hide-the-failure",
+      "source": "vault://metrics.md#MET-048",
+      "publish": true
+    },
+
+    "stt_duration_banded_collapse": {
+      "value": { "from": 100, "to": 30 },
+      "display": "100% → 30% clean-output rate",
+      "confidence": "exact",
+      "basis": "The losing provider held 100% clean output on short clips and collapsed to 30% on 15–25 second clips — the duration band real users actually send. Only visible once the analysis was banded by audio duration instead of aggregated.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "provenSlug": "aggregate-metrics-hide-the-failure",
+      "source": "vault://metrics.md#MET-049",
+      "publish": true,
+      "scopeNote": "The single best argument on the site for disaggregating a metric before trusting it."
+    },
+
+    "voice_vs_text_length": {
+      "value": { "voice": 13.0, "text": 5.8 },
+      "display": "13.0 versus 5.8 words per query",
+      "confidence": "exact",
+      "basis": "203 transcribed voice queries against 405 typed queries, India Maternal Health.",
+      "asOf": "2026-07-01",
+      "attribution": "self",
+      "provenSlug": "audit-your-own-traffic",
+      "source": "vault://metrics.md#MET-051",
+      "publish": true
+    },
+
+    "voice_vs_text_noise": {
+      "value": { "voice": 2, "text": 23 },
+      "display": "2% versus 23% filler content",
+      "confidence": "exact",
+      "basis": "Same 203-voice / 405-text sample. Noise is filler or pure acknowledgement with no clinical substance.",
+      "asOf": "2026-07-01",
+      "attribution": "self",
+      "provenSlug": "audit-your-own-traffic",
+      "source": "vault://metrics.md#MET-052",
+      "publish": true
+    },
+
+    "voice_session_engagement": {
+      "value": { "voice": 6.5, "text": 2.5 },
+      "display": "6–7 versus 2–3 messages per session",
+      "confidence": "exact",
+      "basis": "Same behavioural analysis sample.",
+      "asOf": "2026-07-01",
+      "attribution": "self",
+      "provenSlug": "audit-your-own-traffic",
+      "source": "vault://metrics.md#MET-054",
+      "publish": true
+    },
+
+    "pypi_downloads": {
+      "value": 1824,
+      "display": "1,824 downloads",
+      "confidence": "approximate",
+      "basis": "PyPI stats including mirror traffic, which inflates the figure by an unknown amount. 391 in the trailing 30 days at time of measurement.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-011",
+      "publish": true
+    },
+
+    "engineers_upskilled": {
+      "value": 3,
+      "display": "three engineers",
+      "confidence": "exact",
+      "basis": "One senior engineer with no prior automation experience, mentored through a structured learning path, plus two campus recruits through a four-month programme.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-014",
+      "publish": true
+    }
+  },
+
+  "_superseded": [
+    {
+      "literal": "3 countries",
+      "correction": "6 countries. The three was an HPV market count (India, Indonesia, Thailand), not a country count.",
+      "appearedIn": "legacy about.html, index.html"
+    },
+    {
+      "literal": "2M registered users",
+      "correction": "Use monthly_users only. See registered_users_2m.unpublishedReason.",
+      "appearedIn": "legacy about.html"
+    },
+    {
+      "literal": "2,000,000",
+      "correction": "Same as above, numeric form.",
+      "appearedIn": "legacy markup"
+    },
+    {
+      "literal": "0 → 75%",
+      "correction": "Not published. See coverage_zero_to_seventyfive.unpublishedReason.",
+      "appearedIn": "legacy index.html, skills.html"
+    },
+    {
+      "literal": "75% automation coverage",
+      "correction": "Same as above, prose form.",
+      "appearedIn": "legacy index.html"
+    },
+    {
+      "literal": "60% reduction",
+      "correction": "Restated with its base as 5 → 2 people-days per release. See regression_effort_days.",
+      "appearedIn": "legacy index.html, case-study pages"
+    },
+    {
+      "literal": "4+ years",
+      "correction": "4.5+ years. See experience_years.",
+      "appearedIn": "legacy about.html, resume.html"
+    },
+    {
+      "literal": "47 findings",
+      "correction": "Not published in any form. See security_scan_first_pass.",
+      "appearedIn": "never published; vault only"
+    },
+    {
+      "literal": "2 High, 7 Medium",
+      "correction": "Not published. Softened to the qualitative statement in security_scan_first_pass.",
+      "appearedIn": "never published; vault only"
+    },
+    {
+      "literal": "11 to 4",
+      "correction": "Not published. Stated as 'QA consolidated to a single engineer in October 2025'.",
+      "appearedIn": "never published; vault only"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "_meta": {
+    "purpose": "The single source for employment history. The résumé, the About page and the homepage timeline strip all render from here, so a promotion is recorded once.",
+    "source": "vault://career.md",
+    "rule": "`title` is the title actually held during the period. Never a target title, never an aspirational one."
+  },
+
+  "roles": [
+    {
+      "id": "senior-qa-automation-engineer",
+      "title": "Senior QA Automation Engineer",
+      "employer": "Jeavio India Pvt. Ltd.",
+      "client": "Nivi",
+      "start": "2026-06-01",
+      "end": null,
+      "current": true,
+      "location": "Vadodara, India",
+      "summary": "Sole QA on a multi-region digital health AI platform. I own quality strategy, release governance, the evaluation frameworks and the data platform function across six-plus concurrent AI product lines.",
+      "highlights": [
+        "Own the production evaluation pipeline that samples live traffic and judges it against clinical safety and quality criteria.",
+        "Own the golden-dataset evaluation framework across four country programs and three distinct generation architectures.",
+        "Scrum Master since April 2025, concurrently with the QA and analytics ownership."
+      ],
+      "note": "A title promotion with continuous scope, not a new mandate. Most of the work that justified it was built during the preceding role and is credited there."
+    },
+    {
+      "id": "qa-engineer",
+      "title": "QA Engineer",
+      "employer": "Jeavio India Pvt. Ltd.",
+      "client": "Nivi",
+      "start": "2023-06-01",
+      "end": "2026-05-31",
+      "current": false,
+      "location": "Vadodara, India",
+      "summary": "Led quality strategy and test automation for the platform. QA consolidated to a single engineer in October 2025; I have been the only QA on the project since.",
+      "highlights": [
+        "Built the platform's first LLM-as-a-judge, then diagnosed it as structurally unreliable and rebuilt it around an independent judge model, binary verdicts and a calibrated criteria set.",
+        "Migrated UI automation off Robot Framework to Playwright after four of the framework's limits turned out to be structural rather than fixable.",
+        "Introduced consumer-driven contract testing, which caught a safety-classification refactor that every schema check had passed.",
+        "Built the production monitoring and evaluation pipeline, which surfaced a clinical-safety gap four independent testing layers had missed.",
+        "Primary QA contact in regular engagements with the client's CTO and CEO."
+      ]
+    },
+    {
+      "id": "associate-qa-engineer",
+      "title": "Associate QA Engineer",
+      "employer": "Jeavio India Pvt. Ltd.",
+      "client": "Nivi",
+      "start": "2022-05-02",
+      "end": "2023-05-31",
+      "current": false,
+      "location": "Vadodara, India",
+      "summary": "Built the project's QA infrastructure from zero — the first structured process, the first UI automation, the first API suite, and the first CI integration.",
+      "highlights": [
+        "Co-built the team's first QA process: test case templates, coverage matrices, severity standards and defect governance.",
+        "Built the first UI automation suite in Robot Framework and the first API suite in Pytest.",
+        "Took the full regression suite from a serial three-hour run to 39 minutes by consolidating login to one session per worker, which also fixed a race condition between parallel workers."
+      ]
+    },
+    {
+      "id": "project-intern",
+      "title": "Project Intern",
+      "employer": "Jeavio India Pvt. Ltd.",
+      "client": "Nivi",
+      "start": "2022-01-01",
+      "end": "2022-04-30",
+      "current": false,
+      "location": "Vadodara, India",
+      "summary": "Manual functional, integration and API testing during the platform's early NLP chatbot phase. Converted to full time on 2 May 2022.",
+      "highlights": [
+        "Documented response inconsistencies, routing failures and edge-case behaviour for intent classification and NER flows."
+      ]
+    }
+  ],
+
+  "education": [
+    {
+      "id": "be-computer-engineering",
+      "qualification": "B.E. Computer Engineering",
+      "institution": "Sardar Vallabhbhai Patel Institute of Technology, Vasad",
+      "affiliation": "Gujarat Technological University",
+      "start": "2018-08-01",
+      "end": "2022-05-31",
+      "result": "CGPA 9.35 / 10"
+    }
+  ],
+
+  "markers": [
+    {
+      "date": "2023-09-01",
+      "label": "AI testing specialisation begins",
+      "detail": "NLP intent classification and conversational flow coverage."
+    },
+    {
+      "date": "2025-01-01",
+      "label": "First LLM-as-a-judge",
+      "detail": "Built for the generative snippets feature, then rebuilt after diagnosing the circularity problem."
+    },
+    {
+      "date": "2025-04-01",
+      "label": "Scrum Master",
+      "detail": "Concurrent with QA and analytics ownership."
+    },
+    {
+      "date": "2025-10-01",
+      "label": "Sole QA on the platform",
+      "detail": "QA consolidated to a single engineer."
+    },
+    {
+      "date": "2026-06-01",
+      "label": "Promoted to Senior QA Automation Engineer"
+    }
+  ]
+}
