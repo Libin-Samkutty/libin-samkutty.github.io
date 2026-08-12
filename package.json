@@ -27,6 +27,7 @@
     "@playwright/test": "^1.62.1",
     "html-validate": "^11.6.2",
     "http-server": "^14.1.1",
-    "lightningcss": "^1.33.0"
+    "lightningcss": "^1.33.0",
+    "sharp": "^0.35.3"
   }
 }
