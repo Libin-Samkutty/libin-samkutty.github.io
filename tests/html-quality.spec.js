@@ -43,7 +43,16 @@ for (const { url, html } of contentPages) {
         });
 
         test("has a description between 70 and 160 characters", () => {
-            const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? "";
+            const raw = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? "";
+            // Measured decoded. An apostrophe is one character to a reader and to a
+            // search engine; `&#39;` is five, and counting the escape would reject
+            // descriptions that are actually in range.
+            const description = raw
+                .replace(/&#39;/g, "'")
+                .replace(/&quot;/g, '"')
+                .replace(/&amp;/g, "&")
+                .replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">");
             expect(description, "missing description").not.toBe("");
             expect(description.length, `description length ${description.length}`).toBeGreaterThanOrEqual(70);
             expect(description.length, `description length ${description.length}`).toBeLessThanOrEqual(160);
@@ -82,7 +91,15 @@ for (const { url, html } of contentPages) {
         });
 
         test("has no anchor inside a button", () => {
-            expect(html).not.toMatch(/<button[^>]*>[\s\S]{0,400}?<a\b/);
+            // Bounded by the closing tag. An unbounded lookahead matched from a
+            // button on the page to an unrelated link far below it, which made the
+            // test fail on markup that was fine — a gate that cries wolf is worse
+            // than no gate, because the fix is to delete it.
+            const offenders = [...html.matchAll(/<button\b[^>]*>([\s\S]*?)<\/button>/g)]
+                .map(([, inner]) => inner)
+                .filter((inner) => /<a\b/.test(inner));
+
+            expect(offenders, "anchor nested inside a button").toEqual([]);
         });
     });
 }

@@ -12,16 +12,37 @@
 */
 
 @media print {
-    /* Every `light-dark()` token in the system re-resolves to its light value. */
+    /*
+      Every `light-dark()` token in the system re-resolves to its light value,
+      and the space scale collapses to point values. The screen scale is tuned
+      for a scrolling column; on paper the same figures cost whole pages, and a
+      résumé that runs to four sheets because of white space is a worse document
+      than one that runs to two.
+    */
     :root {
         color-scheme: light;
+        --space-s: 6pt;
+        --space-m: 8pt;
+        --space-l: 10pt;
+        --space-xl: 12pt;
+        --space-2xl: 14pt;
+        --space-3xl: 16pt;
     }
 
     html,
     body {
-        background: #fff;
+        background: var(--white);
         font-size: 10.5pt;
-        line-height: 1.45;
+        line-height: 1.38;
+    }
+
+    /*
+      The résumé page's lede reads "Ctrl+P prints cleanly", which is an
+      instruction for a screen and noise on a sheet of paper. It is the only
+      piece of copy on the site that is meaningless once printed.
+    */
+    body.resume .page__lede {
+        display: none;
     }
 
     /* Chrome the reader did not ask to print. */
@@ -68,6 +89,15 @@
     }
 
     /*
+      The screen indent is a rem value that collapses to about 8pt here, which is
+      narrower than the marker itself — the bullets end up outside the box and
+      the list reads as a stack of stray indented lines.
+    */
+    :is(ul, ol) {
+        padding-inline-start: 15pt;
+    }
+
+    /*
       Expanded URLs, scoped to prose and the résumé. A footnote after every
       internal link would double the length of the document for no gain, so only
       absolute URLs are expanded and `mailto:` is left alone — the address is
@@ -83,9 +113,15 @@
         font-family: var(--font-mono);
     }
 
-    /* Keep a role, a callout or a table from being split across the fold. */
+    /*
+      Keep a role, a callout or a table from being split across the fold.
+
+      `.resume__section` is deliberately NOT in this list: the Experience section
+      is taller than a sheet, so telling the engine not to break it just pushes
+      it to a fresh page and then breaks it anyway, wasting most of the page
+      before it. The unit that has to stay together is the individual role.
+    */
     .resume__role,
-    .resume__section,
     .callout,
     .context-strip,
     .timeline__item,
@@ -117,7 +153,7 @@
         background: none;
         box-shadow: none;
         border: 0;
-        border-inline-start: 1.5pt solid #999;
+        border-inline-start: 1.5pt solid var(--navy-450);
         padding: 0 0 0 8pt;
     }
 

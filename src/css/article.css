@@ -149,6 +149,31 @@
     }
 }
 
+/* ================================================================ scrollable table */
+
+/*
+  The wrapper the markdown pipeline emits around every table. It is the scroll
+  container, so the table inside goes back to being a table — `display: block` on
+  a <table> is only the defensive fallback for one that arrives unwrapped.
+
+  The wrapper carries `tabindex="0"` and a label in the markup, which is what
+  makes it reachable: a region that scrolls but cannot be focused is unusable
+  with a keyboard. The focus ring comes from the global `:focus-visible` rule.
+*/
+.table-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border: var(--hairline);
+    border-radius: var(--radius-m);
+    padding: var(--space-s);
+}
+
+.table-scroll table {
+    display: table;
+    min-inline-size: 100%;
+    inline-size: auto;
+}
+
 /* ================================================================ chips */
 
 .chips {

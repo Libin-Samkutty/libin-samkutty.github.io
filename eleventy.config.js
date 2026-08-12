@@ -1,5 +1,6 @@
 import path from "node:path";
 import Image from "@11ty/eleventy-img";
+import { bundle } from "lightningcss";
 import site from "./src/_data/site.json" with { type: "json" };
 import metrics from "./src/_data/metrics.json" with { type: "json" };
 import programs from "./src/_data/programs.json" with { type: "json" };
@@ -289,6 +290,46 @@ export default function (eleventyConfig) {
         return crumbs;
     });
 
+    /* ---------------------------------------------------------------- transforms */
+
+    /**
+     * Wraps every table in a focusable, labelled scroll region.
+     *
+     * A table that scrolls horizontally is unreachable by keyboard unless the
+     * scrolling element itself is focusable — a real failure, not a technicality,
+     * and one that only appears at a narrow viewport. Doing it here rather than
+     * asking authors to hand-wrap tables in markdown means it cannot be forgotten
+     * on the next post.
+     */
+    eleventyConfig.addTransform("scrollableRegions", function (content) {
+        if (!this.page.outputPath || !this.page.outputPath.endsWith(".html")) return content;
+
+        return (
+            content
+                // <section> rather than a div with role="region": a named section
+                // is the native landmark, so a screen-reader user can jump straight
+                // to the table instead of arrowing into it.
+                .replace(/<table>/g, () => {
+                    tableIndex += 1;
+                    return (
+                        `<section class="table-scroll" tabindex="0" ` +
+                        `aria-label="Table ${tableIndex}, scrollable"><table>`
+                    );
+                })
+                .replace(/<\/table>/g, "</table></section>")
+                // Code blocks overflow horizontally on a phone for the same reason
+                // and are unreachable for the same reason. tabindex on the <pre>
+                // itself is enough; wrapping it would add a landmark for something
+                // that is already announced as a code block.
+                .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre$1 tabindex="0">')
+        );
+    });
+
+    let tableIndex = 0;
+    eleventyConfig.on("eleventy.before", () => {
+        tableIndex = 0;
+    });
+
     /* ---------------------------------------------------------------- collections */
 
     eleventyConfig.addCollection("caseStudies", (collection) =>
@@ -307,7 +348,47 @@ export default function (eleventyConfig) {
 
     /* ---------------------------------------------------------------- passthrough and server */
 
-    eleventyConfig.addPassthroughCopy({ "src/css": "css" });
+    /**
+     * CSS is bundled, not copied.
+     *
+     * Passing the files through would ship main.css as a chain of @import rules,
+     * and an @import is a render-blocking request that cannot start until the
+     * parent stylesheet has arrived — nine files becomes a serial waterfall in
+     * front of first paint. Lightning CSS inlines them into one file, downlevels
+     * nesting and custom media, and minifies.
+     *
+     * Only main.css compiles. The partials return undefined, which tells Eleventy
+     * to write nothing for them.
+     */
+    eleventyConfig.addTemplateFormats("css");
+    eleventyConfig.addExtension("css", {
+        outputFileExtension: "css",
+        compile: async (_content, inputPath) => {
+            if (!/[\\/]main\.css$/.test(inputPath)) return;
+
+            return async () => {
+                const { code, warnings } = bundle({
+                    filename: inputPath,
+                    minify: true,
+                    // Targets chosen so light-dark() survives rather than being
+                    // downlevelled: it is the mechanism the whole theme layer rests
+                    // on, and there is no faithful fallback for it.
+                    targets: {
+                        chrome: 123 << 16,
+                        firefox: 120 << 16,
+                        safari: (17 << 16) | (5 << 8)
+                    }
+                });
+
+                for (const warning of warnings) {
+                    console.warn(`[lightningcss] ${warning.message}`);
+                }
+
+                return code.toString();
+            };
+        }
+    });
+
     eleventyConfig.addPassthroughCopy({ "src/js": "js" });
     eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
 

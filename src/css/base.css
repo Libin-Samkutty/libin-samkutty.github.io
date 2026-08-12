@@ -43,21 +43,33 @@
   exactly that, which is why every fallback on the old site was Times.
 */
 
+/*
+  `size-adjust` was measured rather than looked up: a 600px block of the same
+  sentence set in the webfont and in the adjusted fallback has to break at the
+  same word, because a fallback that fits in two lines where the webfont needs
+  three is a whole line of shift at swap. The published Source Serif figure was
+  5.5% narrow and did exactly that.
+
+  The ascent and descent overrides are the face's own metrics divided by the
+  size-adjust: Inter is 2728/-680 on a 2816 em, Source Serif 4 is 1036/-335 on a
+  1000 em. Re-derive both if the subset in /assets/fonts/ is ever rebuilt.
+*/
+
 @font-face {
     font-family: "Inter Fallback";
     src: local("Arial"), local("Helvetica Neue"), local("Liberation Sans");
-    size-adjust: 107.12%;
-    ascent-override: 90.2%;
-    descent-override: 22.48%;
+    size-adjust: 106.9%;
+    ascent-override: 90.62%;
+    descent-override: 22.59%;
     line-gap-override: 0%;
 }
 
 @font-face {
     font-family: "Source Serif 4 Fallback";
     src: local("Georgia"), local("Times New Roman"), local("Liberation Serif");
-    size-adjust: 96%;
-    ascent-override: 107.9%;
-    descent-override: 34.9%;
+    size-adjust: 107.24%;
+    ascent-override: 96.61%;
+    descent-override: 31.24%;
     line-gap-override: 0%;
 }
 

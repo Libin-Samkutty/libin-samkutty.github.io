@@ -87,6 +87,11 @@ test.describe("interaction behaviour axe cannot see", () => {
             const bad = [];
 
             for (const element of document.querySelectorAll(selector)) {
+                // Elements that are not rendered at this viewport cannot paint a
+                // focus ring and cannot be focused by a user either. The mobile
+                // project covers them at the width where they exist.
+                if (!element.checkVisibility({ visibilityProperty: true })) continue;
+
                 element.focus();
                 const style = getComputedStyle(element);
                 const hasOutline = style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0;
