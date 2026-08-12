@@ -1,3 +1,5 @@
+import path from "node:path";
+import Image from "@11ty/eleventy-img";
 import site from "./src/_data/site.json" with { type: "json" };
 import metrics from "./src/_data/metrics.json" with { type: "json" };
 import programs from "./src/_data/programs.json" with { type: "json" };
@@ -90,6 +92,14 @@ function renderMetric(id, options = {}) {
         html += ` <span class="metric__credit">— co-designed with ${escapeHtml(metric.credit)}</span>`;
     }
 
+    const ATTRIBUTIONS = ["self", "co-designed", "team", "context"];
+    if (!ATTRIBUTIONS.includes(metric.attribution)) {
+        throw new Error(
+            `{% metric "${id}" %} — unknown attribution "${metric.attribution}". ` +
+                `Expected one of: ${ATTRIBUTIONS.join(", ")}.`
+        );
+    }
+
     if (metric.attribution === "team") {
         if (!metric.credit) {
             throw new Error(
@@ -163,6 +173,62 @@ export default function (eleventyConfig) {
             `${escapeHtml(note)} ` +
             `<a href="${escapeHtml(programs.architectureNote.canonicalPost)}">Why the distinction matters</a>.</p>`
         );
+    });
+
+    /**
+     * Responsive images.
+     *
+     * Sources live in src/_images/, which Eleventy never publishes because of the
+     * leading underscore — so the 2.4 MB original cannot be served by accident,
+     * which is exactly what the old site did for its hero.
+     *
+     * Derivatives are generated at build time and are gitignored. Committing them
+     * would put roughly 180 binaries in the history for no benefit; CI regenerates
+     * them in well under a minute.
+     */
+    eleventyConfig.addAsyncShortcode("image", async (src, alt, sizes = "100vw", options = {}) => {
+        if (alt === undefined) {
+            // Not a default of "". An empty alt is a real, meaningful choice for a
+            // decorative image, and it must be made deliberately rather than
+            // arrived at by forgetting the argument.
+            throw new Error(`{% image "${src}" %} — alt text is required. Pass "" explicitly if the image is decorative.`);
+        }
+
+        const source = path.join("src/_images", src);
+        const shared = {
+            outputDir: "./_site/img/",
+            urlPath: "/img/",
+            sharpAvifOptions: { quality: 62 },
+            sharpWebpOptions: { quality: 76 }
+        };
+
+        // No `null` width anywhere: that emits the original 2048px source, and a
+        // 2048px render of a portrait displayed at 480 CSS pixels is build output
+        // nothing will ever request.
+        const modern = await Image(source, {
+            widths: [320, 480, 640, 960, 1280],
+            formats: ["avif", "webp"],
+            ...shared
+        });
+
+        // The PNG fallback gets exactly one width. Every browser that lacks WebP
+        // also lacks AVIF, and that set is now vanishingly small — generating five
+        // PNG widths added 2.4 MB to the build for a file essentially nobody
+        // fetches. One width keeps the fallback honest without paying for it.
+        const fallback = await Image(source, { widths: [640], formats: ["png"], ...shared });
+
+        // Key order decides which format generateHTML uses for the <img> itself,
+        // so the raster fallback must be added last.
+        const metadata = { ...modern, png: fallback.png };
+
+        return Image.generateHTML(metadata, {
+            alt,
+            sizes,
+            loading: options.eager ? "eager" : "lazy",
+            decoding: options.eager ? "sync" : "async",
+            ...(options.eager ? { fetchpriority: "high" } : {}),
+            ...(options.class ? { class: options.class } : {})
+        });
     });
 
     /* ---------------------------------------------------------------- filters */

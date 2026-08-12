@@ -1,0 +1,157 @@
+/*
+  Print.
+
+  The target is Ctrl+P on /resume/ producing something a hiring manager can put
+  in a folder: one page if it fits, no navigation, no footer, no dark ground, and
+  every external link expanded so the paper copy is still usable.
+
+  This file is imported into the `overrides` layer, which is why the
+  `color-scheme` reset below beats `:root[data-theme="dark"]` in the tokens layer
+  without needing a matching selector or an `!important` — layer order outranks
+  specificity.
+*/
+
+@media print {
+    /* Every `light-dark()` token in the system re-resolves to its light value. */
+    :root {
+        color-scheme: light;
+    }
+
+    html,
+    body {
+        background: #fff;
+        font-size: 10.5pt;
+        line-height: 1.45;
+    }
+
+    /* Chrome the reader did not ask to print. */
+    .site-header,
+    .site-footer,
+    .skip-link,
+    .nav-toggle,
+    .theme-toggle,
+    .site-nav,
+    .related,
+    .section--cta,
+    .hero__actions,
+    [data-nav] {
+        display: none !important;
+    }
+
+    /* The scroll-progress bar is a screen affordance and has no meaning on paper. */
+    .case-study::before,
+    .post::before {
+        display: none;
+    }
+
+    /* Reveal state never resolves without JavaScript running on the print copy,
+       so force everything visible rather than printing blank blocks. */
+    [data-reveal] {
+        opacity: 1 !important;
+        translate: none !important;
+    }
+
+    main {
+        padding: 0;
+    }
+
+    .wrap,
+    .wrap--measure {
+        inline-size: 100%;
+        max-inline-size: none;
+        padding: 0;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: underline;
+    }
+
+    /*
+      Expanded URLs, scoped to prose and the résumé. A footnote after every
+      internal link would double the length of the document for no gain, so only
+      absolute URLs are expanded and `mailto:` is left alone — the address is
+      already the link text.
+    */
+    .resume a[href^="http"]::after,
+    .page__body a[href^="http"]::after,
+    .case-study__body a[href^="http"]::after,
+    .post__body a[href^="http"]::after {
+        content: " <" attr(href) ">";
+        font-size: 0.85em;
+        word-break: break-all;
+        font-family: var(--font-mono);
+    }
+
+    /* Keep a role, a callout or a table from being split across the fold. */
+    .resume__role,
+    .resume__section,
+    .callout,
+    .context-strip,
+    .timeline__item,
+    figure,
+    pre,
+    table {
+        break-inside: avoid;
+    }
+
+    h1,
+    h2,
+    h3 {
+        break-after: avoid;
+    }
+
+    p,
+    li {
+        orphans: 3;
+        widows: 3;
+    }
+
+    /* Boxes become rules. Filled panels cost ink and say nothing on paper. */
+    .callout,
+    .context-strip,
+    .architecture-note,
+    .level-key,
+    .card--case-study,
+    .card--post {
+        background: none;
+        box-shadow: none;
+        border: 0;
+        border-inline-start: 1.5pt solid #999;
+        padding: 0 0 0 8pt;
+    }
+
+    @page {
+        margin: 14mm;
+    }
+
+    /* The résumé is the page this exists for. Tighter leading and a smaller
+       heading scale so a full career fits the sheet. */
+    .resume {
+        font-size: 9.75pt;
+    }
+
+    .resume h1 {
+        font-size: 18pt;
+    }
+
+    .resume h2 {
+        font-size: 12pt;
+    }
+
+    .resume h3 {
+        font-size: 10.5pt;
+    }
+
+    .resume__section {
+        padding-block-start: 8pt;
+        margin-block-start: 8pt;
+    }
+
+    .page__header,
+    .case-study__header,
+    .post__header {
+        padding-block: 0 8pt;
+        margin-block-end: 12pt;
+    }
+}

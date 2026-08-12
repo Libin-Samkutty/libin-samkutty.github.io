@@ -1,0 +1,92 @@
+/*
+  Layout primitives. Four of them, and they compose — `.wrap` is applied
+  alongside a block's own class in the templates (`class="wrap site-header__inner"`),
+  so the container and the component never fight over width.
+*/
+
+/*
+  The container.
+
+  `min(100% - 2 * gutter, max)` gives a gutter that is always present and a
+  ceiling that is always respected. The legacy `width: 90vw` had neither: it
+  scaled to 3000px on a wide monitor and produced a 30-character line, and it
+  ignored the scrollbar, which is where the horizontal overflow came from.
+*/
+.wrap {
+    inline-size: min(100% - 2 * var(--gutter), var(--wrap-max));
+    margin-inline: auto;
+}
+
+/* The reading column. 68 characters, which is where an essay stops being a
+   paragraph and starts being a wall. */
+.wrap--measure {
+    inline-size: min(100% - 2 * var(--gutter), var(--measure));
+}
+
+/* ---------------------------------------------------------------- sections */
+
+.section {
+    padding-block: var(--space-2xl);
+}
+
+.section + .section {
+    padding-block-start: 0;
+}
+
+.section__title {
+    margin-block-end: var(--space-l);
+    font-size: var(--step-3);
+    max-inline-size: var(--measure-tight);
+}
+
+.section__more {
+    margin-block-start: var(--space-l);
+    font-size: var(--step--1);
+}
+
+/*
+  An emphasis band. A tint and two hairlines — no shadow, no card, no gradient.
+  It reads as a different kind of passage rather than a different kind of
+  component.
+*/
+.section--emphasis {
+    background-color: var(--color-surface-sunken);
+    border-block: var(--hairline);
+    padding-block: var(--space-2xl);
+    margin-block: var(--space-2xl);
+}
+
+.section--emphasis + .section,
+.section--cta + .section {
+    padding-block-start: 0;
+}
+
+.section--cta {
+    border-block-start: var(--hairline);
+    padding-block: var(--space-2xl);
+    margin-block-start: var(--space-2xl);
+}
+
+.section--cta .section__title {
+    max-inline-size: var(--measure-tight);
+}
+
+/* ---------------------------------------------------------------- grid */
+
+.grid {
+    display: grid;
+    gap: var(--space-m);
+}
+
+@media (min-width: 48em) {
+    .grid--three {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-l);
+    }
+}
+
+@media (min-width: 64em) {
+    .grid--three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}

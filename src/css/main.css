@@ -1,0 +1,23 @@
+/*
+  Ink + Indigo — the single stylesheet entry point.
+
+  The layer order below is declared before anything is imported, so it is the
+  cascade order for the whole system regardless of the order the files happen to
+  load in. That is what makes a component rule beat a base rule with a shorter
+  selector, and what lets print.css override a themed token without an
+  `!important` or a specificity fight.
+
+  Lightning CSS inlines these imports at build time; until then the browser
+  resolves them, and `layer()` on an `@import` is honoured either way.
+*/
+
+@layer tokens, reset, base, layout, components, utilities, overrides;
+
+@import url("tokens.css") layer(tokens);
+@import url("reset.css") layer(reset);
+@import url("base.css") layer(base);
+@import url("layout.css") layer(layout);
+@import url("components.css") layer(components);
+@import url("article.css") layer(components);
+@import url("utilities.css") layer(utilities);
+@import url("print.css") layer(overrides);

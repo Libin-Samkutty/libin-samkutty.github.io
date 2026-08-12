@@ -1,0 +1,231 @@
+/*
+  Design tokens — Ink + Indigo.
+
+  This is the only file in the system permitted to contain a hex colour. Every
+  other file addresses colour through a semantic token, so a palette change is a
+  change to one file rather than a search across the codebase.
+
+  The palette is taken from the portrait: navy suit, lavender shirt. Navy is
+  structure, lavender is emphasis, amber is rare. Amber's job is the
+  `--limitation` callout and almost nothing else.
+
+  Semantic colours are declared ONCE with `light-dark()`. The theme attribute set
+  by the no-flash script flips `color-scheme`, and every token re-resolves. There
+  is no second palette to keep in sync — the only per-theme overrides in the whole
+  system are `color-scheme` and the shadow recipes, because a shadow's geometry
+  differs between themes and `light-dark()` only returns colours.
+
+  Breakpoints are em-based and there is one set: 30em/48em/64em/80em/96em
+  (480/768/1024/1280/1536 at a 16px root). 48em is repeated verbatim in site.js's
+  matchMedia for the nav, so it must not drift here without changing it there.
+  Custom properties are not usable in media queries, hence the literals.
+*/
+
+:root {
+    color-scheme: light dark;
+
+    /* ---------------------------------------------------------------- palette */
+    /* Raw ramps. Referenced only by the semantic tokens below. */
+
+    --navy-900: #0B0F1A;
+    --navy-850: #070A12;
+    --navy-800: #131A2A;
+    --navy-750: #141B2C;
+    --navy-700: #252F47;
+    --navy-600: #36415C;
+    --navy-500: #5F6C88;
+    --navy-450: #78839C;
+    --navy-400: #5A6580;
+    --navy-350: #9AA5BE;
+    --navy-300: #A9B3CA;
+    --navy-250: #4A5570;
+    --navy-200: #BFC6D6;
+    --navy-150: #DCE0EA;
+    --navy-100: #F2F4F9;
+    --navy-050: #FBFBFD;
+
+    --lavender-700: #6D28D9;
+    --lavender-500: #A78BFA;
+    --lavender-300: #C4B5FD;
+    --lavender-100: #F0EBFE;
+    --lavender-900: #1A1733;
+
+    --amber-700: #8A5A18;
+    --amber-500: #C8873A;
+    --amber-300: #E7B168;
+    --amber-100: #FBF1E1;
+    --amber-900: #221A0F;
+
+    --white: #FFFFFF;
+    --mist: #E9EDF6;
+
+    /* ---------------------------------------------------------------- surfaces */
+
+    --color-bg: light-dark(var(--navy-050), var(--navy-900));
+    --color-surface: light-dark(var(--white), var(--navy-750));
+    --color-surface-sunken: light-dark(var(--navy-100), var(--navy-850));
+    --color-surface-accent: light-dark(var(--lavender-100), var(--lavender-900));
+    --color-surface-highlight: light-dark(var(--amber-100), var(--amber-900));
+    --color-surface-inverse: light-dark(var(--navy-800), var(--lavender-300));
+
+    /* ---------------------------------------------------------------- text */
+    /*
+      `--color-accent` and `--color-highlight` are DECORATIVE FILLS. In the light
+      theme they measure 2.72:1 and 3.01:1 against white and fail AA as text. The
+      `-text` variants are the readable ones and are what any rule setting `color`
+      must use. This distinction is the single most common way this palette gets
+      broken.
+    */
+
+    --color-text: light-dark(var(--navy-800), var(--mist));
+    --color-text-muted: light-dark(var(--navy-250), var(--navy-300));
+    --color-text-subtle: light-dark(var(--navy-400), var(--navy-350));
+    --color-text-inverse: light-dark(var(--navy-050), var(--navy-900));
+
+    /* Identical in both themes: the decorative fills read correctly against a
+       light and a dark ground, and only their readable counterparts flip. */
+    --color-accent: var(--lavender-500);
+    --color-accent-text: light-dark(var(--lavender-700), var(--lavender-300));
+
+    --color-highlight: var(--amber-500);
+    --color-highlight-text: light-dark(var(--amber-700), var(--amber-300));
+
+    /* ---------------------------------------------------------------- lines */
+
+    --color-border: light-dark(var(--navy-150), var(--navy-700));
+    --color-border-strong: light-dark(var(--navy-200), var(--navy-600));
+    /* 3.68:1 light, 3.63:1 dark — the boundary of an interactive control has to
+       clear 3:1 as a non-text contrast, which the hairline above does not. */
+    --color-border-interactive: light-dark(var(--navy-450), var(--navy-500));
+    --color-focus: light-dark(var(--lavender-700), var(--lavender-300));
+
+    --hairline: 1px solid var(--color-border);
+    --hairline-strong: 1px solid var(--color-border-strong);
+
+    /* ---------------------------------------------------------------- type */
+
+    --font-display: "Source Serif 4", "Source Serif 4 Fallback", Georgia, Cambria, serif;
+    --font-body: Inter, "Inter Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+    /* Fluid across 20rem–80rem (320–1280px). Below and above, the clamp holds. */
+    --step--2: clamp(0.75rem, 0.729rem + 0.104vw, 0.8125rem);
+    --step--1: clamp(0.875rem, 0.854rem + 0.104vw, 0.9375rem);
+    --step-0: clamp(1rem, 0.979rem + 0.104vw, 1.0625rem);
+    --step-1: clamp(1.2rem, 1.167rem + 0.167vw, 1.3rem);
+    --step-2: clamp(1.4rem, 1.317rem + 0.417vw, 1.65rem);
+    --step-3: clamp(1.65rem, 1.517rem + 0.667vw, 2.05rem);
+    --step-4: clamp(1.95rem, 1.733rem + 1.083vw, 2.6rem);
+    --step-5: clamp(2.25rem, 1.9rem + 1.75vw, 3.3rem);
+
+    --leading-tight: 1.15;
+    --leading-snug: 1.3;
+    --leading-normal: 1.65;
+    --leading-loose: 1.75;
+
+    --tracking-tight: -0.018em;
+    --tracking-wide: 0.06em;
+
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+
+    /* ---------------------------------------------------------------- measure */
+
+    --measure: 68ch;
+    --measure-tight: 46ch;
+    --measure-title: 18ch;
+
+    /* ---------------------------------------------------------------- space */
+
+    --space-3xs: 0.25rem;
+    --space-2xs: 0.5rem;
+    --space-xs: 0.75rem;
+    --space-s: 1rem;
+    --space-m: 1.5rem;
+    --space-l: clamp(2rem, 1.833rem + 0.833vw, 2.5rem);
+    --space-xl: clamp(3rem, 2.667rem + 1.667vw, 4rem);
+    --space-2xl: clamp(4rem, 3.333rem + 3.333vw, 6rem);
+    --space-3xl: clamp(5rem, 4rem + 5vw, 8rem);
+
+    --gutter: clamp(1.25rem, 0.917rem + 1.667vw, 2.25rem);
+    --wrap-max: 75rem;
+
+    --radius-xs: 2px;
+    --radius-s: 4px;
+    --radius-m: 8px;
+    --radius-pill: 999px;
+
+    /* ---------------------------------------------------------------- motion */
+
+    --duration-fast: 120ms;
+    --duration-base: 180ms;
+    --duration-slow: 420ms;
+    --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Distance tokens, so reduced motion can flatten the movement without
+       touching a single transition declaration. */
+    --reveal-shift: 0.75rem;
+    --nav-shift: 0.5rem;
+    --lift-shift: 2px;
+    --stagger: 60ms;
+
+    /* ---------------------------------------------------------------- depth */
+    /*
+      One shadow token, because exactly two things on this site float: the mobile
+      drawer and the skip link. Everything else is a hairline and space. There is
+      deliberately no "raised card" shadow — the moment one exists, every card
+      acquires it.
+    */
+
+    --shadow-overlay: 0 1px 2px rgb(19 26 42 / 0.06), 0 18px 40px -18px rgb(19 26 42 / 0.24);
+}
+
+/*
+  The only theme overrides in the system.
+
+  `color-scheme` re-resolves every `light-dark()` token above. The shadows are
+  re-declared because a dark surface cannot borrow a light theme's shadow: a black
+  umbra on a near-black ground is invisible, so depth in dark comes from an inset
+  top highlight (the edge catching light) over a deeper, wider umbra.
+*/
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --shadow-overlay: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 24px 56px -20px rgb(0 0 0 / 0.85);
+    }
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --shadow-overlay: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 24px 56px -20px rgb(0 0 0 / 0.85);
+}
+
+/*
+  Reduced motion, handled once.
+
+  Durations collapse and distances go to zero, so every transition in the system
+  still fires — `transitionend` listeners keep working, the drawer still opens,
+  <details> still toggles — but nothing moves. A blanket
+  `* { transition: none !important }` would break all three.
+
+  The `::view-transition-*` kill switch lives beside `@view-transition` in
+  base.css.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --duration-fast: 1ms;
+        --duration-base: 1ms;
+        --duration-slow: 1ms;
+        --reveal-shift: 0px;
+        --nav-shift: 0px;
+        --lift-shift: 0px;
+        --stagger: 0ms;
+    }
+}

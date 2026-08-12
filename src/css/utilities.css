@@ -1,0 +1,86 @@
+/*
+  Utilities. Thirteen of them, and that is the whole list.
+
+  This is not a framework and is not meant to grow into one. A utility earns its
+  place here only when the alternative is a component class that exists solely to
+  set one property. Anything that needs three of these at once should be a
+  component.
+*/
+
+/*
+  Visually hidden, still announced.
+
+  `clip-path: inset(50%)` rather than `display: none` or `visibility: hidden`,
+  both of which remove the element from the accessibility tree — which is the
+  opposite of what this class is for. The 1px box plus `white-space: nowrap`
+  keeps the text from being collapsed or read as a vertical stack of letters.
+*/
+.visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.text-balance {
+    text-wrap: balance;
+}
+
+.text-pretty {
+    text-wrap: pretty;
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.text-small {
+    font-size: var(--step--1);
+}
+
+.text-measure {
+    max-inline-size: var(--measure);
+}
+
+/* Tabular figures, for anywhere numbers are stacked and meant to be compared. */
+.numeric {
+    font-variant-numeric: tabular-nums;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+/* The lobotomised owl. Vertical rhythm for a block of prose the templates did
+   not wrap in a body class. */
+.flow > * + * {
+    margin-block-start: var(--flow-space, var(--space-m));
+}
+
+/* Inline items that wrap as a group rather than as a line. */
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2xs) var(--space-s);
+}
+
+/* A horizontally scrollable region. Needs `tabindex="0"` and an accessible name
+   in the markup — a scroll container a keyboard cannot reach is a trap. */
+.scroll-x {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+}
+
+.mt-0 {
+    margin-block-start: 0;
+}
+
+.mb-0 {
+    margin-block-end: 0;
+}

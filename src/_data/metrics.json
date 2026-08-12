@@ -12,7 +12,8 @@
     "attributionRendering": {
       "self": "no credit clause",
       "co-designed": "renders 'co-designed with <credit>'",
-      "team": "renders 'built by <credit>; my role was <role>' — never presentable as a personal achievement"
+      "team": "renders 'delivered by <credit>; my part was <role>' — never presentable as a personal achievement. `credit` is mandatory and the build fails without it.",
+      "context": "no credit clause. For facts about the environment rather than claims of credit — how many countries the platform runs in, how many people use it. Nobody reads '50,000+ monthly users' as something I personally delivered, and appending a credit clause to it would be noise that trains the reader to skip the clauses that matter."
     },
     "publishRule": "`publish: false` means the number is recorded for provenance but must never reach built HTML. tests/content-consistency.spec.js greps the build for the literals in `_superseded`."
   },
@@ -137,9 +138,7 @@
       "confidence": "exact",
       "basis": "India, Indonesia, Thailand, Kenya, Nigeria, Uganda.",
       "asOf": "2026-08-01",
-      "attribution": "team",
-      "credit": "the Nivi platform",
-      "role": "quality and evaluation across all six",
+      "attribution": "context",
       "source": "vault://projects.md",
       "publish": true,
       "scopeNote": "The '3' that appears in older copy was an HPV market count (India, Indonesia, Thailand), not a country count. Where three is meant, say 'three HPV markets'."
@@ -151,9 +150,7 @@
       "confidence": "approximate",
       "basis": "Platform-reported monthly active users.",
       "asOf": "2026-01-01",
-      "attribution": "team",
-      "credit": "the Nivi platform",
-      "role": "quality and evaluation",
+      "attribution": "context",
       "source": "vault://career.md",
       "publish": true,
       "scopeNote": "Scale of the system under test. Never framed as something I delivered."
@@ -377,6 +374,21 @@
       "attribution": "self",
       "source": "vault://metrics.md#MET-023",
       "publish": true
+    },
+
+    "cache_thresholds": {
+      "value": { "precision": 0.9, "recall": 0.75 },
+      "display": "≥0.90 precision, ≥0.75 recall",
+      "unit": "pass thresholds for the semantic cache validation harness",
+      "label": "Deliberately asymmetric gates",
+      "confidence": "exact",
+      "basis": "Set by hand from the cost of each failure mode, not tuned to a single accuracy target. Recorded in the validation harness config.",
+      "asOf": "2026-04-01",
+      "attribution": "self",
+      "provenSlug": "asymmetric-thresholds",
+      "source": "vault://metrics.md#MET-024",
+      "publish": true,
+      "scopeNote": "The gap between the two numbers is the whole argument: a cache miss falls through to live generation, a false hit is served to a user as an answer."
     },
 
     "cache_precision_recall": {
