@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { pages, siteDir } from "./helpers/routes.mjs";
+import { contentPages, pages, siteDir } from "./helpers/routes.mjs";
 
 /**
  * Internal links and asset references only.
@@ -59,5 +59,28 @@ for (const { url, html } of pages) {
             .filter((fragment) => !ids.has(fragment));
 
         expect(broken, `${url} links to missing anchors: ${broken.join(", ")}`).toEqual([]);
+    });
+}
+
+/**
+ * Social cards, over real pages only.
+ *
+ * This is not covered by the reference check above, because a meta URL sits in
+ * `content=` rather than `href=`/`src=`. Every card on the site 404'd for a
+ * while for exactly that reason: the path was well-formed, the file was in an
+ * unpublished source directory, and nothing looked at it. A card is fetched by a
+ * crawler and never by the reader, so a broken one stays silent until the day
+ * someone shares the link.
+ *
+ * Redirect stubs are excluded because they are `noindex` bounce pages. A stub
+ * that rendered a rich card would be competing with the page it points at.
+ */
+for (const { url, html } of contentPages) {
+    test(`${url} declares an og:image that exists`, () => {
+        const declared = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+        expect(declared, `${url} declares no og:image`).toBeTruthy();
+
+        const path = declared.replace(/^https?:\/\/[^/]+/, "");
+        expect(resolvesOnDisk(path), `${url} points og:image at ${path}, which does not exist`).toBe(true);
     });
 }

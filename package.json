@@ -9,13 +9,14 @@
   },
   "scripts": {
     "clean": "node -e \"fs.rmSync('_site',{recursive:true,force:true})\"",
-    "build": "eleventy",
+    "build": "eleventy && npm run og",
     "serve": "eleventy --serve",
     "test:html": "html-validate \"_site/**/*.html\"",
     "test:e2e": "playwright test",
     "test:perf": "lhci autorun",
     "test": "npm run build && npm run test:html && npm run test:e2e",
-    "verify": "npm run clean && npm run test && npm run test:perf"
+    "verify": "npm run clean && npm run test && npm run test:perf",
+    "og": "node scripts/og-images.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",

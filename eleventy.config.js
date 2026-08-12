@@ -232,6 +232,31 @@ export default function (eleventyConfig) {
         });
     });
 
+    /**
+     * A portrait at a stable, predictable path.
+     *
+     * Everything else on the site goes through content-hashed filenames, which
+     * is right for anything a page references — the page is rebuilt at the same
+     * time and the two never disagree. Structured data is the exception: the
+     * `Person.image` URL in JSON-LD is consumed by crawlers that cache it, and a
+     * URL that changes whenever the source is re-encoded is a URL they will
+     * eventually 404 on.
+     *
+     * It also has to be a portrait rather than a social card. Consumers of
+     * `Person.image` render it as a photograph of the person, and a card with a
+     * headline set across it is not that.
+     */
+    eleventyConfig.on("eleventy.after", async () => {
+        await Image(path.join("src/_images", "headshot.png"), {
+            widths: [400],
+            formats: ["jpeg"],
+            outputDir: "./_site/assets/",
+            urlPath: "/assets/",
+            filenameFormat: () => "portrait.jpg",
+            sharpJpegOptions: { quality: 82, mozjpeg: true }
+        });
+    });
+
     /* ---------------------------------------------------------------- filters */
 
     const dateFormat = new Intl.DateTimeFormat("en-GB", {
@@ -260,6 +285,16 @@ export default function (eleventyConfig) {
     });
 
     eleventyConfig.addFilter("absoluteUrl", (path) => new URL(path, site.url).href);
+
+    /**
+     * A URL path flattened into one filename-safe token, so `/work/foo/` and
+     * `/writing/foo/` cannot collide on a single `foo.png`. The home page has no
+     * segments and becomes "home".
+     */
+    eleventyConfig.addFilter("ogSlug", (url) => {
+        const slug = url.replace(/^\/|\/$/g, "").replace(/\.html$/, "").replace(/[^a-z0-9]+/gi, "-");
+        return slug === "" ? "home" : slug.toLowerCase();
+    });
 
     eleventyConfig.addFilter("limit", (array, count) => array.slice(0, count));
 

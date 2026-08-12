@@ -28,7 +28,7 @@
             "description": {{ site.tagline | dump | safe }},
             "email": {{ ("mailto:" + site.email) | dump | safe }},
             "url": {{ site.url | dump | safe }},
-            "image": {{ (site.ogImage | absoluteUrl) | dump | safe }},
+            "image": {{ (site.portrait | absoluteUrl) | dump | safe }},
             "worksFor": {
                 "@type": "Organization",
                 "name": {{ site.employer.name | dump | safe }},

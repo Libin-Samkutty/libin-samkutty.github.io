@@ -29,7 +29,12 @@
 <meta property="og:url" content="{{ page.url | absoluteUrl }}">
 <meta property="og:site_name" content="{{ site.name }}">
 <meta property="og:locale" content="en_GB">
-<meta property="og:image" content="{{ (ogImage or site.ogImage) | absoluteUrl }}">
+{# The card path is a convention, not a file the author has to remember to make:
+   `scripts/og-images.mjs` reads this declaration back out of the built HTML and
+   renders to exactly the path named here. `tests/links.spec.js` then asserts the
+   file exists, because the previous version of this line pointed at an asset in
+   an unpublished directory and every social card on the site was a 404. #}
+<meta property="og:image" content="{{ ('/og/' + (page.url | ogSlug) + '.png') | absoluteUrl }}">
 <meta name="twitter:card" content="summary_large_image">
 
 {% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}

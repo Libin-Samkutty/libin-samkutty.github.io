@@ -39,10 +39,10 @@
     "github": "https://github.com/Libin-Samkutty",
     "pypi": "https://pypi.org/project/api-test-data-generator/"
   },
-  "ogImage": "/assets/og-preview.png",
   "themeColor": {
     "light": "#FBFBFD",
     "dark": "#0B0F1A"
   },
-  "lastUpdated": "2026-08-12"
+  "lastUpdated": "2026-08-12",
+  "portrait": "/assets/portrait.jpg"
 }

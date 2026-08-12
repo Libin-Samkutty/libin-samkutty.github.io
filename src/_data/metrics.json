@@ -165,7 +165,8 @@
       "attribution": "team",
       "source": "vault://career.md",
       "publish": false,
-      "unpublishedReason": "A cumulative registration total next to a monthly-active figure invites the reader to treat them as the same quantity, and the larger number is the one that sticks. One scale figure sitewide: monthly users."
+      "unpublishedReason": "A cumulative registration total next to a monthly-active figure invites the reader to treat them as the same quantity, and the larger number is the one that sticks. One scale figure sitewide: monthly users.",
+      "pdfPattern": "\\b2\\s*M(?:illion)?\\s+registered"
     },
 
     "coverage_zero_to_seventyfive": {
@@ -177,7 +178,8 @@
       "attribution": "self",
       "source": "vault://metrics.md#MET-001",
       "publish": false,
-      "unpublishedReason": "The single riskiest claim on the old site. 'Coverage' is undefined here — it is neither line coverage nor requirement coverage — the denominator moved constantly, and the figure has not been re-measured since the suite passed 225 scenarios. It reads as precise and is not. The coverage story is told qualitatively instead, or through suite size, which is countable."
+      "unpublishedReason": "The single riskiest claim on the old site. 'Coverage' is undefined here — it is neither line coverage nor requirement coverage — the denominator moved constantly, and the figure has not been re-measured since the suite passed 225 scenarios. It reads as precise and is not. The coverage story is told qualitatively instead, or through suite size, which is countable.",
+      "pdfPattern": "coverage from 0%?\\s*to\\s*75|0%?\\s*to\\s*75%\\+?\\s*(?:automation\\s*)?coverage"
     },
 
     "playwright_scenarios": {
