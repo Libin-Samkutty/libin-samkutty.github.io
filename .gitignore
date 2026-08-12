@@ -1,0 +1,23 @@
+# Build output
+_site/
+.cache/
+
+# Dependencies
+node_modules/
+
+# Test artefacts
+.lighthouseci/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Environment
+.env
+.env.*
+
+# Local junk
+*.stackdump
+digest.txt
+.DS_Store
+Thumbs.db
