@@ -157,6 +157,66 @@ test.describe("metric rendering rules", () => {
     });
 });
 
+test("a bare numeral metric is never left without a noun", () => {
+    /**
+     * `countries` renders as "6" and `api_endpoints` as "30+", because the
+     * convention is that the data layer holds the figure and the prose supplies
+     * the word. That works right up until an author writes "across
+     * {% metric "countries" %}." and ships a sentence that reads "across 6."
+     *
+     * It happened at four separate sites, which is what makes it worth a gate
+     * rather than a proofread: every author reached for the same phrasing, so
+     * the next one will too. The résumé shipped "across 6 and three distinct
+     * generation architectures" and "300+ end-to-end scenarios, 30+, and
+     * consumer-driven contracts".
+     *
+     * Scoped narrowly on purpose. It only fires when a metric whose display is a
+     * bare numeral is immediately followed by punctuation or a conjunction —
+     * which in running prose is unambiguously a missing noun, and which a stat
+     * rail never produces, because there the number is followed by a closing
+     * tag.
+     */
+    // A figure carrying a currency symbol or a percent sign already states what
+    // it measures, so "down to $1.80–2.20." is a finished sentence and must not
+    // be flagged. Only a naked count needs the prose to name the thing counted.
+    const bareNumeral = /^[\d.,–—+\s→x×]+$/;
+    const danglingAfter = /^\s*(?:[,.;]|and\b|or\b)/;
+
+    /**
+     * Matched on the rendered markup, not on the page text.
+     *
+     * The first version of this searched the stripped text for the display
+     * string, which for `countries` is the single character "6" — so it matched
+     * inside "2026.", "6.0" and "step 6)" and reported twelve false positives
+     * against one real one. Anchoring on the shortcode's own wrapper means a
+     * match is a metric by construction.
+     */
+    const rendered = /<span class="metric__value">([^<]*)<\/span><\/span>([\s\S]{0,60})/g;
+    const displays = new Map(
+        Object.entries(metrics.items)
+            .filter(([, metric]) => metric.publish !== false && bareNumeral.test(metric.display))
+            .map(([id, metric]) => [metric.display, id])
+    );
+
+    const offenders = [];
+
+    for (const { url, html } of pages) {
+        for (const [, display, following] of html.matchAll(rendered)) {
+            const id = displays.get(display);
+            if (!id) continue;
+
+            // Tags are dropped, not replaced with a space: "6</span></p><p>Every"
+            // must read as "Every", but the closing tag itself is not a word.
+            const text = following.replace(/<[^>]*>/g, "");
+            if (danglingAfter.test(text)) {
+                offenders.push(`${url}: "…${display}${text.slice(0, 40).trim()}…" (${id})`);
+            }
+        }
+    }
+
+    expect(offenders, `a metric was rendered with no noun after it:\n  ${offenders.join("\n  ")}`).toEqual([]);
+});
+
 test("the architecture note is not paraphrased into an over-claim", () => {
     // "I test a RAG chatbot" is the single easiest thing to get wrong about this
     // platform, and it is wrong five times out of six.

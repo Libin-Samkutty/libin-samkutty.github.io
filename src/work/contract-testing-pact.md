@@ -74,7 +74,7 @@ Provider states are the load-bearing mechanism and the part people skip. Without
 
 **The second layer.** An OpenAPI YAML diff engine runs on every commit touching the spec, flagging structural breaking changes — removed fields, narrowed types, newly required properties, dropped enum values — with no service boot required. Cheap, and it enforces spec hygiene, a different problem from contract enforcement.
 
-**Underneath both: the Pytest layer.** The same work absorbed the platform's API testing into Pytest across {% metric "api_endpoints" %}, including a six-call registration-to-delivery workflow that had become an unmaintainable nested-callback chain elsewhere. A shared `DataFactory` fixture module was built for reuse from day one — a decision that paid off when the last Robot Framework suite was retired into it, described in [from Robot to Playwright](/work/from-robot-to-playwright/).
+**Underneath both: the Pytest layer.** The same work absorbed the platform's API testing into Pytest across {% metric "api_endpoints" %} endpoints, including a six-call registration-to-delivery workflow that had become an unmaintainable nested-callback chain elsewhere. A shared `DataFactory` fixture module was built for reuse from day one — a decision that paid off when the last Robot Framework suite was retired into it, described in [from Robot to Playwright](/work/from-robot-to-playwright/).
 
 **The catch.** A classifier refactor added structured pharmacovigilance detail for the two safety categories — adverse event and product quality complaint — as a nested `safety` object. For those two categories only, top-level `intent_label` became a generic `"safety_escalation"`, with the real type moved inside the nested object. The other seven were untouched.
 

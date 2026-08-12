@@ -380,8 +380,84 @@
 
 /* ================================================================ hero */
 
+/*
+  The hero has three background layers behind the portrait, in this order:
+
+  1. A dot grid at 4% opacity. It reads as graph paper rather than as texture,
+     which is the only decorative element on the site that is allowed to exist
+     purely because it looks like the subject matter.
+  2. A lavender radial glow positioned behind the head. This is the one place the
+     accent earns its keep at scale: it echoes the shirt in the portrait and
+     separates a navy jacket from a near-black ground, which otherwise merge into
+     an unreadable silhouette in dark mode.
+  3. A feathered bottom mask on the portrait itself. Without it the photo ends in
+     a straight horizontal cut through the jacket and reads as something pasted
+     onto the page. This one detail is the difference between "transparent PNG"
+     and "art direction".
+
+  All three are painted with `background-image` and `mask-image`, so none of them
+  can shift layout, and the LCP element is untouched.
+*/
 .hero {
     padding-block: var(--space-xl) var(--space-2xl);
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(circle at 1px 1px, var(--color-text) 1px, transparent 0);
+    background-size: 32px 32px;
+    opacity: 0.04;
+
+    /* Fades out toward the bottom so the grid does not collide with the hairline
+       above the stat rail, which is doing structural work and should not have to
+       compete with decoration. */
+    mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
+}
+
+/*
+  Sized and placed in the portrait's own grid cell rather than the section's, so
+  it stays behind the head when the layout goes single-column and the portrait
+  moves to the top.
+*/
+.hero__portrait::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset-block-start: -8%;
+    inset-inline: -20%;
+    aspect-ratio: 1;
+    pointer-events: none;
+
+    /*
+      The two themes need different strengths, and not by a little. Against
+      near-black the glow has to carry enough light to lift the jacket off the
+      ground. Against near-white the same value renders as a grey disc with a
+      visible edge — the eye reads a boundary long before it reads a light
+      source. A third of the dark value, with the falloff pushed most of the way
+      to the edge, is the point where it stops being a shape.
+    */
+    background-image: radial-gradient(
+        circle closest-side,
+        light-dark(
+            color-mix(in oklab, var(--lavender-500) 13%, transparent),
+            color-mix(in oklab, var(--lavender-500) 34%, transparent)
+        ),
+        transparent 88%
+    );
+
+    /* The glow is a lighting effect, not a shape. Blurring it removes the
+       banding a raw radial-gradient shows across a large flat area, and takes
+       the last of the edge off. */
+    filter: blur(36px);
 }
 
 .hero__inner {
@@ -427,11 +503,19 @@
 .hero__portrait {
     order: -1;
     max-inline-size: 20rem;
+    position: relative;
 }
 
 .hero__portrait img {
     inline-size: 100%;
     block-size: auto;
+
+    /* The feather. The photo is cut at the waist, and a straight edge there
+       reads as a mistake — the eye looks for the rest of the body and finds a
+       ruled line instead. Dissolving the last eighth into the page removes the
+       question. Kept shallow: any deeper and the jacket loses the shoulders that
+       carry the palette. */
+    mask-image: linear-gradient(to bottom, #000 78%, transparent 98%);
 }
 
 @media (min-width: 64em) {

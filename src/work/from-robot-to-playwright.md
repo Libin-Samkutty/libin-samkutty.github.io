@@ -82,7 +82,7 @@ Migration started in March 2024 and ran alongside the existing suite rather than
 
 **Removing work rather than speeding it up.** {% metric "ui_scenarios_to_api" %} did not need browser-level verification at all. They asserted on data, not on rendering, and had been UI tests only because the UI suite was where tests lived. Part of the improvement below is not speed — it is work no longer being done in the wrong place.
 
-**Rebuilding rather than porting.** The suite grew to {% metric "playwright_scenarios" %}, from new country variants, dashboard modules and a visual regression layer — {% metric "visual_regression" %}, baselines generated in CI only, since cross-OS font rendering makes a locally-generated baseline a trap.
+**Rebuilding rather than porting.** The suite grew to {% metric "playwright_scenarios" %} scenarios, from new country variants, dashboard modules and a visual regression layer — {% metric "visual_regression" %}, baselines generated in CI only, since cross-OS font rendering makes a locally-generated baseline a trap.
 
 ### Retiring the last corner, four years later
 

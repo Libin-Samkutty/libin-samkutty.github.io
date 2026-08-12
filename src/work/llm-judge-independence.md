@@ -21,7 +21,7 @@ lastReviewed: 2026-08-12
 ## TL;DR
 
 - I built the platform's first LLM-as-a-judge using the same model family that generated the answers it graded. It looked like an evaluation system. It was closer to a mirror.
-- The redesign fixed four things at once: an independent judge model, binary PASS/FAIL per dimension instead of an uncalibrated 1–10 score, temperature 0, and calibration against a human-annotated set with an explicit rule to rewrite the criteria when {% metric "judge_rewrite_rule" %}.
+- The redesign fixed four things at once: an independent judge model, binary PASS/FAIL per dimension instead of an uncalibrated 1–10 score, temperature 0, and calibration against a human-annotated set under one explicit rule: {% metric "judge_rewrite_rule" %}.
 - Those four constraints became the starting point for every judge built afterwards — the RAGAS configuration, the DeepEval criteria, and the production monitoring judge.
 
 ## The problem
