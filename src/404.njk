@@ -1,0 +1,25 @@
+---
+layout: layouts/base.njk
+permalink: /404.html
+title: Page not found
+shortTitle: Page not found
+description: That page does not exist on this site. Links to the case studies, the writing index and the homepage.
+noindex: true
+bodyClass: error-page
+---
+<div class="wrap wrap--measure">
+    <h1>Page not found</h1>
+
+    <p>
+        This site moved to new URLs in August 2026. Every old address still resolves, so if you
+        followed a link from somewhere and landed here, the address was probably never one of mine.
+    </p>
+
+    <ul>
+        <li><a href="{{ '/' | url }}">Homepage</a></li>
+        <li><a href="{{ '/work/' | url }}">Case studies</a></li>
+        <li><a href="{{ '/writing/' | url }}">Writing</a></li>
+        <li><a href="{{ '/resume/' | url }}">Résumé</a></li>
+        <li><a href="mailto:{{ site.email }}">Tell me the link is broken</a></li>
+    </ul>
+</div>

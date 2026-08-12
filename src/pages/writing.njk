@@ -1,0 +1,38 @@
+---
+layout: layouts/base.njk
+permalink: /writing/
+title: Writing
+shortTitle: Writing
+description: "Essays on evaluating AI systems: asymmetric thresholds, why aggregate metrics hide failures, judge independence, and reading production traffic before writing tests."
+---
+<article class="page">
+    <header class="page__header">
+        <div class="wrap wrap--measure">
+            <h1 class="page__title">Writing</h1>
+            <p class="page__lede">
+                A case study answers "what did you build?". These answer "what should I do
+                differently on Monday?". Each one is readable with no context about the platform I
+                work on — the work is the worked example, not the subject.
+            </p>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <ul class="card-list card-list--posts">
+            {% for item in collections.posts %}
+            <li class="card card--post" data-reveal>
+                <p class="card__eyebrow">
+                    <time datetime="{{ item.date | isoDate }}">{{ item.date | readableDate }}</time>
+                    <span>{{ item.templateContent | readingTime }} min read</span>
+                </p>
+                <h3 class="card__title"><a href="{{ item.url }}">{{ item.data.title }}</a></h3>
+                <p class="card__body">{{ item.data.description }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% if not collections.posts.length %}
+        <p>Posts are being written. Check back shortly.</p>
+        {% endif %}
+    </div>
+</article>

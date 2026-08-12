@@ -539,6 +539,75 @@
       "publish": true
     },
 
+    "nudge_api_latency_creep": {
+      "value": { "from": 450, "to": 680, "gate": 800 },
+      "display": "450ms → 680ms p95 across six consecutive nightly runs, against an 800ms gate",
+      "unit": "p95 response time on the nudge-trigger endpoint",
+      "label": "Latency creep no single run failed on",
+      "confidence": "exact",
+      "basis": "JMeter Backend Listener data in InfluxDB, read through a Grafana trend dashboard. Root-caused to a database query that stopped using an index after a schema migration.",
+      "asOf": "2024-12-01",
+      "attribution": "self",
+      "provenSlug": "threshold-gates-vs-trend-views",
+      "source": "vault://metrics.md#MET-040",
+      "publish": true,
+      "scopeNote": "The load-bearing part is what did not happen: six consecutive passing runs. A threshold gate cannot fail a run that sits inside the threshold."
+    },
+
+    "bsp_mock_flakiness": {
+      "value": { "from": 37, "to": 0 },
+      "display": "35–40% of provider-dependent integration runs → none observed in the 60 days after the mock server landed",
+      "unit": "false-failure rate on integration tests depending on the messaging provider sandbox",
+      "confidence": "approximate",
+      "basis": "CI run history over a 60-day window either side of the mock server going in. The before figure is a range because sandbox availability varied week to week.",
+      "asOf": "2024-09-01",
+      "attribution": "self",
+      "provenSlug": "zero-net-writes",
+      "source": "vault://projects.md#PROJ-023",
+      "publish": true,
+      "scopeNote": "Stated as an observation window rather than a rate of zero. Sixty days of no flaky failures is checkable; '0% flakiness' is a claim about the future."
+    },
+
+    "bsp_error_paths": {
+      "value": { "from": 0, "to": 6 },
+      "display": "0 → 6 automated provider error-path scenarios",
+      "unit": "distinct failure modes of the messaging provider exercised in CI",
+      "confidence": "exact",
+      "basis": "Counted from the fixture set: delivery failure, three template-rejection categories, read receipt out of order, and provider timeout.",
+      "asOf": "2024-09-01",
+      "attribution": "self",
+      "provenSlug": "zero-net-writes",
+      "source": "vault://projects.md#PROJ-023",
+      "publish": true,
+      "scopeNote": "Before the mock, these paths were not merely untested — they were untestable, because the real sandbox could not be made to fail on demand."
+    },
+
+    "scheduler_clock_collapse": {
+      "value": { "from": 259200, "to": 5 },
+      "display": "a 72-hour scheduling sequence → under 5 seconds in CI",
+      "unit": "wall-clock time to exercise the full two-nudge re-engagement cycle",
+      "confidence": "exact",
+      "basis": "Test suite timing logs. The clock offset is injected as a test header, so application code is identical between the real and virtual scheduler.",
+      "asOf": "2025-01-01",
+      "attribution": "self",
+      "provenSlug": "zero-net-writes",
+      "source": "vault://projects.md#PROJ-024",
+      "publish": true
+    },
+
+    "scheduler_dedup_catch": {
+      "value": 2,
+      "display": "two de-duplication defects caught before UAT",
+      "confidence": "exact",
+      "basis": "PR review records from the harness's first run. One dispatched a duplicate nudge when a user re-engaged between the two scheduled sends; one read the opt-out signal from a wrongly named configuration field.",
+      "asOf": "2025-01-01",
+      "attribution": "self",
+      "provenSlug": "zero-net-writes",
+      "source": "vault://projects.md#PROJ-024",
+      "publish": true,
+      "scopeNote": "Both are duplicate-message-to-an-opted-out-user failures, which in a health messaging context is a consent problem before it is a quality problem."
+    },
+
     "docker_setup_time": {
       "value": { "from": 240, "to": 12 },
       "display": "half a day → 12 minutes",
@@ -565,7 +634,7 @@
 
     "stt_duration_banded_collapse": {
       "value": { "from": 100, "to": 30 },
-      "display": "100% → 30% clean-output rate",
+      "display": "100% → 30% clean-output rate between short clips and the 15–25 second clips real users send",
       "confidence": "exact",
       "basis": "The losing provider held 100% clean output on short clips and collapsed to 30% on 15–25 second clips — the duration band real users actually send. Only visible once the analysis was banded by audio duration instead of aggregated.",
       "asOf": "2026-06-01",
@@ -600,6 +669,19 @@
       "publish": true
     },
 
+    "voice_vs_text_medical_match": {
+      "value": { "voice": 54, "text": 27 },
+      "display": "54% versus 27% of queries matching a medical category",
+      "confidence": "exact",
+      "basis": "Same 203-voice / 405-text sample as the length and noise figures.",
+      "asOf": "2026-07-01",
+      "attribution": "self",
+      "provenSlug": "audit-your-own-traffic",
+      "source": "vault://metrics.md#MET-053",
+      "publish": true,
+      "scopeNote": "The figure that inverts the usual assumption. Voice input is normally budgeted as an accessibility cost; on this platform it is the channel carrying the clinical signal."
+    },
+
     "voice_session_engagement": {
       "value": { "voice": 6.5, "text": 2.5 },
       "display": "6–7 versus 2–3 messages per session",
@@ -623,6 +705,32 @@
       "publish": true
     },
 
+    "prd_decomposition": {
+      "value": { "epics": 1, "stories": 8, "tasks": 45, "days": 73 },
+      "display": "1 epic, 8 stories, 45 tasks, 73 estimated days",
+      "unit": "the executable plan a requirements document decomposed into",
+      "confidence": "exact",
+      "basis": "Counted from the issue tracker structure at the point development started. Seven functional stories plus one first-class QA story.",
+      "asOf": "2026-04-01",
+      "attribution": "self",
+      "provenSlug": "decompose-by-tool-call",
+      "source": "vault://projects.md#PROJ-032",
+      "publish": true
+    },
+
+    "qa_dev_estimate_ratio": {
+      "value": { "qa": 10, "dev": 63 },
+      "display": "10 QA days against 63 development days",
+      "confidence": "exact",
+      "basis": "Both estimated in the same units, at the same time, from the same decomposition. The QA figure set the UAT window directly.",
+      "asOf": "2026-04-01",
+      "attribution": "self",
+      "provenSlug": "decompose-by-tool-call",
+      "source": "vault://projects.md#PROJ-032",
+      "publish": true,
+      "scopeNote": "The ratio is only meaningful because the QA number came from decomposed tasks rather than a percentage applied to the development estimate."
+    },
+
     "engineers_upskilled": {
       "value": 3,
       "display": "three engineers",
@@ -632,6 +740,267 @@
       "attribution": "self",
       "source": "vault://metrics.md#MET-014",
       "publish": true
+    },
+
+    "clinical_gaps_at_calibration": {
+      "value": 14,
+      "display": "14 clinical safety edge cases",
+      "unit": "pre-existing knowledge-base content gaps surfaced while calibrating the first golden dataset",
+      "confidence": "exact",
+      "basis": "Golden-dataset calibration exercise records with the health content team. These were gaps in the source content, not pipeline defects; the content team corrected them before they could affect production responses.",
+      "asOf": "2025-09-01",
+      "attribution": "co-designed",
+      "credit": "the health content team, who identified and corrected the content gaps",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-046",
+      "publish": true
+    },
+
+    "nightly_eval_runtime": {
+      "value": { "from": 35, "to": 40 },
+      "display": "35–40 minutes",
+      "unit": "wall-clock time for the full nightly evaluation run",
+      "confidence": "approximate",
+      "basis": "GitHub Actions job durations for the full 351-case India Maternal Health run. Stated as a band because run time varies with judge-API latency.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://projects.md#PROJ-001a",
+      "publish": true
+    },
+
+    "ragas_ci_thresholds": {
+      "value": { "faithfulness": 0.8, "answerRelevancy": 0.75, "contextPrecision": 0.7, "contextRecall": 0.65 },
+      "display": "Faithfulness ≥ 0.80 · Answer Relevancy ≥ 0.75 · Context Precision ≥ 0.70 · Context Recall ≥ 0.65",
+      "unit": "nightly CI failure thresholds, applied to the run average rather than per case",
+      "confidence": "exact",
+      "basis": "Calibrated against the pre-reranker-removal baseline, with the most headroom left on Context Precision given its documented history of variance.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://projects.md#PROJ-001a",
+      "publish": true,
+      "scopeNote": "Aggregate thresholds, deliberately. A per-case gate on a float score fails on judge variance rather than on quality; a run average across a stratified dataset moves only when something systematic changes."
+    },
+
+    "geval_calibration_set": {
+      "value": { "training": 20, "validation": 10 },
+      "display": "30 annotated examples, 20 reviewed together and 10 annotated independently",
+      "confidence": "exact",
+      "basis": "Calibration set for the three DeepEval G-Eval criteria. Annotated by three health content team members — a doctor, a nurse-midwife, and a non-clinical content writer acting as a low-literacy proxy reader.",
+      "asOf": "2025-12-01",
+      "attribution": "co-designed",
+      "credit": "the health content team, who annotated the set",
+      "provenSlug": "llm-judge-independence",
+      "source": "vault://projects.md#PROJ-001b",
+      "publish": true,
+      "scopeNote": "Distinct from judge_calibration_set, which is the 40-example set for the earlier Smart Snippets judge. Two calibration exercises, a year apart, on two different judges."
+    },
+
+    "judge_rewrite_rule": {
+      "value": 15,
+      "display": "rewrite the criteria whenever judge–annotator disagreement exceeds 15%",
+      "confidence": "exact",
+      "basis": "The standing calibration rule. Disagreement above the line is treated as evidence that the criterion is underspecified, not that the annotators are wrong.",
+      "asOf": "2025-03-01",
+      "attribution": "self",
+      "provenSlug": "llm-judge-independence",
+      "source": "vault://metrics.md#MET-035",
+      "publish": true
+    },
+
+    "production_sampling": {
+      "value": { "uniform": 5, "confidenceFloor": 0.4, "lengthFloor": 80 },
+      "display": "5% uniform hash sampling, plus every event with empty retrieved context, retrieval confidence under 0.4, or a response under 80 characters",
+      "confidence": "exact",
+      "basis": "Evaluator Lambda configuration. The uniform gate is `hash(session_id) % 20`, so sampling is deterministic per session rather than per message.",
+      "asOf": "2026-03-01",
+      "attribution": "self",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://projects.md#PROJ-016",
+      "publish": true
+    },
+
+    "annotation_queue_routing": {
+      "value": 10,
+      "display": "every Clinical Safety FAIL verdict, plus a random 10% of all evaluated traces",
+      "unit": "what reaches the human annotation queue",
+      "confidence": "exact",
+      "basis": "LangSmith annotation queue routing configuration.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://projects.md#PROJ-016",
+      "publish": true,
+      "scopeNote": "The random sample of passes is the load-bearing half. A judge nobody ever overrides is either correct or unchecked, and only auditing the passes tells you which."
+    },
+
+    "snapshot_canonical_set": {
+      "value": 120,
+      "display": "120 canonical utterances",
+      "unit": "stratified across intent labels, languages and edge cases, run on every prompt version bump",
+      "confidence": "exact",
+      "basis": "Counted from the canonical utterance set in git. Covers the India, Indonesia and Thailand HPV classification prompts across Hindi, Bahasa Indonesia and Thai.",
+      "asOf": "2025-03-01",
+      "attribution": "self",
+      "provenSlug": "snapshot-testing-nondeterministic-ai",
+      "source": "vault://projects.md#PROJ-025",
+      "publish": true
+    },
+
+    "snapshot_majority_vote": {
+      "value": { "runs": 3, "quorum": 2 },
+      "display": "three runs at temperature 0, label must agree in at least two of three",
+      "confidence": "exact",
+      "basis": "The determinism rule that makes a snapshot baseline possible at all. Temperature 0 alone still left occasional label flips; the quorum absorbs them.",
+      "asOf": "2025-03-01",
+      "attribution": "self",
+      "provenSlug": "snapshot-testing-nondeterministic-ai",
+      "source": "vault://projects.md#PROJ-025",
+      "publish": true
+    },
+
+    "snapshot_regressions_caught": {
+      "value": 3,
+      "display": "three silent label regressions caught before production",
+      "confidence": "exact",
+      "basis": "PR records from the snapshot suite's first three months: an acknowledgement label bleeding into a side-effect label in Indonesian, a confidence-tier collapse on a Thai edge-case cluster, and a bit-field order regression after a prompt restructure.",
+      "asOf": "2025-03-01",
+      "attribution": "self",
+      "provenSlug": "snapshot-testing-nondeterministic-ai",
+      "source": "vault://projects.md#PROJ-025",
+      "publish": true
+    },
+
+    "prompt_hotfixes": {
+      "value": { "from": 2, "to": 0 },
+      "display": "two prompt-regression hotfixes before the suite, none since",
+      "confidence": "exact",
+      "basis": "Incident log. Both prior hotfixes shipped within 48 hours of detection; both were label regressions that reached production silently.",
+      "asOf": "2025-03-01",
+      "attribution": "self",
+      "provenSlug": "snapshot-testing-nondeterministic-ai",
+      "source": "vault://projects.md#PROJ-025",
+      "publish": true
+    },
+
+    "journey_config_review_time": {
+      "value": { "from": 3150, "to": 10 },
+      "display": "45–60 minutes → under 10 seconds",
+      "unit": "to review one journey configuration graph",
+      "confidence": "exact",
+      "basis": "PR review timestamps before and after structural snapshot validation landed on journey JSON.",
+      "asOf": "2025-04-01",
+      "attribution": "self",
+      "provenSlug": "snapshot-testing-nondeterministic-ai",
+      "source": "vault://projects.md#PROJ-026",
+      "publish": true,
+      "scopeNote": "Under 10 seconds is the automated diff. Structural breaks still block merge pending a designer's sign-off — the tool decides what to look at, not whether it is acceptable."
+    },
+
+    "template_validation_coverage": {
+      "value": { "from": 8, "to": 40 },
+      "display": "8 spot-checked templates → 40+ templates across 6 languages",
+      "confidence": "exact",
+      "basis": "Counted from the template snapshot baselines. Languages: Hindi, Bengali, Assamese, English, Bahasa Indonesia, Thai.",
+      "asOf": "2025-05-01",
+      "attribution": "self",
+      "provenSlug": "snapshot-testing-nondeterministic-ai",
+      "source": "vault://projects.md#PROJ-027",
+      "publish": true
+    },
+
+    "env_drift_breakages": {
+      "value": { "from": 2.5, "to": 0 },
+      "display": "2–3 CI breakages per month → none observed since",
+      "unit": "environment-drift failures caused by browser and driver versions moving apart",
+      "confidence": "approximate",
+      "basis": "My own before/after observation around Docker adoption in mid-2023. Not drawn from a defect tracker.",
+      "asOf": "2023-07-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-042",
+      "publish": true
+    },
+
+    "playwright_poc": {
+      "value": { "robot": 252, "playwright": 47 },
+      "display": "4m 12s → 47s on the same three scenarios",
+      "confidence": "exact",
+      "basis": "January 2024 proof of concept, timed on the three highest-failure-rate scenarios in the suite.",
+      "asOf": "2024-01-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://decisions.md#DEC-001",
+      "publish": true,
+      "scopeNote": "Three scenarios is a small sample and it was chosen adversarially — the worst offenders, not a representative slice. It was a demonstration for a sign-off conversation, not a benchmark."
+    },
+
+    "robot_pabot_smoke": {
+      "value": { "from": 62, "to": 17 },
+      "display": "62 → 17 minutes",
+      "unit": "CI smoke suite, after pabot tuning on Robot Framework",
+      "confidence": "exact",
+      "basis": "Jenkins build timestamps. A naive file-level split only reached 24 minutes, bottlenecked on two oversized suite files; test-level splitting with longest-first scheduling got it to 17.",
+      "asOf": "2023-06-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-003",
+      "publish": true
+    },
+
+    "robot_pabot_regression": {
+      "value": { "from": 195, "to": 39 },
+      "display": "195 → 39 minutes",
+      "unit": "full regression suite, after consolidating login to one session per worker",
+      "confidence": "exact",
+      "basis": "Jenkins build timestamps. The same change also removed a session race condition between parallel workers.",
+      "asOf": "2023-06-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-018",
+      "publish": true
+    },
+
+    "robot_ceiling_erosion": {
+      "value": { "smoke": { "from": 17, "to": 28 }, "regression": { "from": 39, "to": 65 } },
+      "display": "17 → 28 minutes smoke and 39 → 65 minutes regression",
+      "unit": "erosion of the pabot optimisation over roughly a year of suite growth",
+      "confidence": "approximate",
+      "basis": "Jenkins build history across 2023. The optimisation did not fail; the framework re-authenticated a browser session per suite file regardless of worker count, so every new suite file bought back some of the time the tuning had saved.",
+      "asOf": "2023-12-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-018",
+      "publish": true,
+      "scopeNote": "The single most useful number in this case study. An optimisation that decays with growth is a different object from one that holds, and only the second is a fix."
+    },
+
+    "robot_suite_growth": {
+      "value": { "from": 150, "to": 250 },
+      "display": "150 → 250 test cases",
+      "unit": "suite size over the period the pabot optimisation eroded",
+      "confidence": "approximate",
+      "basis": "Suite size recalled from the Robot Framework repository across 2023, not reconstructed from git history case by case.",
+      "asOf": "2023-12-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://projects.md#PROJ-013",
+      "publish": true
+    },
+
+    "ui_scenarios_to_api": {
+      "value": 28,
+      "display": "28% of UI scenarios",
+      "unit": "moved to the API level during the migration rather than ported",
+      "confidence": "approximate",
+      "basis": "Counted during the migration and refined from an earlier 25–30% bucket estimate. These scenarios asserted on data, not on rendering, so they never needed a browser.",
+      "asOf": "2024-06-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://projects.md#PROJ-013",
+      "publish": true,
+      "scopeNote": "Part of the runtime improvement is not speed at all. Work removed from a suite is faster than work optimised inside it."
     }
   },
 

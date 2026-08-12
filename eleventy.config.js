@@ -153,8 +153,10 @@ export default function (eleventyConfig) {
 
     // One phrasing of the RAG clarification, everywhere. Paraphrasing it is how it
     // becomes wrong.
-    eleventyConfig.addShortcode("architectureNote", (variant = "short") => {
-        const note = programs.architectureNote[variant];
+    eleventyConfig.addShortcode("architectureNote", (variant) => {
+        // Nunjucks passes "" rather than undefined for a missing argument, so a
+        // default parameter value alone would not fire.
+        const note = programs.architectureNote[variant || "short"];
         if (!note) throw new Error(`{% architectureNote "${variant}" %} — expected "short" or "long".`);
         return (
             `<p class="architecture-note"><span class="architecture-note__label">Architecture</span> ` +
@@ -181,6 +183,7 @@ export default function (eleventyConfig) {
     eleventyConfig.addFilter("readableDate", (value) => dateFormat.format(new Date(value)));
     eleventyConfig.addFilter("monthYear", (value) => monthFormat.format(new Date(value)));
     eleventyConfig.addFilter("isoDate", (value) => new Date(value).toISOString().slice(0, 10));
+    eleventyConfig.addFilter("year", (value) => new Date(value).getUTCFullYear());
 
     // Reading time from the rendered content. Deliberately coarse — a minute
     // figure that looks precise is a small lie about a rough measure.
@@ -194,6 +197,31 @@ export default function (eleventyConfig) {
     eleventyConfig.addFilter("limit", (array, count) => array.slice(0, count));
 
     eleventyConfig.addFilter("byLevel", (skills, level) => skills.filter((skill) => skill.level === level));
+
+    eleventyConfig.addFilter("otherThan", (items, url) => items.filter((item) => item.url !== url));
+
+    /**
+     * Breadcrumbs derived from the URL rather than declared per page, so a page
+     * cannot claim a position in the hierarchy it does not occupy. Layout
+     * templates cannot pass data up to the base layout in Eleventy's layout
+     * chain, which is the other reason this is computed here.
+     */
+    const SECTION_LABELS = { work: "Work", writing: "Writing", about: "About", resume: "Résumé", contact: "Contact", skills: "Stack" };
+
+    eleventyConfig.addFilter("breadcrumbs", (url, pageTitle) => {
+        const segments = String(url).split("/").filter(Boolean);
+        const crumbs = [{ label: "Home", url: "/" }];
+        let path = "";
+        segments.forEach((segment, index) => {
+            path += `/${segment}`;
+            const isLast = index === segments.length - 1;
+            crumbs.push({
+                label: isLast && pageTitle ? pageTitle : (SECTION_LABELS[segment] ?? segment),
+                url: `${path}/`
+            });
+        });
+        return crumbs;
+    });
 
     /* ---------------------------------------------------------------- collections */
 

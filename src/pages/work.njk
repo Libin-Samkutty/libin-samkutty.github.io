@@ -1,0 +1,74 @@
+---
+layout: layouts/base.njk
+permalink: /work/
+title: Work
+shortTitle: Work
+description: Six case studies on building AI evaluation systems, production monitoring and test infrastructure for a digital health platform, each with an explicit limitations section.
+---
+<article class="page">
+    <header class="page__header">
+        <div class="wrap wrap--measure">
+            <h1 class="page__title">Work</h1>
+            <p class="page__lede">
+                Six systems, written up in full: the problem, what could not be changed, the options
+                I did not take, the mechanism, the results, and what I would do differently. The
+                last of those is not a formality. Every one of these has open items, and they are
+                labelled.
+            </p>
+        </div>
+    </header>
+
+    <div class="wrap wrap--measure">
+        {% architectureNote %}
+    </div>
+
+    <section class="section" aria-labelledby="case-studies-title">
+        <div class="wrap">
+            <h2 class="section__title" id="case-studies-title">Case studies</h2>
+
+            <ul class="card-list">
+                {% for item in collections.caseStudies %}
+                <li class="card card--case-study" data-reveal>
+                    <p class="card__eyebrow">
+                        <span>Case study {{ item.data.number }}</span>
+                        <span>{{ item.data.period }}</span>
+                    </p>
+                    <h3 class="card__title"><a href="{{ item.url }}">{{ item.data.title }}</a></h3>
+                    <p class="card__body">{{ item.data.description }}</p>
+                    <ul class="chips">
+                        {% for tech in item.data.stack | limit(4) %}<li class="chip">{{ tech }}</li>{% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <section class="section" id="oss" aria-labelledby="other-title">
+        <div class="wrap wrap--measure">
+            <h2 class="section__title" id="other-title">Other systems I built or own</h2>
+            <p>
+                These did not warrant a case study. They are here because breadth is part of the
+                honest picture of a sole-QA role, and because two of them are where I learned things
+                that show up everywhere else on this site.
+            </p>
+
+            <ul class="other-systems">
+                {% for project in projects.other %}
+                <li class="other-systems__item" data-reveal>
+                    <h3 class="card__title">
+                        {% if project.url %}<a href="{{ project.url }}" rel="noopener">{{ project.title }}</a>{% else %}{{ project.title }}{% endif %}
+                    </h3>
+                    <p class="card__eyebrow">{{ project.period }}</p>
+                    <ul class="chips">
+                        {% for tech in project.tech %}<li class="chip">{{ tech }}</li>{% endfor %}
+                    </ul>
+                    <p class="card__body">{{ project.body }}</p>
+                    {% if project.metric %}<p class="card__meta">{% metric project.metric %}</p>{% endif %}
+                    {% if project.relatedPost %}<p class="card__meta"><a href="{{ project.relatedPost | url }}">The general version of this lesson</a></p>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+</article>

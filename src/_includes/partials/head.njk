@@ -1,0 +1,59 @@
+{#
+  The <head> contract. Every page gets its title, description and canonical from
+  here, so "Page | Libin Samkutty" and a unique 140-158 character description are
+  structural properties rather than things thirteen files each have to get right.
+#}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{# Declared before the stylesheet so the UA paints the correct ground colour on
+   the very first frame, not after CSS resolves. #}
+<meta name="color-scheme" content="light dark">
+
+<title>{{ (shortTitle or title) }}{{ site.titleSuffix }}</title>
+
+{% if description %}
+<meta name="description" content="{{ description }}">
+{% endif %}
+
+<link rel="canonical" href="{{ (canonical or page.url) | absoluteUrl }}">
+
+<meta name="theme-color" content="{{ site.themeColor.light }}" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{{ site.themeColor.dark }}" media="(prefers-color-scheme: dark)">
+
+{# Open Graph and Twitter. Third person here — first person belongs in body copy,
+   not in a card rendered next to someone else's link. #}
+<meta property="og:type" content="{{ ogType or 'website' }}">
+<meta property="og:title" content="{{ (shortTitle or title) }}{{ site.titleSuffix }}">
+{% if description %}<meta property="og:description" content="{{ description }}">{% endif %}
+<meta property="og:url" content="{{ page.url | absoluteUrl }}">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="{{ (ogImage or site.ogImage) | absoluteUrl }}">
+<meta name="twitter:card" content="summary_large_image">
+
+{% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}
+
+<link rel="preload" href="{{ '/assets/fonts/inter-var.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ '/assets/fonts/source-serif-var.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+
+<link rel="stylesheet" href="{{ '/css/main.css' | url }}">
+
+<link rel="icon" href="{{ '/assets/favicon.svg' | url }}" type="image/svg+xml">
+<link rel="alternate" type="application/atom+xml" title="{{ site.name }}" href="{{ '/feed.xml' | url }}">
+
+{# Two lines, synchronous, above the fold. The first resolves the theme before
+   first style resolution so a dark-mode reader never sees a white flash. The
+   second is the gate for every scroll reveal on the site: with JavaScript off,
+   `.js` is never added, no reveal rule matches, and all content is visible.
+   Motion is opt-in, not something the reader has to survive. #}
+<script>
+    (function () {
+        var root = document.documentElement;
+        root.classList.add("js");
+        try {
+            var stored = localStorage.getItem("theme");
+            if (stored === "light" || stored === "dark") root.dataset.theme = stored;
+        } catch (e) {}
+    })();
+</script>

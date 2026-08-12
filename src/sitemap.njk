@@ -1,0 +1,17 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+{#- Redirect stubs carry noindex and are excluded here. A sitemap that lists a
+    noindex page sends two contradictory instructions about the same URL. -#}
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- for page in collections.all %}
+{%- if not page.data.sitemapExclude and not page.data.noindex %}
+    <url>
+        <loc>{{ page.url | absoluteUrl }}</loc>
+        <lastmod>{{ (page.data.dateModified or page.date) | isoDate }}</lastmod>
+    </url>
+{%- endif %}
+{%- endfor %}
+</urlset>

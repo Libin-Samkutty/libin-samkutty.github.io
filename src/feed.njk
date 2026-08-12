@@ -1,0 +1,29 @@
+---
+permalink: /feed.xml
+eleventyExcludeFromCollections: true
+---
+{#- Hand-written rather than pulled from a plugin. It is forty lines, it has one
+    consumer shape, and a dependency for it would be the site's ninth. -#}
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>{{ site.name }} — writing</title>
+    <subtitle>{{ site.tagline }}</subtitle>
+    <link href="{{ '/feed.xml' | absoluteUrl }}" rel="self"/>
+    <link href="{{ site.url }}/"/>
+    <updated>{% if collections.posts.length %}{{ collections.posts[0].date.toISOString() }}{% else %}{{ site.lastUpdated }}T00:00:00Z{% endif %}</updated>
+    <id>{{ site.url }}/</id>
+    <author>
+        <name>{{ site.name }}</name>
+        <email>{{ site.email }}</email>
+    </author>
+    {%- for post in collections.posts %}
+    <entry>
+        <title>{{ post.data.title }}</title>
+        <link href="{{ post.url | absoluteUrl }}"/>
+        <updated>{{ (post.data.dateModified or post.date) | isoDate }}T00:00:00Z</updated>
+        <id>{{ post.url | absoluteUrl }}</id>
+        <summary>{{ post.data.description }}</summary>
+        <content type="html">{{ post.templateContent | escape }}</content>
+    </entry>
+    {%- endfor %}
+</feed>

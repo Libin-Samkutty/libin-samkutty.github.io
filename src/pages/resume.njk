@@ -1,0 +1,94 @@
+---
+layout: layouts/page.njk
+permalink: /resume/
+title: Résumé
+shortTitle: Résumé
+description: Résumé for Libin Samkutty, Senior QA Automation Engineer, with 4.5+ years building AI evaluation systems and test infrastructure for a production digital health platform.
+lede: Everything here renders from the same data as the rest of the site, so this page cannot fall out of step with it. Ctrl+P prints cleanly.
+bodyClass: resume
+---
+<div class="resume">
+    <section class="resume__section" aria-labelledby="summary-title">
+        <h2 id="summary-title">Summary</h2>
+        <p>
+            Senior QA Automation Engineer with {% metric "experience_years" %} building quality
+            systems for production AI. Sole QA on a digital health platform serving
+            {% metric "monthly_users" %} across {% metric "countries" %} and three distinct
+            generation architectures. I design golden datasets and LLM judges, run production
+            evaluation on live traffic, and own the test infrastructure underneath —
+            {% metric "playwright_scenarios" %} end-to-end scenarios,
+            {% metric "api_endpoints" %}, and consumer-driven contracts between them.
+        </p>
+    </section>
+
+    <section class="resume__section" aria-labelledby="experience-title">
+        <h2 id="experience-title">Experience</h2>
+
+        {% for role in timeline.roles %}
+        <article class="resume__role">
+            <h3>{{ role.title }}</h3>
+            <p class="resume__meta">
+                {{ role.employer }} · client {{ site.client.name }} · {{ role.location }} ·
+                <time datetime="{{ role.start | isoDate }}">{{ role.start | monthYear }}</time>
+                –
+                {% if role.end %}<time datetime="{{ role.end | isoDate }}">{{ role.end | monthYear }}</time>{% else %}present{% endif %}
+            </p>
+            <p>{{ role.summary }}</p>
+            {% if role.highlights %}
+            <ul>
+                {% for highlight in role.highlights %}<li>{{ highlight }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+        </article>
+        {% endfor %}
+    </section>
+
+    <section class="resume__section" aria-labelledby="capabilities-title">
+        <h2 id="capabilities-title">Core capabilities</h2>
+        {% for group in skills.groups %}
+            {% set core = group.skills | byLevel("core") %}
+            {% if core.length %}
+            <p>
+                <strong>{{ group.name }}:</strong>
+                {% for skill in core %}{{ skill.name }}{{ ", " if not loop.last }}{% endfor %}
+            </p>
+            {% endif %}
+        {% endfor %}
+        <p><a href="{{ '/skills/' | url }}">The full capability matrix, with definitions and evidence</a></p>
+    </section>
+
+    <section class="resume__section" aria-labelledby="selected-title">
+        <h2 id="selected-title">Selected work</h2>
+        <ul>
+            {% for item in collections.caseStudies %}
+            <li><a href="{{ item.url }}">{{ item.data.title }}</a> — {{ item.data.scope }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section class="resume__section" aria-labelledby="oss-resume-title">
+        <h2 id="oss-resume-title">Open source</h2>
+        {% for project in skills.openSource %}
+        <p><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a> — {{ project.description }}</p>
+        {% endfor %}
+    </section>
+
+    <section class="resume__section" aria-labelledby="education-title">
+        <h2 id="education-title">Education</h2>
+        {% for item in timeline.education %}
+        <p>
+            <strong>{{ item.qualification }}</strong> · {{ item.institution }} ·
+            {{ item.end | year }} · {{ item.result }}
+        </p>
+        {% endfor %}
+    </section>
+
+    <section class="resume__section" aria-labelledby="contact-resume-title">
+        <h2 id="contact-resume-title">Contact</h2>
+        <ul>
+            <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            <li><a href="{{ site.profiles.linkedin }}" rel="me noopener">{{ site.profiles.linkedin }}</a></li>
+            <li><a href="{{ site.profiles.github }}" rel="me noopener">{{ site.profiles.github }}</a></li>
+        </ul>
+    </section>
+</div>

@@ -1,0 +1,51 @@
+---
+layout: layouts/page.njk
+permalink: /skills/
+title: Capabilities
+shortTitle: Capabilities
+description: A capability matrix with three honest levels rather than percentage bars, where every Core claim links to the case study that proves it.
+lede: Three levels, defined. Every Core claim links to the work that proves it. No percentages, because a "90% Playwright" bar encodes nothing you can check.
+---
+<div class="level-key">
+    <dl>
+        {% for id, level in skills.levels %}
+        <div class="level-key__item">
+            <dt>{{ level.label }}</dt>
+            <dd>{{ level.definition }}</dd>
+        </div>
+        {% endfor %}
+    </dl>
+</div>
+
+{% for group in skills.groups %}
+<section class="capability__group" aria-labelledby="group-{{ group.id }}">
+    <h2 id="group-{{ group.id }}">{{ group.name }}</h2>
+    {% if group.lede %}<p>{{ group.lede }}</p>{% endif %}
+
+    {% for levelId, level in skills.levels %}
+        {% set matching = group.skills | byLevel(levelId) %}
+        {% if matching.length %}
+        <div class="capability__level" data-level="{{ levelId }}">
+            <h3 class="capability__level-title">{{ level.label }}</h3>
+            <ul class="capability__list">
+                {% for skill in matching %}
+                <li class="capability__item">
+                    <span class="capability__name">{{ skill.name }}</span>
+                    {% if skill.note %}<span class="capability__note">{{ skill.note }}</span>{% endif %}
+                    {% if skill.evidence %}<a class="capability__evidence" href="{{ skill.evidence | url }}">Evidence</a>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    {% endfor %}
+</section>
+{% endfor %}
+
+<h2>Open source</h2>
+{% for project in skills.openSource %}
+<p>
+    <a href="{{ project.url }}" rel="noopener">{{ project.name }}</a> — {{ project.description }}
+    {{ project.language }}, {{ project.license }}. {% metric project.metric %}
+</p>
+{% endfor %}

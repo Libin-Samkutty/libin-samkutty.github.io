@@ -1,0 +1,54 @@
+{#
+  Site header.
+
+  Two accessibility decisions are load-bearing here and should not be "simplified"
+  later:
+
+  1. The mobile drawer collapses with `visibility`, not `height: 0`. A height-
+     collapsed element still contains focusable links, so a keyboard user tabs
+     into an invisible menu — which is exactly what the old site did.
+  2. The toggle is a real <button> with aria-expanded and aria-controls. It is not
+     a styled <div>, and it never wraps an <a>.
+#}
+<header class="site-header" data-header>
+    <div class="wrap site-header__inner">
+        <a class="site-header__brand" href="{{ '/' | url }}">
+            <span class="site-header__name">{{ site.name }}</span>
+            <span class="site-header__role">{{ site.title }}</span>
+        </a>
+
+        <button
+            class="nav-toggle"
+            type="button"
+            data-nav-toggle
+            aria-expanded="false"
+            aria-controls="primary-navigation">
+            <span class="nav-toggle__bars" aria-hidden="true"></span>
+            <span class="nav-toggle__label">Menu</span>
+        </button>
+
+        <nav id="primary-navigation" class="site-nav" aria-label="Primary" data-nav>
+            <ul class="site-nav__list">
+                {% for item in nav.primary %}
+                <li class="site-nav__item">
+                    <a
+                        class="site-nav__link"
+                        href="{{ item.url | url }}"
+                        {% if page.url == item.url %}aria-current="page"{% elif item.url != '/' and page.url.startsWith(item.url) %}aria-current="true"{% endif %}>
+                        {{ item.label }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <button
+            class="theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-pressed="false">
+            <span class="theme-toggle__icon" aria-hidden="true"></span>
+            <span class="theme-toggle__label">Dark theme</span>
+        </button>
+    </div>
+</header>
