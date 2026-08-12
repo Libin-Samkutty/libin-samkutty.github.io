@@ -1,0 +1,31 @@
+{
+  "name": "portfolio",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal engineering portfolio for Libin Samkutty. Static output, zero runtime dependencies.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "clean": "node -e \"fs.rmSync('_site',{recursive:true,force:true})\"",
+    "build": "eleventy",
+    "serve": "eleventy --serve",
+    "test:html": "html-validate \"_site/**/*.html\"",
+    "test:e2e": "playwright test",
+    "test:perf": "lhci autorun",
+    "test": "npm run build && npm run test:html && npm run test:e2e",
+    "verify": "npm run clean && npm run test && npm run test:perf"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy-img": "^7.0.0",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "@axe-core/playwright": "^4.13.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.62.1",
+    "html-validate": "^11.6.2",
+    "http-server": "^14.1.1",
+    "lightningcss": "^1.33.0"
+  }
+}
