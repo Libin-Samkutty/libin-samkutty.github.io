@@ -39,6 +39,12 @@ export default defineConfig({
     updateSnapshots: "none",
 
     expect: {
+        // Default is 5000ms. `/styleguide/` is a single full-page shot of every
+        // component on the site — over 7000px tall — and the two-consecutive-
+        // stable-screenshots check that precedes any real diff needs more room on
+        // a shared CI runner than it does locally. This is retry budget, not
+        // comparison tolerance: `maxDiffPixels` below is unchanged.
+        timeout: 15_000,
         toHaveScreenshot: {
             // `animations: "disabled"` finishes CSS transitions instead of catching
             // them mid-flight, which is the single largest source of pixel flake.
