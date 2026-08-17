@@ -1,0 +1,21 @@
+{
+  "_comment": "Frozen inventory of URLs that existed on the live site before the Eleventy migration. Every one must continue to resolve, either as a real page or a redirect stub. tests/urls.spec.js is a hard gate on this list.",
+  "mustExist": [
+    "/index.html",
+    "/about.html",
+    "/skills.html",
+    "/resume.html",
+    "/contact.html",
+    "/case-studies.html",
+    "/case-study-01.html",
+    "/case-study-02.html",
+    "/case-study-03.html",
+    "/case-study-04.html",
+    "/case-study-05.html",
+    "/qa-portfolio.html",
+    "/automation-projects.html"
+  ],
+  "mustExistFragments": {
+    "/qa-portfolio.html": ["oss"]
+  }
+}

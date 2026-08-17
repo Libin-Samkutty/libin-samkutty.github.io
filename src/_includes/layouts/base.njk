@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+<head>
+    {% include "partials/head.njk" %}
+    {% include "partials/json-ld.njk" %}
+</head>
+<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
+    {# First focusable element on the page. Not the logo, not the menu. #}
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {% include "partials/nav.njk" %}
+
+    {# tabindex="-1" so the skip link can move focus here programmatically without
+       putting <main> into the tab order. #}
+    <main id="main" tabindex="-1">
+        {{ content | safe }}
+    </main>
+
+    {% include "partials/footer.njk" %}
+
+    <script src="{{ '/js/site.js' | url }}" type="module"></script>
+</body>
+</html>

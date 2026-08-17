@@ -1,0 +1,97 @@
+{
+  "_meta": {
+    "purpose": "Fixes the architecture nuance permanently. 'I test a RAG chatbot' is the single easiest thing to get wrong about this platform, and it is wrong five times out of six.",
+    "rule": "Retrieval-augmented generation is limited to the India Maternal Health program. Nothing on this site may describe the platform, or my work, as RAG in general. The {% architectureNote %} shortcode renders the clarification identically everywhere so it is never paraphrased into something inaccurate.",
+    "disclosure": "Programs are named by country and health area only. Sponsoring partners are not named anywhere on this site.",
+    "source": "vault://career.md, vault://metrics.md#MET-037, vault://projects.md"
+  },
+
+  "architectures": {
+    "rag": {
+      "id": "rag",
+      "label": "RAG retrieval",
+      "short": "Dense and sparse retrieval fused, then generation grounded in the retrieved passages.",
+      "evaluates": "Retrieval quality as well as generation quality — context precision, faithfulness, and whether the right passage was found at all.",
+      "programs": ["india-mh"]
+    },
+    "snippets": {
+      "id": "snippets",
+      "label": "Smart Snippets with intent classification",
+      "short": "An intent classifier routes the utterance, generation draws on curated snippet content, and a vector semantic cache serves repeat questions.",
+      "evaluates": "Classification correctness, generation quality against the snippet, and cache correctness. There is no retrieval step to evaluate.",
+      "programs": ["india-hpv", "indonesia-hpv", "thailand-hpv"]
+    },
+    "dispatcher": {
+      "id": "dispatcher",
+      "label": "Family Planning dispatcher",
+      "short": "A dispatcher routes to LLM-generated responses within a defined journey graph.",
+      "evaluates": "Journey routing integrity and response quality. Not retrieval.",
+      "programs": ["kenya-fp", "nigeria-fp", "uganda-fp"]
+    }
+  },
+
+  "programs": [
+    {
+      "id": "india-mh",
+      "country": "India",
+      "area": "Maternal health",
+      "architecture": "rag",
+      "languages": ["English", "Hindi", "Assamese"],
+      "goldenDataset": "golden_dataset_india_mh",
+      "note": "The only RAG program on the platform, and the only one where retrieval quality is something I can measure. It also carries the highest clinical stakes: a pregnancy-complication symptom described in Assamese has to reach a danger-sign response, not a sympathetic non-answer.",
+      "featured": true
+    },
+    {
+      "id": "india-hpv",
+      "country": "India",
+      "area": "HPV vaccination",
+      "architecture": "snippets",
+      "languages": ["English", "Marathi", "Hindi", "Kannada"],
+      "note": "A separate program from India Maternal Health, with a separate architecture and a separately evaluated dataset. Conflating the two India programs into 'the India chatbot' is the most common mistake made about this platform, including in my own earlier writing."
+    },
+    {
+      "id": "indonesia-hpv",
+      "country": "Indonesia",
+      "area": "HPV vaccination",
+      "architecture": "snippets",
+      "languages": ["English", "Bahasa Indonesia"]
+    },
+    {
+      "id": "thailand-hpv",
+      "country": "Thailand",
+      "area": "HPV vaccination",
+      "architecture": "snippets",
+      "languages": ["English", "Thai"],
+      "note": "Thai has no word boundaries, which breaks tokenisation assumptions that hold silently in every other language on the platform."
+    },
+    {
+      "id": "kenya-fp",
+      "country": "Kenya",
+      "area": "Family planning",
+      "architecture": "dispatcher",
+      "languages": ["English", "Swahili"]
+    },
+    {
+      "id": "nigeria-fp",
+      "country": "Nigeria",
+      "area": "Family planning",
+      "architecture": "dispatcher",
+      "languages": ["English", "Hausa"]
+    },
+    {
+      "id": "uganda-fp",
+      "country": "Uganda",
+      "area": "Family planning",
+      "architecture": "dispatcher",
+      "languages": ["English"],
+      "note": "A 32-node journey graph across nine phases with two entry paths — the largest journey configuration on the platform, and the one that motivated structural snapshot validation of the config itself.",
+      "confidence": "The journey structure I can state precisely because I gated it. I am less certain of the exact generation path here than for the other five, so I do not claim it in detail."
+    }
+  ],
+
+  "architectureNote": {
+    "short": "Six country programs, three generation architectures. Only India Maternal Health is RAG.",
+    "long": "The platform runs six country programs across three different generation architectures. Retrieval-augmented generation is used in exactly one of them — India Maternal Health. The three HPV programs use intent classification with curated snippet generation and a semantic cache; the three family planning programs use a dispatcher over a journey graph. This matters for evaluation because you cannot measure context precision on a system that never retrieves anything. Most of the work below is about building one evaluation framework across all three without pretending they are the same system.",
+    "canonicalPost": "/writing/dont-call-it-rag/"
+  }
+}

@@ -1,0 +1,257 @@
+---
+layout: layouts/page.njk
+permalink: /styleguide/
+title: Component styleguide
+shortTitle: Styleguide
+description: Every component the site can render, gathered on one page so the visual regression suite has a single stable target instead of one screenshot per route.
+lede: Not a published page. It exists so a screenshot diff can cover the design system in one shot, and so a component that only appears on one route still gets looked at.
+noindex: true
+sitemapExclude: true
+eyebrow: Internal
+---
+{#
+  The whole point of this page is that it is *one* target. Per-route full-page
+  snapshots across two themes and three viewports is forty-plus baselines that
+  nobody maintains; when they start failing for unrelated reasons the suite gets
+  switched off. Everything renderable appears here once, so a token change shows
+  up as one diff on one page.
+
+  Two rules for editing it:
+    1. Use the real component markup, copied from the page that owns it. A
+       styleguide that invents its own classes tests nothing.
+    2. Numbers come from `{% metric %}` like anywhere else. Typing "351" here to
+       "just show the component" is exactly the drift the data layer prevents.
+#}
+
+<h2>Typography</h2>
+
+<p>Body copy sets the measure. This paragraph exists to show the line length, the
+leading and the <a href="{{ '/work/' | url }}">inline link</a> treatment, along with
+<strong>bold</strong>, <em>italic</em>, <code>inline code</code> and an
+abbreviation such as <abbr title="Large Language Model">LLM</abbr>.</p>
+
+<h3>Third-level heading</h3>
+
+<p>A second paragraph, so the vertical rhythm between a heading and the text under
+it is visible rather than inferred.</p>
+
+<blockquote>
+    <p>A pull quote, used where a case study needs to sit a claim apart from the
+    narrative around it.</p>
+</blockquote>
+
+<ul>
+    <li>An unordered list item</li>
+    <li>A second item, long enough to wrap onto a second line at the narrow
+    viewport so the hanging indent is covered</li>
+</ul>
+
+<ol>
+    <li>An ordered list item</li>
+    <li>A second ordered item</li>
+</ol>
+
+<h2>Metrics</h2>
+
+<p>Four confidence levels, four different renderings. The hedge is added by the
+shortcode, never typed, which is what stops it drifting from the evidence.</p>
+
+<ul>
+    <li><strong>Exact</strong> renders bare:
+    {% metric "golden_dataset_india_mh" %} golden-dataset cases.</li>
+
+    <li><strong>Approximate</strong> prefixes "roughly":
+    {% metric "regression_suite_runtime" %} for the full CI regression suite.</li>
+
+    <li><strong>Estimate</strong> prefixes "approximately" and shows its basis:
+    {% metric "anomaly_sampling_yield" %}</li>
+
+    <li><strong>Projection</strong> prefixes "an estimated" and carries a visible
+    footnote it cannot be rendered without: {% metric "pact_blast_radius" %}</li>
+</ul>
+
+<h2>Architecture note</h2>
+
+<p>One phrasing, everywhere, because paraphrasing it is how it becomes wrong.</p>
+
+{% architectureNote "short" %}
+
+<h2>Buttons</h2>
+
+<p>
+    <a class="button button--primary" href="{{ '/work/' | url }}">Primary action</a>
+    <a class="button button--ghost" href="{{ '/contact/' | url }}">Ghost action</a>
+</p>
+
+<h2>Stat rail</h2>
+
+<div class="stat-rail">
+    <dl class="stat-rail__list">
+        <div class="stat">
+            <dt class="stat__label">Golden-dataset cases gating every India Maternal Health release</dt>
+            <dd class="stat__value">{% metric "golden_dataset_india_mh" %}</dd>
+        </div>
+        <div class="stat">
+            <dt class="stat__label">Cost of a full nightly evaluation run</dt>
+            <dd class="stat__value">{% metric "nightly_eval_cost" %}</dd>
+        </div>
+    </dl>
+</div>
+
+<h2>Cards</h2>
+
+<ul class="card-list">
+    <li class="card card--case-study">
+        <p class="card__eyebrow">2025 – 2026</p>
+        <h3 class="card__title"><a href="{{ '/work/' | url }}">Case study card</a></h3>
+        <p class="card__body">The card used on the work index, with an eyebrow, a
+        linked title and a body.</p>
+    </li>
+    <li class="card card--post">
+        <p class="card__eyebrow"><time datetime="2026-01-01">1 January 2026</time></p>
+        <h3 class="card__title"><a href="{{ '/writing/' | url }}">Post card</a></h3>
+        <p class="card__body">The card used on the writing index.</p>
+    </li>
+</ul>
+
+<div class="card card--plain">
+    <h3 class="card__title">Plain card</h3>
+    <p class="card__body">Used for the open-source list and the "what I own"
+    section.</p>
+    <p class="card__meta">Python · MIT · {% metric "golden_dataset_hpv" %} cases</p>
+</div>
+
+<h2>Callout</h2>
+
+<p>The limitation variant, used where a case study has to state what went wrong.</p>
+
+<div class="callout callout--limitation">
+    <h3 class="callout__title">The limitation callout</h3>
+    <p>Carries the amber highlight token rather than a warning icon, because the
+    heading already says what it is.</p>
+</div>
+
+<h2>Context strip</h2>
+
+<p>The attribution block at the head of every case study. It is the reason a reader
+who stops after the first screen still leaves with an accurate picture of who did
+what.</p>
+
+<dl class="context-strip">
+    <div class="context-strip__row">
+        <dt>Role at the time</dt>
+        <dd>QA Automation Engineer</dd>
+    </div>
+    <div class="context-strip__row">
+        <dt>Stack</dt>
+        <dd>
+            <ul class="chips">
+                <li class="chip">Playwright</li>
+                <li class="chip">Python</li>
+                <li class="chip">GitHub Actions</li>
+            </ul>
+        </dd>
+    </div>
+    <div class="context-strip__row context-strip__row--attribution">
+        <dt>What wasn't mine</dt>
+        <dd>The attribution row, which is styled apart from the others on purpose.</dd>
+    </div>
+</dl>
+
+<h2>Capability list</h2>
+
+<p>From the capabilities page: three defined levels rather than percentage bars.</p>
+
+<div class="level-key">
+    <dl>
+        <div class="level-key__item">
+            <dt>Core</dt>
+            <dd>Used in production, with a case study behind it.</dd>
+        </div>
+    </dl>
+</div>
+
+<div class="capability__level" data-level="core">
+    <h3 class="capability__level-title">Core</h3>
+    <ul class="capability__list">
+        <li class="capability__item">
+            <span class="capability__name">Playwright</span>
+            <span class="capability__note">The note treatment</span>
+            <a class="capability__evidence" href="{{ '/work/' | url }}">Evidence</a>
+        </li>
+    </ul>
+</div>
+
+<h2>Timeline</h2>
+
+<ol class="timeline">
+    <li class="timeline__item timeline__item--current">
+        <p class="timeline__period">2026 –</p>
+        <h3 class="timeline__title">The current-role variant</h3>
+        <p class="timeline__org">An organisation</p>
+    </li>
+    <li class="timeline__item">
+        <p class="timeline__period">2022 – 2026</p>
+        <h3 class="timeline__title">A past role</h3>
+        <p class="timeline__org">An organisation</p>
+    </li>
+</ol>
+
+<h2>Table</h2>
+
+<p>Tables are wrapped at build time in a focusable, labelled scroll region, so a
+table wider than a phone is reachable by keyboard. This one is deliberately wide
+enough to overflow at the narrow viewport.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Approach</th>
+            <th scope="col">What it catches</th>
+            <th scope="col">What it misses</th>
+            <th scope="col">Cost per run</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Threshold gate</td>
+            <td>A regression past a fixed line</td>
+            <td>Slow drift underneath the line</td>
+            <td>Low</td>
+        </tr>
+        <tr>
+            <td>Trend view</td>
+            <td>Drift, and the shape of it over time</td>
+            <td>Nothing, but it does not block a merge</td>
+            <td>Storage and a dashboard</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Code block</h2>
+
+<p>A <code>&lt;pre&gt;</code> gets <code>tabindex="0"</code> from the same
+transform, for the same reason.</p>
+
+<pre><code>eleventyConfig.addTransform("scrollableRegions", function (content) {
+    if (!this.page.outputPath || !this.page.outputPath.endsWith(".html")) return content;
+    let tableIndex = 0;
+    return content.replace(/&lt;table\b[^&gt;]*&gt;/g, (openTag) =&gt; { /* … */ });
+});</code></pre>
+
+<h2>Image</h2>
+
+<p>The <code>{% raw %}{% image %}{% endraw %}</code> shortcode throws without alt
+text and supplies width and height itself, so a layout shift is not something an
+author has to remember to prevent.</p>
+
+{% image "headshot-small.png", "Libin Samkutty", "(min-width: 48em) 320px, 50vw", { eager: true } %}
+
+<h2>Footnote</h2>
+
+<p>A claim that needs a source carries one.<sup id="fnref-styleguide"><a href="#fn-styleguide">1</a></sup></p>
+
+<ol class="footnotes">
+    <li id="fn-styleguide">The footnote treatment, including the return link.
+    <a href="#fnref-styleguide">Back to the text</a>.</li>
+</ol>

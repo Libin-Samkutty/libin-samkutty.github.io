@@ -1,0 +1,114 @@
+---
+layout: layouts/page.njk
+permalink: /about/
+title: About
+shortTitle: About
+description: Libin Samkutty is a Senior QA Automation Engineer and sole QA on a digital health AI platform spanning six countries and three generation architectures.
+lede: I started as the person who wrote test cases. I am now the person who decides what "correct" means for a system that generates its answers.
+---
+<h2>What I actually do</h2>
+
+<p>
+    I am the only QA engineer on a digital health platform that answers health questions over
+    WhatsApp in nine languages across {% metric "countries" %} countries. It reaches
+    {% metric "monthly_users" %}. My job is the evidence layer underneath a claim nobody can make
+    by inspection: that a generated answer is safe to send.
+</p>
+
+<p>
+    That breaks down into three things. Golden datasets and judge design, which is how we decide
+    what good looks like before a release. Production monitoring, which is how we find out we were
+    wrong about it. And the test infrastructure underneath both: Playwright, API and contract
+    suites, and the CI they run in.
+</p>
+
+{% architectureNote "long" %}
+
+<h2>How I got here</h2>
+
+<p>
+    I joined as an intern in January 2022 and converted to full time that May. The project had no
+    QA process, so the first year was building one from nothing: templates, severity standards,
+    the first UI automation suite, the first API suite, the first CI integration. It is unglamorous
+    work and it is the reason I have opinions about test infrastructure that are not borrowed.
+</p>
+
+<p>
+    AI testing started in September 2023 with intent classification and conversational flows. The
+    real shift was Q1 2025, when I built the platform's first LLM-as-a-judge. I then found that
+    it was grading answers produced by the same model family that generated them. Everything I have
+    built since traces back to that, because the question it raised is the interesting one:
+    <a href="{{ '/work/llm-judge-independence/' | url }}">what makes an evaluation independent
+    enough to be worth anything?</a>
+</p>
+
+<p>
+    QA on the project consolidated to a single engineer in October 2025. I have been Scrum Master
+    since April 2025, and I was promoted to Senior QA Automation Engineer on 1 June 2026. The scope
+    did not change at the promotion; the title caught up with it.
+</p>
+
+<h2>What I am like to work with</h2>
+
+<p>
+    I write down what went wrong. Every case study on this site has a section on what I would do
+    differently, and at least one item in it is still open. This is not self-deprecation. It is
+    the only way I know to make the rest of the claims checkable. If someone tells you their
+    systems have no limitations, they have not measured them.
+</p>
+
+<p>
+    I am careful about attribution. Two of the largest performance improvements in the pipeline I
+    work on were other engineers' work; I built the measurement that attributed them. Where that
+    is true on this site, it says so on the same line as the number, not in a footnote.
+</p>
+
+<p>
+    I hedge in proportion to the evidence and no further. {% metric "golden_dataset_india_mh" %} is
+    a count, so it is stated as a count. A self-tracked estimate says it is self-tracked. A replay
+    projection says it never happened in production.
+</p>
+
+<h2>Education</h2>
+
+<ul>
+    {% for item in timeline.education %}
+    <li>
+        <strong>{{ item.qualification }}</strong>, {{ item.institution }} ({{ item.affiliation }}),
+        {{ item.end | year }} · {{ item.result }}
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Where I have been</h2>
+
+<ol class="timeline">
+    {% for role in timeline.roles %}
+    <li class="timeline__item{% if role.current %} timeline__item--current{% endif %}">
+        <p class="timeline__period">
+            <time datetime="{{ role.start | isoDate }}">{{ role.start | monthYear }}</time>
+            –
+            {% if role.end %}<time datetime="{{ role.end | isoDate }}">{{ role.end | monthYear }}</time>{% else %}present{% endif %}
+        </p>
+        <h3 class="timeline__title">{{ role.title }}</h3>
+        <p class="timeline__org">{{ role.employer }} · client {{ site.client.name }}</p>
+        <p>{{ role.summary }}</p>
+        {% if role.highlights %}
+        <ul>
+            {% for highlight in role.highlights %}<li>{{ highlight }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ol>
+
+<h2>What I am looking for</h2>
+
+<p>
+    {{ site.targetRoles | join(", ") }}. The common thread is systems where a wrong answer has a
+    cost: health, finance, safety, anything regulated. I have spent {% metric "experience_years" %} learning
+    how to be specific about that cost, and I would rather keep doing that than move to a domain
+    where nobody checks.
+</p>
+
+<p><a href="{{ '/contact/' | url }}">Get in touch</a>, or read <a href="{{ '/work/' | url }}">the work</a>.</p>

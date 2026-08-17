@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "purpose": "The 'Other systems I built or own' section of /work/. These are real systems that do not warrant a full case study — they carry breadth, not depth. Deep work goes in src/work/ as a case study.",
+    "replaces": "The legacy qa-portfolio.html and automation-projects.html pages, which duplicated each other and the case-study index.",
+    "source": "vault://projects.md"
+  },
+
+  "other": [
+    {
+      "id": "service-virtualization",
+      "title": "Service virtualization for third-party dependencies",
+      "period": "2025",
+      "tech": ["Node.js", "nock", "HMAC-SHA256"],
+      "body": "Several journeys depend on third-party services that cannot be called from a test environment: messaging providers, partner webhooks, scheduled callbacks. I built mock services that reproduce their contracts rather than their responses: signed webhook payloads verified with the same HMAC the production consumer uses, and a controllable clock so a re-engagement nudge scheduled fourteen days out can be tested in a second. The rule I settled on is that a mock which cannot fail the way the real service fails is a liability, because it teaches the suite that a whole class of error does not exist. Test-data isolation came out of the same work: timestamp-scoped assertions and a proxy that blocks writes to shared state, so a parallel run cannot poison another worker's fixtures."
+    },
+    {
+      "id": "journey-config-snapshots",
+      "title": "Structural snapshot validation for journey configs",
+      "period": "2025",
+      "tech": ["Python", "pytest", "JSON graph diffing"],
+      "body": "Chatbot journeys are JSON configuration graphs: the largest is 32 nodes across nine phases with two entry paths. They are edited by designers and engineers at the same time, across programs, and reviewing one by hand took the better part of an hour. Two mis-wiring bugs had already reached user-acceptance testing rather than review: a phase-skip edge, and a missing re-entry after a coaching branch. I extended the snapshot framework built for prompt regression to diff journey structure instead of model output: node counts per phase, edge adjacency, entry paths, button payload mappings, and re-engagement hook points. Each diff is categorised as a structural break, an edge change, a rename, or an additive change, so a reviewer now reads a change report instead of a graph."
+    },
+    {
+      "id": "data-platform",
+      "title": "Data platform ownership and automated validation",
+      "period": "2024–present",
+      "tech": ["BigQuery", "SQL", "Looker Studio", "Google Apps Script"],
+      "body": "The analytics function came with the sole-QA role, and it turned out to be where a large share of real defects live. Dashboards are believed. A dashboard that quietly drops a segment of users is worse than one that is obviously broken, because nobody investigates it. The work here is validating the pipeline that feeds the dashboards rather than the charts themselves: reconciling event-level pulls against reported figures, and gating the reconciliation. One attribution gap I found this way was undercounting a meaningful share of users across three markets. The events existed; they just were not being attributed to a journey, so they were absent from every rollup."
+    },
+    {
+      "id": "security-testing",
+      "title": "First structured security testing pass",
+      "period": "2025",
+      "tech": ["OWASP ZAP", "DAST"],
+      "body": "The platform handles protected health information and had never had a structured security scan. I ran the first authenticated active scan against the internal dashboard and the API surface. It had to be authenticated, because an unauthenticated scan of a product where everything meaningful sits behind a login mostly proves the login works. Two high-severity findings came out of it, both fixed within the sprint of discovery. The more useful outcome was procedural: authenticated scanning became a recurring pre-release activity with a defined scope, instead of a thing that had never happened."
+    },
+    {
+      "id": "performance-testing",
+      "title": "Performance baselines and trend gating",
+      "period": "2023–2024",
+      "tech": ["JMeter", "InfluxDB", "Grafana"],
+      "body": "I built the platform's first load test plans, starting with a conversation-loading endpoint whose payload grew linearly with the number of active conversations in a journey. Measuring it before and after the fix closed the engineering story with a number rather than a developer's impression from a local request. The more interesting lesson came later: a nudge-trigger endpoint's p95 crept from 450ms toward an 800ms gate across six consecutive nightly runs and never once failed, because each run was judged alone. It was only visible as a slope after trend charts existed. A threshold answers whether tonight is acceptable; only a trend answers whether you are heading somewhere unacceptable.",
+      "relatedPost": "/writing/threshold-gates-vs-trend-views/"
+    },
+    {
+      "id": "api-test-data-generator",
+      "title": "api-test-data-generator",
+      "period": "2026",
+      "tech": ["Python", "PyPI", "MIT"],
+      "url": "https://pypi.org/project/api-test-data-generator/",
+      "body": "A small open-source library for schema-driven test data generation, published to PyPI in February 2026 with a second release in April. It exists because the same fixture-shaping code kept being rewritten across suites, and because publishing something forces an interface decision that an internal helper never has to make. It is deliberately narrow: generate data that conforms to a schema, with control over which fields are randomised and which are pinned.",
+      "metric": "pypi_downloads"
+    }
+  ],
+
+  "featuredCaseStudies": [
+    "llm-judge-independence",
+    "production-evaluation-pipeline",
+    "ai-evaluation-framework"
+  ],
+
+  "whatIOwn": [
+    {
+      "title": "Evaluation systems",
+      "body": "Golden datasets, judge design and calibration, nightly gates. The question is always the same: on what evidence do we believe this answer is safe to send?"
+    },
+    {
+      "title": "Production quality signal",
+      "body": "Sampling live traffic, judging it, routing the disagreements to people who know medicine better than I do, and feeding what they find back into the datasets."
+    },
+    {
+      "title": "The test infrastructure underneath",
+      "body": "Playwright, API and contract suites, the CI they run in, and the discipline to retire the ones that have stopped earning their runtime."
+    }
+  ]
+}

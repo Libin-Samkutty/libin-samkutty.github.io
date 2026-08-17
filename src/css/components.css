@@ -1,0 +1,906 @@
+/*
+  Site chrome and the homepage components.
+
+  Flat single-class BEM throughout. `is-` classes are state written by site.js;
+  `data-` attributes are behaviour hooks. Neither is renamed here, because
+  site.js queries the `data-` hooks and toggles the `is-` classes and nothing
+  else — a design change in this file cannot break behaviour.
+*/
+
+/* ================================================================ skip link */
+
+/*
+  Off-screen but never `display: none` — a hidden skip link is not focusable,
+  which defeats its only purpose. It parks above the viewport and drops in when
+  focused.
+*/
+.skip-link {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: var(--gutter);
+    z-index: 100;
+    translate: 0 -120%;
+    padding: var(--space-2xs) var(--space-s);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: var(--hairline-strong);
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    border-end-start-radius: var(--radius-s);
+    border-end-end-radius: var(--radius-s);
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: var(--weight-medium);
+    transition: translate var(--duration-base) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+    translate: 0 0;
+    box-shadow: var(--shadow-overlay);
+}
+
+/* ================================================================ header */
+
+.site-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 20;
+    background-color: var(--color-bg);
+    border-block-end: var(--hairline);
+}
+
+.site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-s);
+    padding-block: var(--space-xs);
+}
+
+.site-header__brand {
+    display: flex;
+    flex-direction: column;
+    margin-inline-end: auto;
+    color: var(--color-text);
+    text-decoration: none;
+    line-height: var(--leading-tight);
+}
+
+.site-header__name {
+    font-family: var(--font-display);
+    font-size: var(--step-0);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+}
+
+.site-header__role {
+    font-size: var(--step--2);
+    color: var(--color-text-subtle);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------- nav toggle */
+
+.nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--space-2xs) var(--space-xs);
+    border: 1px solid var(--color-border-interactive);
+    border-radius: var(--radius-s);
+    color: var(--color-text);
+    font-size: var(--step--1);
+    font-weight: var(--weight-medium);
+}
+
+/*
+  Two bars rather than three. Three needs the middle one hidden with `opacity`,
+  and opacity on the parent takes the other two with it — the workarounds all end
+  up animating something that is not a transform. Two bars rotate into an X with
+  nothing but `rotate` and `translate`.
+*/
+.nav-toggle__bars {
+    position: relative;
+    display: block;
+    inline-size: 1rem;
+    block-size: 0.75rem;
+}
+
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 50%;
+    block-size: 1.5px;
+    background-color: currentcolor;
+    border-radius: var(--radius-pill);
+    transition:
+        translate var(--duration-base) var(--ease-out),
+        rotate var(--duration-base) var(--ease-out);
+}
+
+.nav-toggle__bars::before {
+    translate: 0 -4px;
+}
+
+.nav-toggle__bars::after {
+    translate: 0 3px;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars::before {
+    translate: 0 0;
+    rotate: 45deg;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars::after {
+    translate: 0 0;
+    rotate: -45deg;
+}
+
+/* ---------------------------------------------------------------- nav */
+
+/*
+  The mobile drawer collapses with `visibility: hidden`, not `height: 0`.
+
+  A height-collapsed element still contains focusable links, so a keyboard user
+  tabs into an invisible menu and loses the focus ring off-screen. That is the
+  bug the old site shipped. `visibility: hidden` removes the subtree from the tab
+  order outright, and the delayed `visibility` step in the transition below lets
+  the fade finish before it disappears.
+*/
+.site-nav {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    visibility: hidden;
+    opacity: 0;
+    translate: 0 calc(-1 * var(--nav-shift));
+    background-color: var(--color-surface);
+    border-block-end: var(--hairline);
+    box-shadow: var(--shadow-overlay);
+    padding: var(--space-s) var(--gutter) var(--space-m);
+    transition:
+        opacity var(--duration-base) var(--ease-out),
+        translate var(--duration-base) var(--ease-out),
+        visibility 0s linear var(--duration-base);
+}
+
+.site-nav.is-open {
+    visibility: visible;
+    opacity: 1;
+    translate: none;
+    /* The only `will-change` in the system, and only while the drawer is open. */
+    will-change: opacity, translate;
+    transition:
+        opacity var(--duration-base) var(--ease-out),
+        translate var(--duration-base) var(--ease-out),
+        visibility 0s;
+}
+
+.site-nav__list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+}
+
+.site-nav__link {
+    display: block;
+    padding: var(--space-2xs) 0;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: var(--step-0);
+    font-weight: var(--weight-medium);
+}
+
+.site-nav__link:hover {
+    color: var(--color-accent-text);
+}
+
+/*
+  Current page. The rule is the signal, not the colour — a lavender link that is
+  merely a slightly different lavender would be colour carrying meaning alone.
+  Weight changes too.
+*/
+.site-nav__link[aria-current] {
+    color: var(--color-accent-text);
+    font-weight: var(--weight-semibold);
+}
+
+/* Body scroll lock while the drawer is open. */
+.is-nav-open {
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------------------- theme toggle */
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+    border: 1px solid var(--color-border-interactive);
+    border-radius: var(--radius-s);
+    color: var(--color-text);
+}
+
+/*
+  With JavaScript off the toggle cannot do anything, and it cannot even tell the
+  truth: `aria-pressed` is server-rendered as "false" while the page itself is
+  whatever the OS asked for. A control that is permanently inert and permanently
+  lying about its state is worse than an absent one.
+
+  `html:not(.js)` rather than a `.js`-prefixed display rule because the
+  `pointer: coarse` block near the end of this file also sets `display` on
+  `.theme-toggle`; this selector outranks it, so the outcome does not depend on
+  source order.
+*/
+html:not(.js) .theme-toggle {
+    display: none;
+}
+
+/*
+  A half-filled disc — the contrast mark. It means the same thing in both themes,
+  so the icon does not have to be swapped on toggle; it rotates instead, which is
+  a transform and costs nothing. State is carried by `aria-pressed`, which is
+  what a screen reader announces.
+*/
+.theme-toggle__icon {
+    position: relative;
+    display: block;
+    inline-size: 1.05rem;
+    block-size: 1.05rem;
+    border: 1.5px solid currentcolor;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: rotate var(--duration-base) var(--ease-out);
+}
+
+.theme-toggle__icon::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 50% 0;
+    background-color: currentcolor;
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle__icon {
+    rotate: 180deg;
+}
+
+.theme-toggle__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ---------------------------------------------------------------- desktop nav */
+
+@media (min-width: 48em) {
+    .nav-toggle {
+        display: none;
+    }
+
+    /*
+      Both selectors, because `.site-nav.is-open` outranks `.site-nav` and the
+      drawer state can survive a resize for one frame before site.js clears it.
+    */
+    .site-nav,
+    .site-nav.is-open {
+        position: static;
+        visibility: visible;
+        opacity: 1;
+        translate: none;
+        will-change: auto;
+        background: none;
+        border: 0;
+        box-shadow: none;
+        padding: 0;
+        transition: none;
+    }
+
+    .site-nav__list {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-m);
+    }
+
+    .site-nav__link {
+        font-size: var(--step--1);
+        padding: 0;
+    }
+}
+
+/* ================================================================ footer */
+
+.site-footer {
+    margin-block-start: var(--space-2xl);
+    border-block-start: var(--hairline);
+    background-color: var(--color-surface-sunken);
+    padding-block: var(--space-xl);
+    font-size: var(--step--1);
+}
+
+.site-footer__inner {
+    display: grid;
+    gap: var(--space-m);
+}
+
+.site-footer__list,
+.site-footer__profiles {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-m);
+}
+
+.site-footer__colophon {
+    max-inline-size: var(--measure);
+    color: var(--color-text-muted);
+    border-inline-start: 2px solid var(--color-border-strong);
+    padding-inline-start: var(--space-s);
+}
+
+.site-footer__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-m);
+    color: var(--color-text-subtle);
+    font-size: var(--step--2);
+    padding-block-start: var(--space-s);
+    border-block-start: var(--hairline);
+}
+
+@media (min-width: 64em) {
+    .site-footer__inner {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+        gap: var(--space-l) var(--space-xl);
+    }
+
+    .site-footer__nav {
+        grid-column: 1;
+    }
+
+    .site-footer__list {
+        flex-direction: column;
+        gap: var(--space-3xs);
+    }
+
+    .site-footer__profiles {
+        grid-column: 1;
+        flex-direction: column;
+        gap: var(--space-3xs);
+    }
+
+    .site-footer__colophon {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+    }
+
+    .site-footer__meta {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ================================================================ hero */
+
+/*
+  The hero has three background layers behind the portrait, in this order:
+
+  1. A dot grid at 4% opacity. It reads as graph paper rather than as texture,
+     which is the only decorative element on the site that is allowed to exist
+     purely because it looks like the subject matter.
+  2. A lavender radial glow positioned behind the head. This is the one place the
+     accent earns its keep at scale: it echoes the shirt in the portrait and
+     separates a navy jacket from a near-black ground, which otherwise merge into
+     an unreadable silhouette in dark mode.
+  3. A feathered bottom mask on the portrait itself. Without it the photo ends in
+     a straight horizontal cut through the jacket and reads as something pasted
+     onto the page. This one detail is the difference between "transparent PNG"
+     and "art direction".
+
+  All three are painted with `background-image` and `mask-image`, so none of them
+  can shift layout, and the LCP element is untouched.
+*/
+.hero {
+    padding-block: var(--space-xl) var(--space-2xl);
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(circle at 1px 1px, var(--color-text) 1px, transparent 0);
+    background-size: 32px 32px;
+    opacity: 0.04;
+
+    /* Fades out toward the bottom so the grid does not collide with the hairline
+       above the stat rail, which is doing structural work and should not have to
+       compete with decoration. */
+    mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
+}
+
+/*
+  Sized and placed in the portrait's own grid cell rather than the section's, so
+  it stays behind the head when the layout goes single-column and the portrait
+  moves to the top.
+*/
+.hero__portrait::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset-block-start: -8%;
+    inset-inline: -20%;
+    aspect-ratio: 1;
+    pointer-events: none;
+
+    /*
+      The two themes need different strengths, and not by a little. Against
+      near-black the glow has to carry enough light to lift the jacket off the
+      ground. Against near-white the same value renders as a grey disc with a
+      visible edge — the eye reads a boundary long before it reads a light
+      source. A third of the dark value, with the falloff pushed most of the way
+      to the edge, is the point where it stops being a shape.
+    */
+    background-image: radial-gradient(
+        circle closest-side,
+        light-dark(
+            color-mix(in oklab, var(--lavender-500) 13%, transparent),
+            color-mix(in oklab, var(--lavender-500) 34%, transparent)
+        ),
+        transparent 88%
+    );
+
+    /* The glow is a lighting effect, not a shape. Blurring it removes the
+       banding a raw radial-gradient shows across a large flat area, and takes
+       the last of the edge off. */
+    filter: blur(36px);
+}
+
+.hero__inner {
+    display: grid;
+    gap: var(--space-l);
+    align-items: center;
+}
+
+.hero__eyebrow {
+    font-size: var(--step--2);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-s);
+}
+
+/*
+  Capped near 18ch so the sentence breaks into three or four strong lines rather
+  than running the full container. This is the LCP element on the homepage and it
+  is deliberately not revealed, not faded and not transitioned.
+*/
+.hero__title {
+    font-size: var(--step-5);
+    max-inline-size: var(--measure-title);
+    margin-block-end: var(--space-m);
+}
+
+.hero__lede {
+    font-size: var(--step-1);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+    max-inline-size: 52ch;
+}
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-block-start: var(--space-l);
+}
+
+.hero__portrait {
+    order: -1;
+    max-inline-size: 20rem;
+    position: relative;
+}
+
+.hero__portrait img {
+    inline-size: 100%;
+    block-size: auto;
+
+    /* The feather. The photo is cut at the waist, and a straight edge there
+       reads as a mistake — the eye looks for the rest of the body and finds a
+       ruled line instead. Dissolving the last eighth into the page removes the
+       question. Kept shallow: any deeper and the jacket loses the shoulders that
+       carry the palette. */
+    mask-image: linear-gradient(to bottom, #000 78%, transparent 98%);
+}
+
+@media (min-width: 64em) {
+    .hero {
+        padding-block: var(--space-2xl) var(--space-3xl);
+    }
+
+    .hero__inner {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: var(--space-xl);
+
+        /* Centering a shorter portrait against a taller text column drops its
+           top edge below the headline's. Top-aligning puts the two where a
+           reader's eye actually lands first. */
+        align-items: start;
+    }
+
+    .hero__portrait {
+        order: 0;
+        max-inline-size: none;
+        justify-self: end;
+    }
+}
+
+/* ================================================================ buttons */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    padding: var(--space-2xs) var(--space-m);
+    border-radius: var(--radius-s);
+    border: 1px solid transparent;
+    font-size: var(--step--1);
+    font-weight: var(--weight-medium);
+    line-height: 1.5;
+    text-decoration: none;
+    transition:
+        translate var(--duration-fast) var(--ease-out),
+        opacity var(--duration-fast) var(--ease-standard);
+}
+
+.button:hover {
+    translate: 0 calc(-1 * var(--lift-shift));
+}
+
+.button:active {
+    translate: 0 0;
+}
+
+.button--primary {
+    background-color: var(--color-surface-inverse);
+    color: var(--color-text-inverse);
+}
+
+.button--primary:hover {
+    opacity: 0.9;
+}
+
+.button--ghost {
+    border-color: var(--color-border-interactive);
+    color: var(--color-text);
+}
+
+.button--ghost:hover {
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-text);
+}
+
+/* ================================================================ stat rail */
+
+.stat-rail {
+    border-block: var(--hairline);
+    background-color: var(--color-surface-sunken);
+    padding-block: var(--space-l);
+}
+
+.stat-rail__list {
+    display: grid;
+    gap: var(--space-m);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: var(--space-3xs);
+}
+
+.stat__label {
+    font-size: var(--step--2);
+    line-height: var(--leading-snug);
+    color: var(--color-text-muted);
+    max-inline-size: 34ch;
+}
+
+/*
+  The number leads visually but follows in the DOM: `column-reverse` puts the
+  <dd> on top while the <dt>/<dd> pairing a screen reader relies on stays intact.
+  Everything inside `.metric` sizes in `em`, so the whole assembly — hedge, value,
+  basis, credit — scales from this one declaration.
+*/
+.stat__value {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+}
+
+@media (min-width: 30em) {
+    .stat-rail__list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-l);
+    }
+}
+
+@media (min-width: 64em) {
+    .stat-rail__list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .stat--wide {
+        grid-column: 1 / -1;
+        border-block-start: var(--hairline);
+        padding-block-start: var(--space-m);
+    }
+
+    .stat--wide .stat__value {
+        font-size: var(--step-1);
+        font-family: var(--font-body);
+    }
+}
+
+/* ================================================================ cards */
+
+.card-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-m);
+}
+
+@media (min-width: 48em) {
+    .card-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-l);
+    }
+}
+
+@media (min-width: 64em) {
+    .card-list--posts {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+}
+
+.card__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
+    font-size: var(--step--2);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+}
+
+.card__title {
+    font-size: var(--step-1);
+}
+
+.card__title a {
+    color: inherit;
+    text-decoration-color: color-mix(in oklab, var(--color-accent) 70%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+}
+
+.card__title a:hover {
+    color: var(--color-accent-text);
+}
+
+.card__body {
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+}
+
+.card__meta {
+    margin-block-start: auto;
+    padding-block-start: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--color-text-subtle);
+}
+
+/* A bordered card for things that are a destination. Padding and a hairline —
+   the depth is the space, not a shadow. */
+.card--case-study,
+.card--post {
+    border: var(--hairline);
+    border-radius: var(--radius-m);
+    background-color: var(--color-surface);
+    padding: var(--space-m);
+    transition: border-color var(--duration-base) var(--ease-standard);
+}
+
+.card--case-study:hover,
+.card--post:hover {
+    border-color: var(--color-border-interactive);
+}
+
+/* An unbordered card for things that are a statement. A single accent rule at
+   the top instead of a box. */
+.card--plain {
+    border-block-start: 2px solid var(--color-accent);
+    padding-block-start: var(--space-s);
+    background: none;
+}
+
+.card--plain + .card--plain {
+    margin-block-start: var(--space-l);
+}
+
+/* ================================================================ timeline */
+
+.timeline {
+    list-style: none;
+    padding: 0;
+    margin-inline-start: var(--space-2xs);
+    border-inline-start: var(--hairline-strong);
+}
+
+.timeline__item {
+    position: relative;
+    padding-inline-start: var(--space-m);
+    padding-block-end: var(--space-l);
+}
+
+.timeline__item:last-child {
+    padding-block-end: 0;
+}
+
+.timeline__item::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: -4.5px;
+    inset-block-start: 0.55em;
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: 50%;
+    background-color: var(--color-bg);
+    border: 1.5px solid var(--color-border-interactive);
+}
+
+/*
+  The current role. The dot fills and the period goes semibold — and the period
+  itself already reads "… – present", so the state is in the text before it is in
+  the colour.
+*/
+.timeline__item--current::before {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent-text);
+}
+
+.timeline__item--current .timeline__period {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text);
+}
+
+.timeline__period {
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+}
+
+.timeline__title {
+    font-size: var(--step-1);
+    margin-block: var(--space-3xs);
+}
+
+.timeline__org {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+}
+
+/* ================================================================ other systems */
+
+.other-systems {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-l);
+}
+
+.other-systems__item {
+    border-block-start: var(--hairline);
+    padding-block-start: var(--space-m);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+}
+
+/* ================================================================ stub pages */
+
+/*
+  The redirect stub and the 404. Both are pages a reader did not mean to land on,
+  so they are short, centred and get out of the way.
+*/
+.redirect-page,
+.error-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+}
+
+.redirect-page main,
+.error-page main {
+    padding-block: var(--space-3xl);
+}
+
+.redirect-page h1,
+.error-page h1 {
+    font-size: var(--step-3);
+    margin-block-end: var(--space-m);
+}
+
+.redirect-page p + p,
+.error-page p + p,
+.error-page ul {
+    margin-block-start: var(--space-s);
+}
+
+.error-page li + li {
+    margin-block-start: var(--space-2xs);
+}
+
+/* ================================================================ touch */
+
+/*
+  44px minimum on anything a thumb has to hit. Inline prose links are exempt —
+  padding a link inside a paragraph to 44px overlaps the lines above and below,
+  which makes the whole paragraph harder to tap, not easier.
+*/
+@media (pointer: coarse) {
+    .button,
+    .nav-toggle,
+    .theme-toggle,
+    .site-nav__link,
+    .site-footer__list a,
+    .site-footer__profiles a,
+    .contact-list a,
+    .capability__evidence {
+        min-block-size: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .theme-toggle {
+        min-inline-size: 44px;
+    }
+
+    .site-nav__link {
+        display: flex;
+    }
+}

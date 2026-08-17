@@ -1,0 +1,77 @@
+---
+layout: layouts/base.njk
+articleType: TechArticle
+ogType: article
+---
+<article class="case-study">
+    <header class="case-study__header">
+        <div class="wrap">
+            <p class="case-study__eyebrow">
+                <span class="case-study__number">Case study {{ number }}</span>
+                <span class="case-study__period">{{ period }}</span>
+            </p>
+            <h1 class="case-study__title">{{ title }}</h1>
+        </div>
+    </header>
+
+    {#
+      The context strip. "What was mine / what wasn't" sits here rather than in a
+      footnote at the bottom, because a reader who stops after the first screen
+      should still leave with an accurate picture of the attribution.
+    #}
+    <div class="wrap">
+        <dl class="context-strip">
+            <div class="context-strip__row">
+                <dt>Role at the time</dt>
+                <dd>{{ roleAtTime }}</dd>
+            </div>
+            <div class="context-strip__row">
+                <dt>Scope</dt>
+                <dd>{{ scope }}</dd>
+            </div>
+            <div class="context-strip__row">
+                <dt>Stack</dt>
+                <dd>
+                    <ul class="chips">
+                        {% for item in stack %}<li class="chip">{{ item }}</li>{% endfor %}
+                    </ul>
+                </dd>
+            </div>
+            <div class="context-strip__row">
+                <dt>What was mine</dt>
+                <dd>{{ mine }}</dd>
+            </div>
+            {% if notMine %}
+            <div class="context-strip__row context-strip__row--attribution">
+                <dt>What wasn't</dt>
+                <dd>{{ notMine }}</dd>
+            </div>
+            {% endif %}
+        </dl>
+    </div>
+
+    <div class="case-study__body wrap">
+        {{ content | safe }}
+    </div>
+
+    <footer class="case-study__footer wrap">
+        <p class="case-study__reviewed">
+            Written {{ datePublished | readableDate }}.
+            {% if lastReviewed and lastReviewed != datePublished %}Last reviewed {{ lastReviewed | readableDate }}.{% endif %}
+            Numbers on this page come from a single data file with recorded provenance;
+            where a figure is approximate or projected, it says so.
+        </p>
+
+        {% set related = collections.caseStudies | otherThan(page.url) | limit(2) %}
+        {% if related.length %}
+        <nav class="related" aria-label="Related case studies">
+            <h2 class="related__title">Related work</h2>
+            <ul class="related__list">
+                {% for item in related %}
+                <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+        {% endif %}
+    </footer>
+</article>

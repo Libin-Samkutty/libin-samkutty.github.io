@@ -1,0 +1,13 @@
+---
+layout: layouts/redirect.njk
+pagination:
+  data: redirects
+  size: 1
+  alias: redirect
+permalink: "{{ redirect.from }}"
+eleventyExcludeFromCollections: true
+sitemapExclude: true
+eleventyComputed:
+  from: "{{ redirect.from }}"
+  to: "{{ redirect.to }}"
+---

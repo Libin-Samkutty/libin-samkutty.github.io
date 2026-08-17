@@ -1,0 +1,48 @@
+{
+  "name": "Libin Samkutty",
+  "title": "Senior QA Automation Engineer",
+  "titleEffective": "2026-06-01",
+  "titleSuffix": " | Libin Samkutty",
+  "tagline": "I build the evaluation systems that decide whether an AI answer is safe to ship.",
+  "targetRoles": [
+    "Senior AI QA Engineer",
+    "Lead AI Quality Engineer",
+    "Senior SDET (AI)"
+  ],
+  "url": "https://libin-samkutty.github.io",
+  "locale": "en",
+  "lang": "en",
+  "email": "samlibin2001@gmail.com",
+  "experienceYears": "4.5+",
+  "experienceStart": "2022-01",
+  "location": {
+    "city": "Vadodara",
+    "region": "Gujarat",
+    "country": "India"
+  },
+  "employer": {
+    "name": "Jeavio India Pvt. Ltd.",
+    "url": "https://jeavio.com"
+  },
+  "client": {
+    "name": "Nivi",
+    "url": "https://nivi.io"
+  },
+  "education": {
+    "degree": "B.E. Computer Engineering",
+    "institution": "Sardar Vallabhbhai Patel Institute of Technology, Vasad (GTU)",
+    "year": 2022,
+    "result": "CGPA 9.35 / 10"
+  },
+  "profiles": {
+    "linkedin": "https://linkedin.com/in/libin-samkutty",
+    "github": "https://github.com/Libin-Samkutty",
+    "pypi": "https://pypi.org/project/api-test-data-generator/"
+  },
+  "themeColor": {
+    "light": "#FBFBFD",
+    "dark": "#0B0F1A"
+  },
+  "lastUpdated": "2026-08-12",
+  "portrait": "/assets/portrait.jpg"
+}

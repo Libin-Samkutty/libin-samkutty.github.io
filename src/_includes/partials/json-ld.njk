@@ -1,0 +1,85 @@
+{#
+  Structured data.
+
+  One Person node with a stable @id, referenced by every other node rather than
+  repeated. `knowsAbout` is emitted from skills.json filtered to level "core", so
+  it cannot claim expertise the capability matrix does not.
+
+  Deliberately absent: FAQPage, Review, AggregateRating. A personal site emitting
+  review markup is either misuse or an attempt at rich results it has not earned.
+#}
+{% set personId = site.url + "/#person" %}
+{% set coreSkills = [] %}
+{% for group in skills.groups %}
+    {% for skill in group.skills %}
+        {% if skill.level == "core" %}{% set coreSkills = (coreSkills.push(skill.name), coreSkills) %}{% endif %}
+    {% endfor %}
+{% endfor %}
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Person",
+            "@id": {{ personId | dump | safe }},
+            "name": {{ site.name | dump | safe }},
+            "jobTitle": {{ site.title | dump | safe }},
+            "description": {{ site.tagline | dump | safe }},
+            "email": {{ ("mailto:" + site.email) | dump | safe }},
+            "url": {{ site.url | dump | safe }},
+            "image": {{ (site.portrait | absoluteUrl) | dump | safe }},
+            "worksFor": {
+                "@type": "Organization",
+                "name": {{ site.employer.name | dump | safe }},
+                "url": {{ site.employer.url | dump | safe }}
+            },
+            "alumniOf": {
+                "@type": "CollegeOrUniversity",
+                "name": {{ site.education.institution | dump | safe }}
+            },
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": {{ site.location.city | dump | safe }},
+                "addressRegion": {{ site.location.region | dump | safe }},
+                "addressCountry": {{ site.location.country | dump | safe }}
+            },
+            "knowsAbout": {{ coreSkills | dump | safe }},
+            "sameAs": [
+                {{ site.profiles.linkedin | dump | safe }},
+                {{ site.profiles.github | dump | safe }},
+                {{ site.profiles.pypi | dump | safe }}
+            ]
+        }
+        {%- if articleType %},
+        {
+            "@type": {{ articleType | dump | safe }},
+            "@id": {{ (page.url | absoluteUrl) | dump | safe }},
+            "headline": {{ title | dump | safe }},
+            "description": {{ description | dump | safe }},
+            "datePublished": {{ (datePublished or date) | isoDate | dump | safe }},
+            "dateModified": {{ (dateModified or datePublished or date) | isoDate | dump | safe }},
+            "author": { "@id": {{ personId | dump | safe }} },
+            "publisher": { "@id": {{ personId | dump | safe }} },
+            "mainEntityOfPage": {{ (page.url | absoluteUrl) | dump | safe }},
+            "inLanguage": "en"
+        }
+        {%- endif %}
+        {%- if page.url != "/" %},
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {%- for crumb in page.url | breadcrumbs(shortTitle or title) %}
+                {
+                    "@type": "ListItem",
+                    "position": {{ loop.index }},
+                    "name": {{ crumb.label | dump | safe }},
+                    "item": {{ (crumb.url | absoluteUrl) | dump | safe }}
+                }{{ "," if not loop.last }}
+                {%- endfor %}
+            ]
+        }
+        {%- endif %}
+    ]
+}
+</script>

@@ -1,0 +1,62 @@
+name: PR checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A new push to the same PR makes the previous run's answer irrelevant, so
+# cancelling it is free. This is the opposite of the deploy workflow, where
+# cancelling mid-flight would leave a partial artifact.
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      # html-validate runs before Playwright on purpose. It takes about two
+      # seconds and needs no browser, and most structural mistakes fail here
+      # first — there is no reason to spend ninety seconds of browser time
+      # discovering that a tag was never closed.
+      - name: Validate HTML
+        run: npm run test:html
+
+      - name: Test
+        run: npm run test:e2e
+
+      # Lighthouse blocks here and only here. A performance regression is worth
+      # arguing about before it merges; on main it would mean a shared runner
+      # having a slow minute can block a one-line copy fix from going live.
+      - name: Budgets
+        run: npm run test:perf
+
+      - name: Upload failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failures
+          path: |
+            test-results/
+            playwright-report/
+            .lighthouseci/
+          retention-days: 7
+          if-no-files-found: ignore

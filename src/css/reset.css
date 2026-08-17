@@ -1,0 +1,93 @@
+/*
+  Reset. Deliberately small: it removes UA decisions that fight the design and
+  leaves the ones that carry meaning. Notably it does NOT strip focus outlines,
+  and it does not zero list semantics globally — a screen reader that stops
+  announcing "list, 5 items" because of `list-style: none` is a real regression,
+  so lists are unstyled per component instead.
+*/
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Clears the sticky header when a fragment link lands. */
+    scroll-padding-block-start: calc(var(--space-2xl) + 1rem);
+}
+
+body {
+    min-block-size: 100svb;
+    -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+/* Balance is for short strings only; a long paragraph balanced is a paragraph
+   the browser has to lay out several times. `pretty` handles the rest. */
+h1,
+h2,
+h3,
+h4 {
+    text-wrap: balance;
+}
+
+p,
+li,
+dd,
+figcaption {
+    text-wrap: pretty;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+:target {
+    scroll-margin-block-start: calc(var(--space-2xl) + 1rem);
+}

@@ -1,0 +1,70 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, and never cancel one that is already running — a
+# half-uploaded Pages artifact is a broken site, not a skipped build.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # The build generates one Open Graph card per page by rendering them in a
+      # real browser, so the build itself needs Chromium — not just the test
+      # job. `--with-deps` pulls the shared libraries headless Chromium needs on
+      # a bare runner. No `--with-deps` on a cached hit would fail at launch.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      # The gates that must hold on the deploy path, not just on the PR. A merge
+      # can be green and main can still be broken: two PRs that each pass alone
+      # can produce a duplicate title or a dead link once combined, and nothing
+      # re-checks that unless the deploy does.
+      #
+      # Lighthouse is deliberately absent here. It blocks on PRs, where a
+      # regression can still be discussed, and would only ever block a merged
+      # commit from reaching production over a shared runner's noise.
+      - name: Validate HTML
+        run: npm run test:html
+
+      - name: Test
+        run: npm run test:e2e
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

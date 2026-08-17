@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Libin Samkutty">
+    <!--
+      Theme-aware favicon. A browser that supports SVG icons applies the media
+      query below against the OS setting, so the mark keeps its contrast on both a
+      light and a dark tab strip.
+
+      Geometric rather than a monogram: two initials are unreadable at 16px, and
+      an emoji is not a mark. This is an L set as a corner rule — the same
+      hairline the site uses to build every surface — with the lavender accent
+      squared off against it.
+    -->
+    <style>
+        .ground { fill: #131A2A; }
+        .rule   { stroke: #C4B5FD; }
+        .accent { fill: #A78BFA; }
+
+        @media (prefers-color-scheme: dark) {
+            .ground { fill: #1B2438; }
+            .rule   { stroke: #C4B5FD; }
+            .accent { fill: #C4B5FD; }
+        }
+    </style>
+
+    <rect class="ground" width="32" height="32" rx="7"/>
+    <path class="rule" d="M11 8v14h11" fill="none" stroke-width="3.25" stroke-linecap="square"/>
+    <rect class="accent" x="18.5" y="8" width="5.5" height="5.5" rx="1"/>
+</svg>

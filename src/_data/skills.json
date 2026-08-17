@@ -1,0 +1,125 @@
+{
+  "_meta": {
+    "purpose": "The only stack list on the site. The résumé, the /skills/ page and the About page all render from here, which is why the old site's three disagreeing lists cannot recur.",
+    "source": "vault://skills.md, vault://career.md",
+    "noPercentages": "Deliberately no percentages and no bars. A '90% Playwright' bar encodes nothing a reader can check. Three levels with a definition each, and every Core claim linking to the work that proves it, encodes something.",
+    "jsonLd": "`knowsAbout` in the Person JSON-LD is emitted from entries with level 'core' only."
+  },
+
+  "levels": {
+    "core": {
+      "label": "Core",
+      "definition": "I have built and owned production systems with this, made design decisions I can defend, and hit its limits. Every Core entry links to the work."
+    },
+    "working": {
+      "label": "Working",
+      "definition": "I use this regularly and productively. I would not claim to know its edges."
+    },
+    "familiar": {
+      "label": "Familiar",
+      "definition": "I have shipped something with it, or maintain code that uses it. I would need a ramp-up before owning it."
+    }
+  },
+
+  "groups": [
+    {
+      "id": "ai-evaluation",
+      "name": "AI evaluation and quality",
+      "lede": "The centre of what I do. Deciding whether a generated answer is good enough to send to a person asking about their pregnancy.",
+      "skills": [
+        { "name": "LLM-as-a-judge design", "level": "core", "evidence": "/work/llm-judge-independence/", "note": "Judge independence, binary verdicts over floating scores, calibration against human annotation." },
+        { "name": "Golden dataset design", "level": "core", "evidence": "/work/ai-evaluation-framework/", "note": "Multilingual, stratified, versioned in git alongside the code it gates." },
+        { "name": "DeepEval", "level": "core", "evidence": "/work/ai-evaluation-framework/" },
+        { "name": "RAGAS", "level": "core", "evidence": "/work/ai-evaluation-framework/", "note": "Faithfulness and context precision as nightly CI signals, not a report nobody opens." },
+        { "name": "G-Eval custom criteria", "level": "core", "evidence": "/work/llm-judge-independence/" },
+        { "name": "Production evaluation pipelines", "level": "core", "evidence": "/work/production-evaluation-pipeline/", "note": "Anomaly-triggered sampling on live traffic, human annotation loop, alerting." },
+        { "name": "Snapshot testing for non-deterministic output", "level": "core", "evidence": "/work/snapshot-testing-nondeterministic-ai/" },
+        { "name": "Prompt regression and guardrail tuning", "level": "core", "evidence": "/work/snapshot-testing-nondeterministic-ai/" },
+        { "name": "Semantic cache correctness validation", "level": "core", "evidence": "/writing/asymmetric-thresholds/", "note": "Precision and recall gated at different thresholds, because a false hit and a miss are not the same failure." },
+        { "name": "NLP intent classification testing", "level": "core", "evidence": "/writing/decompose-by-tool-call/" },
+        { "name": "LangSmith", "level": "working" },
+        { "name": "STT provider benchmarking", "level": "working", "evidence": "/writing/aggregate-metrics-hide-the-failure/" },
+        { "name": "RAG retrieval evaluation", "level": "working", "evidence": "/writing/dont-call-it-rag/", "note": "One of the six programs I cover is RAG. I evaluate it; I did not build the retrieval architecture." }
+      ]
+    },
+    {
+      "id": "automation",
+      "name": "Test automation",
+      "lede": "Four and a half years of it, including the part where I retired two frameworks I had built.",
+      "skills": [
+        { "name": "Playwright", "level": "core", "evidence": "/work/from-robot-to-playwright/", "note": "300+ scenarios, native sharding across six runners, visual regression." },
+        { "name": "Python", "level": "core", "evidence": "/work/contract-testing-pact/" },
+        { "name": "Pytest", "level": "core", "evidence": "/work/contract-testing-pact/" },
+        { "name": "Contract testing with Pact", "level": "core", "evidence": "/work/contract-testing-pact/", "note": "Provider states, broker, can-i-deploy as a real deployment gate." },
+        { "name": "API test design", "level": "core", "note": "30+ endpoints across five backend services." },
+        { "name": "TypeScript", "level": "working" },
+        { "name": "Visual regression", "level": "working", "note": "Tight pixel tolerance, CI-only baselines. Cross-OS font rendering makes local baselines a trap." },
+        { "name": "Robot Framework and pabot", "level": "working", "evidence": "/work/from-robot-to-playwright/", "note": "Two years of it, then the diagnosis that four of its limits were structural." },
+        { "name": "Botium", "level": "working", "note": "140+ conversational flows. Maintained as an internal fork; upstream adoption collapsed after the 2022 acquisition." },
+        { "name": "Service virtualization and mock design", "level": "working", "note": "Signed webhooks, controllable clocks, write-blocking proxies for test-data isolation." },
+        { "name": "JMeter", "level": "working", "evidence": "/writing/threshold-gates-vs-trend-views/" },
+        { "name": "Selenium", "level": "familiar" }
+      ]
+    },
+    {
+      "id": "infrastructure",
+      "name": "Infrastructure and pipelines",
+      "lede": "Enough to own the systems my tests run on, and to be useful in a design review about them.",
+      "skills": [
+        { "name": "GitHub Actions", "level": "core", "evidence": "/work/from-robot-to-playwright/" },
+        { "name": "Docker", "level": "working", "note": "Containerising the test environment eliminated a class of CI breakage caused by Chrome and driver versions drifting apart." },
+        { "name": "AWS (Lambda, MSK, EC2, SQS, Parameter Store)", "level": "working", "evidence": "/work/production-evaluation-pipeline/" },
+        { "name": "Kafka", "level": "working", "evidence": "/work/production-evaluation-pipeline/" },
+        { "name": "Prometheus and Grafana", "level": "working", "evidence": "/writing/threshold-gates-vs-trend-views/" },
+        { "name": "Linux and shell", "level": "working" },
+        { "name": "CircleCI", "level": "familiar" },
+        { "name": "GCP (BigQuery, Vertex AI, Cloud Functions)", "level": "familiar" }
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Data and analytics",
+      "lede": "The data platform function came with the sole-QA role. Most of the quality problems I find now are data problems.",
+      "skills": [
+        { "name": "SQL", "level": "core", "note": "Window functions, CTEs, geospatial predicates. Test design, not just reporting." },
+        { "name": "BigQuery", "level": "core", "evidence": "/writing/audit-your-own-traffic/" },
+        { "name": "Production traffic analysis", "level": "core", "evidence": "/writing/audit-your-own-traffic/", "note": "Reading what users actually send, rather than what the test set assumes they send." },
+        { "name": "PostgreSQL", "level": "working" },
+        { "name": "Looker Studio", "level": "working" },
+        { "name": "Statistical outlier detection", "level": "familiar" }
+      ]
+    },
+    {
+      "id": "security",
+      "name": "Security testing",
+      "skills": [
+        { "name": "OWASP ZAP", "level": "working", "note": "Authenticated active scans against the platform. Ran the first structured pass it had had." },
+        { "name": "DAST methodology", "level": "working" }
+      ]
+    },
+    {
+      "id": "practice",
+      "name": "Practice and leadership",
+      "skills": [
+        { "name": "Quality strategy ownership", "level": "core", "note": "Sole QA across six country programs and six-plus AI product lines." },
+        { "name": "Release governance and sign-off gates", "level": "core" },
+        { "name": "Framework retirement discipline", "level": "core", "evidence": "/work/from-robot-to-playwright/", "note": "The hard half of framework work. Retiring one I built, with a full parallel-run cycle proving zero divergence before decommissioning." },
+        { "name": "Scrum Master", "level": "working", "note": "Since April 2025, concurrently with the QA and analytics ownership." },
+        { "name": "Client-facing communication at CTO/CEO level", "level": "working" },
+        { "name": "Mentoring", "level": "working", "note": "One senior engineer with no automation background and two campus recruits through a four-month programme." }
+      ]
+    }
+  ],
+
+  "openSource": [
+    {
+      "name": "api-test-data-generator",
+      "url": "https://pypi.org/project/api-test-data-generator/",
+      "repo": "https://github.com/Libin-Samkutty",
+      "license": "MIT",
+      "language": "Python",
+      "description": "Schema-driven test data generation for API suites. Published to PyPI in February 2026.",
+      "metric": "pypi_downloads"
+    }
+  ]
+}

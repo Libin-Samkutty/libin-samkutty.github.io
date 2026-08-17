@@ -1,0 +1,16 @@
+---
+layout: layouts/base.njk
+---
+<article class="page">
+    <header class="page__header">
+        <div class="wrap">
+            {% if eyebrow %}<p class="page__eyebrow">{{ eyebrow }}</p>{% endif %}
+            <h1 class="page__title">{{ title }}</h1>
+            {% if lede %}<p class="page__lede">{{ lede }}</p>{% endif %}
+        </div>
+    </header>
+
+    <div class="page__body wrap wrap--measure">
+        {{ content | safe }}
+    </div>
+</article>

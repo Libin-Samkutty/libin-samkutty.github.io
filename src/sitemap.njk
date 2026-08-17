@@ -1,0 +1,31 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+{#- Redirect stubs carry noindex and are excluded here. A sitemap that lists a
+    noindex page sends two contradictory instructions about the same URL.
+
+    The outputPath test is not belt-and-braces. Stylesheets are registered as a
+    template format so Lightning CSS can bundle them, which puts all nine CSS
+    files into `collections.all` alongside real pages — and eight of them are
+    never written to disk at all, because only main.css compiles. Without this
+    filter the sitemap advertised eight URLs that 404.
+
+    Sorted, because `collections.all` does not come back in a stable order and a
+    sitemap that reshuffles on every build produces a diff on every deploy. -#}
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- set indexable = [] -%}
+{%- for page in collections.all -%}
+{%- if page.outputPath and page.outputPath.endsWith(".html")
+       and not page.data.sitemapExclude and not page.data.noindex -%}
+{%- set indexable = (indexable.push(page), indexable) -%}
+{%- endif -%}
+{%- endfor %}
+{%- for page in indexable | sort(false, false, "url") %}
+    <url>
+        <loc>{{ page.url | absoluteUrl }}</loc>
+        <lastmod>{{ (page.data.dateModified or page.date) | isoDate }}</lastmod>
+    </url>
+{%- endfor %}
+</urlset>

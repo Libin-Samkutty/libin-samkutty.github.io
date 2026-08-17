@@ -1,0 +1,44 @@
+---
+layout: layouts/base.njk
+ogType: article
+eleventyComputed:
+  # Computed rather than set in the template body: Eleventy's layout chain renders
+  # child before parent, so a {% set %} here would never reach the <head>.
+  articleType: "{% if technical %}TechArticle{% else %}Article{% endif %}"
+  datePublished: "{{ date | isoDate }}"
+---
+<article class="post">
+    <header class="post__header">
+        <div class="wrap">
+            <p class="post__eyebrow">
+                <time datetime="{{ date | isoDate }}">{{ date | readableDate }}</time>
+                <span class="post__reading-time" data-volatile>{{ content | readingTime }} min read</span>
+            </p>
+            <h1 class="post__title">{{ title }}</h1>
+        </div>
+    </header>
+
+    <div class="post__body wrap wrap--measure">
+        {{ content | safe }}
+    </div>
+
+    <footer class="post__footer wrap wrap--measure">
+        {% if tags.length %}
+        <ul class="chips chips--tags">
+            {% for tag in tags %}<li class="chip">{{ tag }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+
+        {% set related = collections.posts | otherThan(page.url) | limit(3) %}
+        {% if related.length %}
+        <nav class="related" aria-label="More writing">
+            <h2 class="related__title">More writing</h2>
+            <ul class="related__list">
+                {% for item in related %}
+                <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+        {% endif %}
+    </footer>
+</article>

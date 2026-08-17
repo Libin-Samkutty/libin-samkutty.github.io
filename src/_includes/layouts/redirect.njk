@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Moved{{ site.titleSuffix }}</title>
+
+    {#
+      GitHub Pages cannot issue a 301, so this is the strongest signal available:
+      a canonical pointing at the real page, noindex so the stub itself never
+      ranks, and a meta refresh for the browser.
+
+      The refresh delay is 0 for the machine but the page still renders a real
+      link, because a meta refresh that a reader cannot escape from is a trap for
+      anyone whose browser blocks it — and "0" is the only delay that does not
+      strand a screen-reader user mid-announcement.
+    #}
+    <link rel="canonical" href="{{ to | absoluteUrl }}">
+    <meta name="robots" content="noindex, follow">
+    <meta http-equiv="refresh" content="0; url={{ to | url }}">
+    <link rel="stylesheet" href="{{ '/css/main.css' | url }}">
+</head>
+<body class="redirect-page">
+    <main id="main" tabindex="-1">
+        <div class="wrap wrap--measure">
+            <h1>This page moved</h1>
+            <p>
+                <code>{{ from }}</code> is now at
+                <a href="{{ to | url }}">{{ to }}</a>. You should be redirected automatically.
+            </p>
+            <p><a href="{{ '/' | url }}">Go to the homepage instead</a>.</p>
+        </div>
+    </main>
+</body>
+</html>

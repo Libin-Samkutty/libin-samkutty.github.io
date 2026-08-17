@@ -1,0 +1,41 @@
+{#
+  Footer. Carries the demoted nav items, the profiles, and a colophon — the
+  colophon is not decoration here, it is the shortest honest statement of how the
+  site is built and is the first thing an engineer reading this page will check.
+#}
+<footer class="site-footer">
+    <div class="wrap site-footer__inner">
+        <nav class="site-footer__nav" aria-label="Footer">
+            <ul class="site-footer__list">
+                {% for item in nav.primary %}
+                <li><a href="{{ item.url | url }}">{{ item.label }}</a></li>
+                {% endfor %}
+                {% for item in nav.secondary %}
+                <li><a href="{{ item.url | url }}">{{ item.label }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <ul class="site-footer__profiles">
+            <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            <li><a href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a></li>
+            <li><a href="{{ site.profiles.github }}" rel="me noopener">GitHub</a></li>
+            <li><a href="{{ site.profiles.pypi }}" rel="noopener">PyPI</a></li>
+        </ul>
+
+        <p class="site-footer__colophon">
+            Built with Eleventy. No client-side framework, no third-party requests, no analytics.
+            Accessibility and performance budgets are enforced in CI. If this page had a contrast
+            failure or a layout shift, the build that produced it would have failed.
+        </p>
+
+        {# `data-volatile` marks text that changes without any design change, so
+           the visual suite can mask it. Without that, editing site.lastUpdated —
+           which happens on most commits — fails every screenshot baseline on the
+           site, and a suite that cries wolf on every PR gets turned off. #}
+        <p class="site-footer__meta">
+            <span>&copy; {{ site.lastUpdated | year }} {{ site.name }}</span>
+            <span data-volatile>Last updated <time datetime="{{ site.lastUpdated }}">{{ site.lastUpdated | readableDate }}</time></span>
+        </p>
+    </div>
+</footer>

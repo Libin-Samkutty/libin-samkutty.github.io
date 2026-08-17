@@ -1,0 +1,388 @@
+/*
+  Element defaults, the typographic rhythm, and the prose measure.
+
+  The type is doing the work on this site, so the rules here are the design. Two
+  faces: Source Serif 4 for anything that is a statement (titles, the hero, a
+  pulled number), Inter for everything that is an interface or a paragraph. The
+  serif carries the essay register; the sans keeps the chrome quiet.
+*/
+
+/* ---------------------------------------------------------------- webfonts */
+
+/*
+  Variable, self-hosted, one file each. `font-display: swap` is safe here only
+  because the fallbacks below are metric-matched — without them, swap is a
+  guaranteed layout shift.
+*/
+
+@font-face {
+    font-family: Inter;
+    src: url("/assets/fonts/inter-var.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Source Serif 4";
+    src: url("/assets/fonts/source-serif-var.woff2") format("woff2");
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/*
+  Metric-matched fallbacks. The overrides scale a locally installed face so its
+  line box matches the webfont's, which is what makes the swap invisible: the
+  text reflows to the same height, so CLS from the font swap is zero rather than
+  merely small.
+
+  Note the generic keywords in the stacks above are UNQUOTED. `'sans-serif'` in
+  quotes is a request for a family literally named "sans-serif", which does not
+  exist, and it silently voids the rest of the chain. The legacy stylesheet did
+  exactly that, which is why every fallback on the old site was Times.
+*/
+
+/*
+  `size-adjust` was measured rather than looked up: a 600px block of the same
+  sentence set in the webfont and in the adjusted fallback has to break at the
+  same word, because a fallback that fits in two lines where the webfont needs
+  three is a whole line of shift at swap. The published Source Serif figure was
+  5.5% narrow and did exactly that.
+
+  The ascent and descent overrides are the face's own metrics divided by the
+  size-adjust: Inter is 2728/-680 on a 2816 em, Source Serif 4 is 1036/-335 on a
+  1000 em. Re-derive both if the subset in /assets/fonts/ is ever rebuilt.
+*/
+
+@font-face {
+    font-family: "Inter Fallback";
+    src: local("Arial"), local("Helvetica Neue"), local("Liberation Sans");
+    size-adjust: 106.9%;
+    ascent-override: 90.62%;
+    descent-override: 22.59%;
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: "Source Serif 4 Fallback";
+    src: local("Georgia"), local("Times New Roman"), local("Liberation Serif");
+    size-adjust: 107.24%;
+    ascent-override: 96.61%;
+    descent-override: 31.24%;
+    line-gap-override: 0%;
+}
+
+/* ---------------------------------------------------------------- ground */
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-normal);
+    font-synthesis-weight: none;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/*
+  <main> takes programmatic focus from the skip link. It is not interactive, so
+  the ring is dashed and offset rather than the solid ring used for controls —
+  a replacement indicator, not `outline: none`.
+*/
+main:focus-visible {
+    outline: 2px dashed var(--color-focus);
+    outline-offset: 6px;
+}
+
+/* ---------------------------------------------------------------- headings */
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text);
+}
+
+h4,
+h5,
+h6 {
+    font-family: var(--font-body);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+}
+
+h1 {
+    font-size: var(--step-5);
+}
+
+h2 {
+    font-size: var(--step-3);
+}
+
+h3 {
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+}
+
+h4 {
+    font-size: var(--step-0);
+}
+
+/* ---------------------------------------------------------------- links */
+
+a {
+    color: var(--color-accent-text);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in oklab, currentcolor 40%, transparent);
+    transition: text-decoration-color var(--duration-fast) var(--ease-standard);
+}
+
+a:hover {
+    text-decoration-color: currentcolor;
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+}
+
+/* ---------------------------------------------------------------- inline */
+
+strong,
+b {
+    font-weight: var(--weight-semibold);
+}
+
+small {
+    font-size: var(--step--1);
+}
+
+code,
+kbd,
+samp {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+:not(pre) > code {
+    background-color: var(--color-surface-sunken);
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    padding: 0.1em 0.35em;
+    overflow-wrap: anywhere;
+}
+
+abbr[title] {
+    text-decoration: underline dotted;
+    cursor: help;
+}
+
+::selection {
+    background-color: var(--color-surface-accent);
+    color: var(--color-text);
+}
+
+hr {
+    border: 0;
+    border-block-start: var(--hairline);
+    margin-block: var(--space-l);
+}
+
+/* ---------------------------------------------------------------- prose */
+
+/*
+  The measure lives on the container (layout.css). What lives here is the rhythm:
+  space between blocks is a property of what precedes the block, so no element
+  carries a top margin it has to have collapsed later.
+*/
+
+.page__body,
+.case-study__body,
+.post__body {
+    font-size: var(--step-0);
+    line-height: var(--leading-loose);
+}
+
+:is(.page__body, .case-study__body, .post__body) > * + * {
+    margin-block-start: var(--space-m);
+}
+
+:is(.page__body, .case-study__body, .post__body) h2 {
+    margin-block-start: var(--space-xl);
+    font-size: var(--step-2);
+}
+
+:is(.page__body, .case-study__body, .post__body) h3 {
+    margin-block-start: var(--space-l);
+    font-size: var(--step-1);
+}
+
+:is(.page__body, .case-study__body, .post__body) h2 + *,
+:is(.page__body, .case-study__body, .post__body) h3 + * {
+    margin-block-start: var(--space-s);
+}
+
+:is(.page__body, .case-study__body, .post__body) :is(ul, ol) {
+    padding-inline-start: var(--space-m);
+}
+
+:is(.page__body, .case-study__body, .post__body) li + li {
+    margin-block-start: var(--space-2xs);
+}
+
+:is(.page__body, .case-study__body, .post__body) li::marker {
+    color: var(--color-text-subtle);
+}
+
+:is(.page__body, .case-study__body, .post__body) blockquote {
+    border-inline-start: 2px solid var(--color-accent);
+    padding-inline-start: var(--space-s);
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/*
+  `.case-study__body` itself sits on the full composition band, not the
+  reading measure, so tables and architecture notes can use the width they
+  need. Prose still reads at 68 characters — it just gets there directly on
+  the element instead of inheriting it from the container.
+*/
+.case-study__body :is(p, li, blockquote) {
+    max-inline-size: var(--measure);
+}
+
+:is(.page__body, .case-study__body, .post__body) figcaption {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--color-text-subtle);
+}
+
+/*
+  Code blocks and tables scroll horizontally rather than forcing the page to.
+  Both need `tabindex="0"` to be reachable by keyboard, and a table also needs a
+  label. Neither comes from markdown-it, so the `scrollableRegions` transform in
+  eleventy.config.js adds them to the built HTML — doing it there rather than
+  asking authors to hand-wrap a table means it cannot be forgotten on the next
+  post.
+*/
+
+pre {
+    background-color: var(--color-surface-sunken);
+    border: var(--hairline);
+    border-radius: var(--radius-m);
+    padding: var(--space-s);
+    overflow-x: auto;
+    font-size: var(--step--1);
+    line-height: 1.6;
+    tab-size: 4;
+}
+
+table {
+    inline-size: 100%;
+    display: block;
+    overflow-x: auto;
+    font-size: var(--step--1);
+    line-height: var(--leading-normal);
+}
+
+th,
+td {
+    text-align: start;
+    vertical-align: baseline;
+    padding: var(--space-2xs) var(--space-s) var(--space-2xs) 0;
+    border-block-end: var(--hairline);
+}
+
+th {
+    font-family: var(--font-body);
+    font-weight: var(--weight-semibold);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    border-block-end: var(--hairline-strong);
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- motion */
+
+/*
+  Scroll reveal.
+
+  Gated on `.js`, which the inline script in <head> adds synchronously. With
+  JavaScript off the class is never added, no rule below matches, and every
+  element is visible at full opacity — the content does not depend on the
+  animation having run.
+
+  Only opacity and translate. The distance is a token so reduced motion zeroes it
+  in one place.
+*/
+
+.js [data-reveal] {
+    opacity: 0;
+    translate: 0 var(--reveal-shift);
+    transition:
+        opacity var(--duration-slow) var(--ease-out),
+        translate var(--duration-slow) var(--ease-out);
+}
+
+.js [data-reveal].is-revealed {
+    opacity: 1;
+    translate: none;
+}
+
+/* Stagger, capped at four steps. Past four the reader is waiting on the design
+   rather than reading, and a long list would take seconds to finish arriving. */
+.js [data-reveal]:nth-child(2) {
+    transition-delay: var(--stagger);
+}
+
+.js [data-reveal]:nth-child(3) {
+    transition-delay: calc(var(--stagger) * 2);
+}
+
+.js [data-reveal]:nth-child(n + 4) {
+    transition-delay: calc(var(--stagger) * 3);
+}
+
+/*
+  Cross-document view transitions. 180ms: long enough to read as continuity,
+  short enough that a reader clicking through four case studies never waits on
+  it.
+*/
+
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: var(--duration-base);
+    animation-timing-function: var(--ease-standard);
+}
+
+/*
+  The reduced-motion kill switch for view transitions. Token overrides cannot
+  reach these pseudo-elements, so this is the one extra block reduced motion
+  needs — and it is scoped to `::view-transition-*`, not to everything.
+*/
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
+    }
+}

@@ -1,0 +1,567 @@
+/*
+  Article layouts, the data layer, and the callouts.
+
+  This is where the site earns its claim to be a written thing rather than a
+  landing page: the page header, the case-study context strip, the metric with
+  its hedge and its provenance, and the limitation callout.
+*/
+
+/* ================================================================ page header */
+
+.page__header,
+.case-study__header,
+.post__header {
+    padding-block: var(--space-xl) var(--space-l);
+    border-block-end: var(--hairline);
+    margin-block-end: var(--space-xl);
+}
+
+.page__eyebrow,
+.case-study__eyebrow,
+.post__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
+    align-items: baseline;
+    font-size: var(--step--2);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-s);
+}
+
+.case-study__number {
+    color: var(--color-accent-text);
+    font-weight: var(--weight-semibold);
+}
+
+.post__reading-time::before {
+    content: "·";
+    margin-inline-end: var(--space-2xs);
+    color: var(--color-border-strong);
+}
+
+.page__title,
+.case-study__title,
+.post__title {
+    font-size: var(--step-4);
+    max-inline-size: 24ch;
+}
+
+.page__lede {
+    margin-block-start: var(--space-m);
+    font-size: var(--step-1);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+}
+
+/* At narrow widths the lede's own font step drops the line below the 45ch
+   readability floor before the column has a chance to grow. Sized down to
+   the body step here specifically, rather than in the shared token, since
+   every other consumer of --step-1 is fine at this width. */
+@media (max-width: 48em) {
+    .page__lede {
+        font-size: var(--step-0);
+    }
+}
+
+/* ================================================================ scroll progress */
+
+/*
+  A wayfinding indicator, not an animation: it is driven entirely by where the
+  reader has scrolled to, so it stays on under reduced motion — suppressing it
+  would remove information the reader is generating themselves. Scroll-driven, so
+  there is no scroll listener anywhere in the JavaScript.
+*/
+
+@keyframes scroll-progress {
+    to {
+        scale: 1 1;
+    }
+}
+
+@supports (animation-timeline: scroll()) {
+    .case-study::before,
+    .post::before {
+        content: "";
+        position: fixed;
+        inset-block-start: 0;
+        inset-inline: 0;
+        z-index: 30;
+        block-size: 2px;
+        background-color: var(--color-accent);
+        transform-origin: 0 50%;
+        scale: 0 1;
+        animation: scroll-progress linear;
+        animation-timeline: scroll(root block);
+    }
+}
+
+/* ================================================================ context strip */
+
+/*
+  "What was mine / what wasn't" sits at the top of a case study, not in a
+  footnote. A reader who leaves after the first screen should still leave with an
+  accurate picture of the attribution.
+*/
+.context-strip {
+    margin-block-end: var(--space-xl);
+    border: var(--hairline);
+    border-radius: var(--radius-m);
+    background-color: var(--color-surface-sunken);
+    padding: var(--space-m);
+    font-size: var(--step--1);
+}
+
+.context-strip__row + .context-strip__row {
+    margin-block-start: var(--space-s);
+    padding-block-start: var(--space-s);
+    border-block-start: var(--hairline);
+}
+
+.context-strip dt {
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-3xs);
+}
+
+.context-strip dd {
+    margin-inline-start: 0;
+    color: var(--color-text);
+}
+
+/* The attribution row. An accent rule marks it as the one a reader should not
+   skim, and the label already says "What wasn't". */
+.context-strip__row--attribution {
+    border-inline-start: 2px solid var(--color-accent);
+    padding-inline-start: var(--space-s);
+}
+
+@media (min-width: 48em) {
+    .context-strip__row {
+        display: grid;
+        grid-template-columns: 11rem minmax(0, 1fr);
+        gap: var(--space-m);
+        align-items: baseline;
+    }
+
+    .context-strip dt {
+        margin-block-end: 0;
+    }
+
+    .context-strip__row--attribution {
+        padding-inline-start: calc(var(--space-s) - 2px);
+        margin-inline-start: -2px;
+    }
+}
+
+/* ================================================================ scrollable table */
+
+/*
+  The wrapper the markdown pipeline emits around every table. It is the scroll
+  container, so the table inside goes back to being a table — `display: block` on
+  a <table> is only the defensive fallback for one that arrives unwrapped.
+
+  The wrapper carries `tabindex="0"` and a label in the markup, which is what
+  makes it reachable: a region that scrolls but cannot be focused is unusable
+  with a keyboard. The focus ring comes from the global `:focus-visible` rule.
+*/
+.table-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border: var(--hairline);
+    border-radius: var(--radius-m);
+    padding: var(--space-s);
+}
+
+.table-scroll table {
+    display: table;
+    min-inline-size: 100%;
+    inline-size: auto;
+}
+
+/* ================================================================ chips */
+
+.chips {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-2xs);
+}
+
+.chip {
+    display: inline-block;
+    padding: 0.15em 0.6em;
+    border: var(--hairline-strong);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface);
+    font-size: var(--step--2);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+.chips--tags .chip {
+    background: none;
+    border-style: dashed;
+}
+
+/* ================================================================ metric */
+
+/*
+  The typographic problem this site actually has.
+
+  A published number arrives with up to four subordinate clauses attached: a
+  hedge ("roughly"), a basis ("(measured over six sprints)"), a credit ("—
+  delivered by …") and a projection footnote. All four have to read as
+  subordinate to the number without becoming illegible — a 10px grey aside is not
+  honesty, it is a disclaimer.
+
+  The rules: everything sizes in `em` so the assembly scales with wherever it is
+  dropped; the value is the only part that is not reduced; the reductions bottom
+  out at 0.78em, which at the body size is still above 13px; and the colour used
+  for the subordinate parts clears 4.5:1 in both themes rather than fading toward
+  the background.
+*/
+
+.metric {
+    font-variant-numeric: tabular-nums;
+}
+
+.metric__value {
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text);
+}
+
+/*
+  The hedge is part of the claim, so it is not parenthetical and not italic. It
+  is one step down and one weight lighter, which is enough to read as a
+  qualifier — the number still leads.
+*/
+.metric__hedge {
+    font-size: 0.82em;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-muted);
+}
+
+.metric__basis,
+.metric__credit {
+    font-size: 0.82em;
+    color: var(--color-text-muted);
+    font-weight: var(--weight-regular);
+    letter-spacing: 0;
+}
+
+.metric__credit {
+    font-style: italic;
+}
+
+/*
+  A projection footnote is a sentence, not an aside, so it breaks to its own line
+  and keeps a full measure. Indented rather than shrunk further.
+*/
+.metric__footnote {
+    display: block;
+    margin-block-start: var(--space-3xs);
+    padding-inline-start: var(--space-2xs);
+    border-inline-start: 2px solid var(--color-highlight);
+    font-size: 0.82em;
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+    font-variant-numeric: normal;
+}
+
+/*
+  Confidence, marked without relying on colour. A projected or estimated figure
+  gets a dotted underline under the value; the hedge word ("an estimated",
+  "approximately") is present in the text either way, so the underline is
+  reinforcement rather than the only signal.
+*/
+[data-confidence="projection"] .metric__value,
+[data-confidence="estimate"] .metric__value {
+    text-decoration: underline dotted from-font;
+    text-decoration-color: var(--color-highlight);
+    text-underline-offset: 0.25em;
+}
+
+[data-confidence="exact"] .metric__value {
+    text-decoration: none;
+}
+
+/* ================================================================ architecture note */
+
+.architecture-note {
+    margin-block: var(--space-l);
+    padding: var(--space-s) var(--space-m);
+    border: var(--hairline);
+    border-inline-start: 2px solid var(--color-accent);
+    border-radius: var(--radius-s);
+    background-color: var(--color-surface);
+    font-size: var(--step--1);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+}
+
+.architecture-note__label {
+    display: inline-block;
+    margin-inline-end: var(--space-2xs);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+}
+
+/* ================================================================ callouts */
+
+.callout {
+    margin-block: var(--space-l);
+    padding: var(--space-m);
+    border: var(--hairline);
+    border-inline-start: 3px solid var(--color-accent);
+    border-radius: var(--radius-m);
+    background-color: var(--color-surface);
+}
+
+.callout > * + * {
+    margin-block-start: var(--space-s);
+}
+
+.callout__title {
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+}
+
+/*
+  The signature component, and amber's entire job on this site.
+
+  Everything else is navy and lavender precisely so this reads as a different
+  register the moment it appears. If amber shows up more than twice in a viewport
+  the design has stopped saying "this is the part where I was wrong" and started
+  saying "this is a warning box".
+*/
+.callout--limitation {
+    border-inline-start-color: var(--color-highlight);
+    background-color: var(--color-surface-highlight);
+}
+
+.callout--limitation .callout__title {
+    color: var(--color-highlight-text);
+}
+
+.callout--limitation a {
+    color: var(--color-highlight-text);
+}
+
+/* ================================================================ capability matrix */
+
+/*
+  Three named levels with a written definition each.
+
+  There are no percentage bars here, and that is a content decision rather than a
+  missing feature: a bar at 80% asserts a precision nobody has, and it is
+  unreadable to a screen reader without a label that would have been the honest
+  version anyway. The level name and its definition are the label.
+*/
+
+.level-key {
+    margin-block-end: var(--space-xl);
+    padding: var(--space-m);
+    border: var(--hairline);
+    border-radius: var(--radius-m);
+    background-color: var(--color-surface-sunken);
+    font-size: var(--step--1);
+}
+
+.level-key dl {
+    display: grid;
+    gap: var(--space-m);
+}
+
+.level-key__item dt {
+    font-weight: var(--weight-semibold);
+    color: var(--color-accent-text);
+    margin-block-end: var(--space-3xs);
+}
+
+.level-key__item dd {
+    margin-inline-start: 0;
+    color: var(--color-text-muted);
+}
+
+@media (min-width: 48em) {
+    .level-key dl {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.capability,
+.capability__group {
+    display: grid;
+    gap: var(--space-l);
+}
+
+.capability__group + .capability__group {
+    margin-block-start: var(--space-2xl);
+}
+
+.capability__level {
+    display: grid;
+    gap: var(--space-s);
+}
+
+/*
+  The level label. Three named levels, each with a definition in `.level-key` —
+  and no bar, no percentage, no meter. A "90% Playwright" fill encodes nothing a
+  reader can check and nothing a screen reader can announce; the level name and
+  its written definition are the honest version of the same claim.
+*/
+.capability__level-title {
+    font-family: var(--font-body);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+    padding-block-end: var(--space-2xs);
+    border-block-end: var(--hairline-strong);
+}
+
+.capability__list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-m);
+}
+
+.capability__item {
+    display: grid;
+    gap: var(--space-3xs);
+    align-content: start;
+}
+
+.capability__name {
+    font-weight: var(--weight-semibold);
+    font-size: var(--step-0);
+}
+
+.capability__note {
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+    max-inline-size: var(--measure);
+}
+
+.capability__evidence {
+    justify-self: start;
+    font-size: var(--step--2);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+}
+
+@media (min-width: 48em) {
+    .capability__list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-m) var(--space-l);
+    }
+}
+
+/* ================================================================ contact */
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2xs);
+    font-size: var(--step-1);
+}
+
+/* ================================================================ résumé */
+
+.resume__section {
+    padding-block-start: var(--space-l);
+    margin-block-start: var(--space-l);
+    border-block-start: var(--hairline);
+}
+
+.resume__section:first-of-type {
+    border-block-start: 0;
+    margin-block-start: 0;
+    padding-block-start: 0;
+}
+
+.resume__role + .resume__role {
+    margin-block-start: var(--space-l);
+}
+
+.resume__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-s);
+    font-size: var(--step--1);
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-2xs);
+}
+
+/* ================================================================ footers */
+
+.case-study__footer,
+.post__footer {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-l);
+    border-block-start: var(--hairline);
+}
+
+.case-study__reviewed {
+    font-size: var(--step--1);
+    color: var(--color-text-subtle);
+    max-inline-size: var(--measure);
+}
+
+.related {
+    margin-block-start: var(--space-l);
+}
+
+.related__title {
+    font-size: var(--step--2);
+    font-family: var(--font-body);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-2xs);
+}
+
+.related__list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2xs);
+}
+
+.post__footer .chips {
+    margin-block-end: var(--space-l);
+}
+
+/*
+  Prose gives every `li + li` a top margin, which is right for a bulleted list in
+  an essay and wrong for a component list that already has a `gap`. These lists
+  live in the components layer, so this reset wins on layer order and the prose
+  rule is left alone for everything else.
+*/
+.capability__list > li + li,
+.contact-list > li + li,
+.related__list > li + li,
+.chips > li + li,
+.card-list > li + li,
+.other-systems > li + li,
+.timeline > li + li {
+    margin-block-start: 0;
+}

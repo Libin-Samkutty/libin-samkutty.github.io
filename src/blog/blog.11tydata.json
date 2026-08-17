@@ -1,0 +1,5 @@
+{
+  "layout": "layouts/post.njk",
+  "permalink": "/writing/{{ page.fileSlug }}/",
+  "_comment": "Posts live in src/blog/ but publish under /writing/. The directory name is an authoring detail; the URL is a reader-facing decision, and 'writing' is what the nav calls it."
+}
