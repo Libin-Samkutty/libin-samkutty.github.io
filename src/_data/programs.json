@@ -46,7 +46,7 @@
       "country": "India",
       "area": "HPV vaccination",
       "architecture": "snippets",
-      "languages": ["English", "Hinglish", "Hindi"],
+      "languages": ["English", "Marathi", "Hindi", "Kannada"],
       "note": "A separate program from India Maternal Health, with a separate architecture and a separately evaluated dataset. Conflating the two India programs into 'the India chatbot' is the most common mistake made about this platform, including in my own earlier writing."
     },
     {
@@ -76,7 +76,7 @@
       "country": "Nigeria",
       "area": "Family planning",
       "architecture": "dispatcher",
-      "languages": ["English", "Yoruba"]
+      "languages": ["English", "Hausa"]
     },
     {
       "id": "uganda-fp",

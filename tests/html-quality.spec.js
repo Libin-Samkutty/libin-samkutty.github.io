@@ -35,6 +35,24 @@ for (const { url, html } of contentPages) {
             expect(html).toMatch(/<html[^>]+lang="[a-z]{2}/);
         });
 
+        test("every table is wrapped in a scroll region numbered from one", () => {
+            // The `scrollableRegions` transform opens a <section> per table and
+            // closes one per </table>. Asymmetric counts mean an orphan tag that
+            // no browser reports and html-validate cannot see across the boundary.
+            const opens = (html.match(/<section class="table-scroll"/g) ?? []).length;
+            const closes = (html.match(/<\/table>/g) ?? []).length;
+            expect(opens, "table-scroll wrappers vs closing tables").toBe(closes);
+
+            // Numbered per page, in document order. A build-global counter made a
+            // one-table page announce itself as "Table 8".
+            const labels = [...html.matchAll(/aria-label="Table (\d+), scrollable"/g)].map(
+                ([, index]) => Number(index)
+            );
+            expect(labels, "table labels are not 1..n in document order").toEqual(
+                labels.map((_, index) => index + 1)
+            );
+        });
+
         test("has a title of at most 60 characters with the right suffix", () => {
             const title = html.match(/<title>([^<]+)<\/title>/)?.[1] ?? "";
             expect(title, "missing title").not.toBe("");

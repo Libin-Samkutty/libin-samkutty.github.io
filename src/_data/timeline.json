@@ -50,7 +50,7 @@
       "end": "2023-05-31",
       "current": false,
       "location": "Vadodara, India",
-      "summary": "Built the project's QA infrastructure from zero — the first structured process, the first UI automation, the first API suite, and the first CI integration.",
+      "summary": "Built the project's QA infrastructure from zero: the first structured process, the first UI automation, the first API suite, and the first CI integration.",
       "highlights": [
         "Co-built the team's first QA process: test case templates, coverage matrices, severity standards and defect governance.",
         "Built the first UI automation suite in Robot Framework and the first API suite in Pytest.",

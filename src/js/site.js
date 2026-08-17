@@ -25,9 +25,25 @@ const root = document.documentElement;
     const currentlyDark = () =>
         root.dataset.theme ? root.dataset.theme === "dark" : prefersDark.matches;
 
+    // Both <meta name="theme-color"> tags are media-scoped so the browser chrome
+    // is correct with JavaScript off. That also means they follow the OS forever,
+    // so an explicit choice here has to re-point `media` instead. Passing null
+    // hands control back to the media queries.
+    const applyThemeColor = (theme) => {
+        document.querySelectorAll("meta[data-theme-color]").forEach((meta) => {
+            const kind = meta.dataset.themeColor;
+            meta.media = theme
+                ? kind === theme
+                    ? "all"
+                    : "not all"
+                : `(prefers-color-scheme: ${kind})`;
+        });
+    };
+
     const sync = () => {
         const dark = currentlyDark();
         toggle.setAttribute("aria-pressed", String(dark));
+        applyThemeColor(root.dataset.theme || null);
         // The accessible name stays "Dark theme" in both states. A name that
         // changes with state ("Light theme" / "Dark theme") is announced as a
         // different control each time, and aria-pressed already carries the state.

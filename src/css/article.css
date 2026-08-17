@@ -56,6 +56,16 @@
     color: var(--color-text-muted);
 }
 
+/* At narrow widths the lede's own font step drops the line below the 45ch
+   readability floor before the column has a chance to grow. Sized down to
+   the body step here specifically, rather than in the shared token, since
+   every other consumer of --step-1 is fine at this width. */
+@media (max-width: 48em) {
+    .page__lede {
+        font-size: var(--step-0);
+    }
+}
+
 /* ================================================================ scroll progress */
 
 /*
@@ -484,6 +494,7 @@
 .resume__section:first-of-type {
     border-block-start: 0;
     margin-block-start: 0;
+    padding-block-start: 0;
 }
 
 .resume__role + .resume__role {

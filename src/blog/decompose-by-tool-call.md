@@ -14,7 +14,7 @@ An AI feature request arrives as a paragraph about what the assistant will feel 
 
 ## Why user stories decompose badly here
 
-A user story is organised around what a person wants. For a deterministic feature that is fine — the story maps onto a screen, a submit, and a handful of validations, and the mapping is close enough to one-to-one that nothing important hides in the gap.
+A user story is organised around what a person wants. For a deterministic feature that is fine: the story maps onto a screen, a submit, and a handful of validations, and the mapping is close enough to one-to-one that nothing important hides in the gap.
 
 For an assistant, one sentence of user intent fans out into an intent inference, several tool calls, a data lookup behind each of those calls, a state write, and a rendering decision. The story mentions none of it. Decompose by story and you get tasks named after screens, then discover the fan-out during the sprint, when the discovery is most expensive.
 
@@ -22,7 +22,7 @@ The deeper problem is sequencing. **Dependencies between features in an AI produ
 
 ## The method
 
-1. **List the tool calls.** Not features — calls. "Resolve a journey from a plain-language description", "fetch programme defaults", "check keyword uniqueness", "generate the link and the code".
+1. **List the tool calls.** Not features. Calls. "Resolve a journey from a plain-language description", "fetch programme defaults", "check keyword uniqueness", "generate the link and the code".
 2. **For each call, write down the data it reads and who owns that data.** This is where your schedule risk actually lives.
 3. **For each call, write down what happens when that data is missing, ambiguous or stale.** This is where your test cases actually live.
 4. **Then group calls into stories.** Last, not first.
@@ -31,7 +31,7 @@ Steps two and three take a couple of hours and they are the entire value of the 
 
 ## What step two found
 
-The feature was an admin console where an operator describes a campaign in plain language and an assistant infers the programme, the journey and sensible defaults, then produces the entry points — keyword, welcome message, deep link, scannable code — that previously took several tools and an engineer's afternoon per campaign.
+The feature was an admin console where an operator describes a campaign in plain language and an assistant infers the programme, the journey and sensible defaults, then produces the entry points (keyword, welcome message, deep link, scannable code) that previously took several tools and an engineer's afternoon per campaign.
 
 The decomposition came out at {% metric "prd_decomposition" %}.
 
@@ -65,7 +65,7 @@ Notice where those criteria came from: three of the five are direct restatements
 
 Because the QA work was decomposed into tasks against those criteria rather than expressed as a percentage of the development estimate, it could be estimated in the same units at the same time: {% metric "qa_dev_estimate_ratio" %}.
 
-That number then did real work — it set the user-acceptance window directly, in a conversation with the programme owners, before development started. A QA estimate derived as "twenty percent of dev" cannot do that, because it is not attached to anything you can point at when someone asks why.
+That number then did real work: it set the user-acceptance window directly, in a conversation with the programme owners, before development started. A QA estimate derived as "twenty percent of dev" cannot do that, because it is not attached to anything you can point at when someone asks why.
 
 One structural detail that matters more than it should: the QA work was its own first-class story, not a task hanging under a functional one. Where testing sits in the hierarchy decides whether it can be quietly dropped when the sprint tightens, or whether dropping it requires a conversation. It is the same work either way. Only the visibility differs.
 

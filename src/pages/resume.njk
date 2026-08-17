@@ -15,7 +15,7 @@ bodyClass: resume
             systems for production AI. Sole QA on a digital health platform serving
             {% metric "monthly_users" %} across {% metric "countries" %} countries and three
             distinct generation architectures. I design golden datasets and LLM judges, run
-            production evaluation on live traffic, and own the test infrastructure underneath —
+            production evaluation on live traffic, and own the test infrastructure underneath:
             {% metric "playwright_scenarios" %} end-to-end scenarios,
             {% metric "api_endpoints" %} API endpoints, and consumer-driven contracts between them.
         </p>
@@ -61,7 +61,7 @@ bodyClass: resume
         <h2 id="selected-title">Selected work</h2>
         <ul>
             {% for item in collections.caseStudies %}
-            <li><a href="{{ item.url }}">{{ item.data.title }}</a> — {{ item.data.scope }}</li>
+            <li><a href="{{ item.url }}">{{ item.data.title }}</a> · {{ item.data.scope }}</li>
             {% endfor %}
         </ul>
     </section>
@@ -69,7 +69,7 @@ bodyClass: resume
     <section class="resume__section" aria-labelledby="oss-resume-title">
         <h2 id="oss-resume-title">Open source</h2>
         {% for project in skills.openSource %}
-        <p><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a> — {{ project.description }}</p>
+        <p><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a> · {{ project.description }}</p>
         {% endfor %}
     </section>
 
@@ -85,7 +85,7 @@ bodyClass: resume
 
     <section class="resume__section" aria-labelledby="contact-resume-title">
         <h2 id="contact-resume-title">Contact</h2>
-        <ul>
+        <ul class="contact-list">
             <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
             <li><a href="{{ site.profiles.linkedin }}" rel="me noopener">{{ site.profiles.linkedin }}</a></li>
             <li><a href="{{ site.profiles.github }}" rel="me noopener">{{ site.profiles.github }}</a></li>

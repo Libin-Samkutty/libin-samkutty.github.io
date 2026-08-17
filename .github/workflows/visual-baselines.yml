@@ -1,0 +1,61 @@
+name: Visual baselines
+
+# Manual only, and deliberately so. Regenerating a baseline is how a visual suite
+# stops being a gate: the fastest route to green is always "accept the new
+# picture", and anything that runs this automatically will take it. A human has to
+# ask for this, look at the diff in the failing PR check first, and commit the
+# result knowingly.
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why these baselines are being regenerated (recorded in the artifact)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  baselines:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Same runner, same browser build, same font packages as the PR check that
+      # will compare against these files. This is the whole reason baselines are
+      # not generated on a developer machine: Windows and Ubuntu rasterize text
+      # differently enough that a locally-authored PNG can never match here, and
+      # the resulting failure looks like a real regression.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      - name: Regenerate baselines
+        run: npx playwright test visual.spec.js --update-snapshots
+
+      - name: Record why
+        run: |
+          {
+            echo "Regenerated: ${{ github.event.inputs.reason }}"
+            echo "Commit:      ${{ github.sha }}"
+            echo "Ref:         ${{ github.ref }}"
+            echo "Run:         ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } > tests/__screenshots__/REGENERATED.txt
+
+      - name: Upload baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines
+          path: tests/__screenshots__/
+          retention-days: 14
+          if-no-files-found: error

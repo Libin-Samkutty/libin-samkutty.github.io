@@ -11,28 +11,28 @@
       "title": "Service virtualization for third-party dependencies",
       "period": "2025",
       "tech": ["Node.js", "nock", "HMAC-SHA256"],
-      "body": "Several journeys depend on third-party services that cannot be called from a test environment — messaging providers, partner webhooks, scheduled callbacks. I built mock services that reproduce their contracts rather than their responses: signed webhook payloads verified with the same HMAC the production consumer uses, and a controllable clock so a re-engagement nudge scheduled fourteen days out can be tested in a second. The rule I settled on is that a mock which cannot fail the way the real service fails is a liability, because it teaches the suite that a whole class of error does not exist. Test-data isolation came out of the same work: timestamp-scoped assertions and a proxy that blocks writes to shared state, so a parallel run cannot poison another worker's fixtures."
+      "body": "Several journeys depend on third-party services that cannot be called from a test environment: messaging providers, partner webhooks, scheduled callbacks. I built mock services that reproduce their contracts rather than their responses: signed webhook payloads verified with the same HMAC the production consumer uses, and a controllable clock so a re-engagement nudge scheduled fourteen days out can be tested in a second. The rule I settled on is that a mock which cannot fail the way the real service fails is a liability, because it teaches the suite that a whole class of error does not exist. Test-data isolation came out of the same work: timestamp-scoped assertions and a proxy that blocks writes to shared state, so a parallel run cannot poison another worker's fixtures."
     },
     {
       "id": "journey-config-snapshots",
       "title": "Structural snapshot validation for journey configs",
       "period": "2025",
       "tech": ["Python", "pytest", "JSON graph diffing"],
-      "body": "Chatbot journeys are JSON configuration graphs — the largest is 32 nodes across nine phases with two entry paths. They are edited by designers and engineers at the same time, across programs, and reviewing one by hand took the better part of an hour. Two mis-wiring bugs had already reached user-acceptance testing rather than review: a phase-skip edge, and a missing re-entry after a coaching branch. I extended the snapshot framework built for prompt regression to diff journey structure instead of model output — node counts per phase, edge adjacency, entry paths, button payload mappings, re-engagement hook points — and categorised each diff as a structural break, an edge change, a rename, or an additive change. A reviewer now reads a change report instead of a graph."
+      "body": "Chatbot journeys are JSON configuration graphs: the largest is 32 nodes across nine phases with two entry paths. They are edited by designers and engineers at the same time, across programs, and reviewing one by hand took the better part of an hour. Two mis-wiring bugs had already reached user-acceptance testing rather than review: a phase-skip edge, and a missing re-entry after a coaching branch. I extended the snapshot framework built for prompt regression to diff journey structure instead of model output: node counts per phase, edge adjacency, entry paths, button payload mappings, and re-engagement hook points. Each diff is categorised as a structural break, an edge change, a rename, or an additive change, so a reviewer now reads a change report instead of a graph."
     },
     {
       "id": "data-platform",
       "title": "Data platform ownership and automated validation",
       "period": "2024–present",
       "tech": ["BigQuery", "SQL", "Looker Studio", "Google Apps Script"],
-      "body": "The analytics function came with the sole-QA role, and it turned out to be where a large share of real defects live. Dashboards are believed. A dashboard that quietly drops a segment of users is worse than one that is obviously broken, because nobody investigates it. The work here is validating the pipeline that feeds the dashboards rather than the charts themselves: reconciling event-level pulls against reported figures, and gating the reconciliation. One attribution gap I found this way was undercounting a meaningful share of users across three markets — the events existed, they just were not being attributed to a journey, so they were absent from every rollup."
+      "body": "The analytics function came with the sole-QA role, and it turned out to be where a large share of real defects live. Dashboards are believed. A dashboard that quietly drops a segment of users is worse than one that is obviously broken, because nobody investigates it. The work here is validating the pipeline that feeds the dashboards rather than the charts themselves: reconciling event-level pulls against reported figures, and gating the reconciliation. One attribution gap I found this way was undercounting a meaningful share of users across three markets. The events existed; they just were not being attributed to a journey, so they were absent from every rollup."
     },
     {
       "id": "security-testing",
       "title": "First structured security testing pass",
       "period": "2025",
       "tech": ["OWASP ZAP", "DAST"],
-      "body": "The platform handles protected health information and had never had a structured security scan. I ran the first authenticated active scan against the internal dashboard and the API surface — authenticated, because an unauthenticated scan of a product where everything meaningful sits behind a login mostly proves the login works. Two high-severity findings came out of it, both fixed within the sprint of discovery. The more useful outcome was procedural: authenticated scanning became a recurring pre-release activity with a defined scope, instead of a thing that had never happened."
+      "body": "The platform handles protected health information and had never had a structured security scan. I ran the first authenticated active scan against the internal dashboard and the API surface. It had to be authenticated, because an unauthenticated scan of a product where everything meaningful sits behind a login mostly proves the login works. Two high-severity findings came out of it, both fixed within the sprint of discovery. The more useful outcome was procedural: authenticated scanning became a recurring pre-release activity with a defined scope, instead of a thing that had never happened."
     },
     {
       "id": "performance-testing",

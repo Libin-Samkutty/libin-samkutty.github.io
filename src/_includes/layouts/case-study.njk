@@ -5,7 +5,7 @@ ogType: article
 ---
 <article class="case-study">
     <header class="case-study__header">
-        <div class="wrap wrap--measure">
+        <div class="wrap">
             <p class="case-study__eyebrow">
                 <span class="case-study__number">Case study {{ number }}</span>
                 <span class="case-study__period">{{ period }}</span>
@@ -19,7 +19,7 @@ ogType: article
       footnote at the bottom, because a reader who stops after the first screen
       should still leave with an accurate picture of the attribution.
     #}
-    <div class="wrap wrap--measure">
+    <div class="wrap">
         <dl class="context-strip">
             <div class="context-strip__row">
                 <dt>Role at the time</dt>
@@ -50,11 +50,11 @@ ogType: article
         </dl>
     </div>
 
-    <div class="case-study__body wrap wrap--measure">
+    <div class="case-study__body wrap">
         {{ content | safe }}
     </div>
 
-    <footer class="case-study__footer wrap wrap--measure">
+    <footer class="case-study__footer wrap">
         <p class="case-study__reviewed">
             Written {{ datePublished | readableDate }}.
             {% if lastReviewed and lastReviewed != datePublished %}Last reviewed {{ lastReviewed | readableDate }}.{% endif %}

@@ -50,5 +50,25 @@
             <span class="theme-toggle__icon" aria-hidden="true"></span>
             <span class="theme-toggle__label">Dark theme</span>
         </button>
+        {# `aria-pressed` above is a placeholder the server cannot fill: the real
+           answer depends on localStorage and on the OS setting. site.js corrects
+           it, but site.js is a module and therefore deferred, so a dark-mode
+           reader would get a control announcing "not pressed" — and, via the
+           [aria-pressed="true"] icon rule, visibly rotated the wrong way — until
+           after the document parsed. Three lines here close that window: this
+           runs in the same parse pass, before the button is painted. #}
+        <script>
+            (function () {
+                var root = document.documentElement;
+                document.querySelector("[data-theme-toggle]").setAttribute(
+                    "aria-pressed",
+                    String(
+                        root.dataset.theme
+                            ? root.dataset.theme === "dark"
+                            : window.matchMedia("(prefers-color-scheme: dark)").matches
+                    )
+                );
+            })();
+        </script>
     </div>
 </header>

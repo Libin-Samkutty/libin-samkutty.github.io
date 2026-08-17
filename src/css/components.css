@@ -28,7 +28,6 @@
     border-start-end-radius: 0;
     border-end-start-radius: var(--radius-s);
     border-end-end-radius: var(--radius-s);
-    box-shadow: var(--shadow-overlay);
     text-decoration: none;
     font-size: var(--step--1);
     font-weight: var(--weight-medium);
@@ -37,6 +36,7 @@
 
 .skip-link:focus-visible {
     translate: 0 0;
+    box-shadow: var(--shadow-overlay);
 }
 
 /* ================================================================ header */
@@ -226,6 +226,21 @@
     border: 1px solid var(--color-border-interactive);
     border-radius: var(--radius-s);
     color: var(--color-text);
+}
+
+/*
+  With JavaScript off the toggle cannot do anything, and it cannot even tell the
+  truth: `aria-pressed` is server-rendered as "false" while the page itself is
+  whatever the OS asked for. A control that is permanently inert and permanently
+  lying about its state is worse than an absent one.
+
+  `html:not(.js)` rather than a `.js`-prefixed display rule because the
+  `pointer: coarse` block near the end of this file also sets `display` on
+  `.theme-toggle`; this selector outranks it, so the outcome does not depend on
+  source order.
+*/
+html:not(.js) .theme-toggle {
+    display: none;
 }
 
 /*
@@ -526,6 +541,11 @@
     .hero__inner {
         grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
         gap: var(--space-xl);
+
+        /* Centering a shorter portrait against a taller text column drops its
+           top edge below the headline's. Top-aligning puts the two where a
+           reader's eye actually lands first. */
+        align-items: start;
     }
 
     .hero__portrait {
@@ -597,6 +617,7 @@
 .stat {
     display: flex;
     flex-direction: column-reverse;
+    justify-content: flex-end;
     gap: var(--space-3xs);
 }
 
@@ -867,10 +888,16 @@
     .theme-toggle,
     .site-nav__link,
     .site-footer__list a,
-    .site-footer__profiles a {
+    .site-footer__profiles a,
+    .contact-list a,
+    .capability__evidence {
         min-block-size: 44px;
         display: inline-flex;
         align-items: center;
+    }
+
+    .theme-toggle {
+        min-inline-size: 44px;
     }
 
     .site-nav__link {

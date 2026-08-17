@@ -17,7 +17,7 @@ lede: Email is best. There is no form on this page on purpose.
 
 <p>
     {{ site.targetRoles | join(", ") }}. Also happy to talk about evaluation design without a role
-    attached — judge calibration, golden dataset construction, and what to do when your only
+    attached: judge calibration, golden dataset construction, and what to do when your only
     ground truth is a domain expert's time.
 </p>
 
@@ -27,8 +27,8 @@ lede: Email is best. There is no form on this page on purpose.
     A contact form on a static site has to post somewhere, which means either a third-party
     endpoint or an API key sitting in client-side JavaScript. The previous version of this site had
     the latter. A form would also be the only third-party request on the entire site, and the
-    performance budget in CI sets third-party requests to zero — not as a target but as a
-    constraint, so that a convenience cannot quietly reintroduce one.
+    performance budget in CI sets third-party requests to zero. That is a constraint, not
+    a target, so that a convenience cannot quietly reintroduce one.
 </p>
 
 <p>

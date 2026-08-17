@@ -14,7 +14,7 @@ A threshold gate answers exactly one question: is tonight's run acceptable? It a
 
 ## Six green runs
 
-The performance job I built ran nightly. A Python script compared each run's percentiles against a properties file and failed the build on breach. Simple, and it worked — it had already closed out an endpoint fix with an objective before-and-after rather than a developer's impression from a local `curl`.
+The performance job I built ran nightly. A Python script compared each run's percentiles against a properties file and failed the build on breach. Simple, and it worked. It had already closed out an endpoint fix with an objective before-and-after rather than a developer's impression from a local `curl`.
 
 Then a campaign-trigger endpoint's p95 went {% metric "nudge_api_latency_creep" %}.
 
@@ -22,11 +22,11 @@ Six consecutive builds. Six passes. Six perfectly correct green ticks. Nothing i
 
 The gate was not broken and had not been misconfigured. It did precisely what it was built to do, and what it was built to do did not include this.
 
-It became visible only after I pushed the run results into a time-series store and put a trend dashboard over the top. Then it was a straight line sloping upward — obvious in one glance, invisible across six accurate build reports. Root cause was a database query that had stopped using its index after a schema migration. Once the slope was on screen, diagnosis took minutes. Left alone, it would have been an incident, discovered by users, on whatever night the line finally crossed.
+It became visible only after I pushed the run results into a time-series store and put a trend dashboard over the top. Then it was a straight line sloping upward: obvious in one glance, invisible across six accurate build reports. Root cause was a database query that had stopped using its index after a schema migration. Once the slope was on screen, diagnosis took minutes. Left alone, it would have been an incident, discovered by users, on whatever night the line finally crossed.
 
 ## Why no threshold catches this
 
-A gate is a function of one run. A creep is a property of a sequence. That is a category difference, not a tuning problem, and lowering the threshold does not fix it — it moves the wall closer and starts failing builds on ordinary night-to-night noise, which trains everyone to ignore the gate. You end up with a gate people rerun until it goes green, which is worse than no gate.
+A gate is a function of one run. A creep is a property of a sequence. That is a category difference, not a tuning problem, and lowering the threshold does not fix it. It moves the wall closer and starts failing builds on ordinary night-to-night noise, which trains everyone to ignore the gate. You end up with a gate people rerun until it goes green, which is worse than no gate.
 
 The two artefacts answer different questions and you need both:
 
@@ -38,13 +38,13 @@ The two artefacts answer different questions and you need both:
 | Acts | Automatically, blocks the merge | Only when a person looks |
 | Fails by | Passing everything under the line | Nobody opening the dashboard |
 
-The last row is why the gate stays. A trend view has no teeth — it depends on a human looking on a day when they have time. The gate is what stops a fourfold regression at two in the morning.
+The last row is why the gate stays. A trend view has no teeth. It depends on a human looking on a day when they have time. The gate is what stops a fourfold regression at two in the morning.
 
 ## What to add alongside the gate
 
 **Persist every measurement, not just the verdict.** This is the cheapest item on the list and the one most often skipped. A gate that records only pass or fail has destroyed the data you would need to reconstruct the trend later, and you always want it later. Store the numbers from day one even if nothing reads them for a year.
 
-**Compare against a rolling baseline rather than a fixed line.** The gate uses a fixed line. The trend check should not — it should ask whether the recent window sits above the window before it.
+**Compare against a rolling baseline rather than a fixed line.** The gate uses a fixed line. The trend check should not: it should ask whether the recent window sits above the window before it.
 
 ```python
 def creeping(history, window=6, tolerance=1.10):
@@ -75,7 +75,7 @@ There is one question to ask of any gate you own: **if this degraded by one perc
 
 ## The rule
 
-A threshold answers whether tonight is acceptable. Only a trend answers whether you are heading somewhere unacceptable. Store the measurement, not just the verdict — you cannot reconstruct a trend from a history of green ticks.
+A threshold answers whether tonight is acceptable. Only a trend answers whether you are heading somewhere unacceptable. Store the measurement, not just the verdict. You cannot reconstruct a trend from a history of green ticks, and a threshold was never going to tell you one was forming.
 
 ---
 

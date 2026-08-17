@@ -132,7 +132,13 @@
 
     /* ---------------------------------------------------------------- measure */
 
-    --measure: 68ch;
+    /* `ch` is the advance width of "0". In a proportional face most letters are
+       narrower than that, so a column set to 68ch renders closer to 88 characters
+       of Inter body copy per line — past the 75-character upper bound of the
+       readability range. 52ch was chosen by measuring rendered characters per
+       line against real paragraphs, not by eye, to land the reading column near
+       the 60–70 target. */
+    --measure: 52ch;
     --measure-tight: 46ch;
     --measure-title: 18ch;
 
@@ -180,6 +186,15 @@
     */
 
     --shadow-overlay: 0 1px 2px rgb(19 26 42 / 0.06), 0 18px 40px -18px rgb(19 26 42 / 0.24);
+}
+
+/* 75rem holds up to 96em (1536px). Past that, a fixed band leaves more than a
+   third of the viewport as flat margin on each side, so the band grows once
+   more — still centred, still short of full-bleed. */
+@media (min-width: 96em) {
+    :root {
+        --wrap-max: 84rem;
+    }
 }
 
 /*

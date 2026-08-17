@@ -254,6 +254,16 @@ hr {
     font-style: italic;
 }
 
+/*
+  `.case-study__body` itself sits on the full composition band, not the
+  reading measure, so tables and architecture notes can use the width they
+  need. Prose still reads at 68 characters — it just gets there directly on
+  the element instead of inheriting it from the container.
+*/
+.case-study__body :is(p, li, blockquote) {
+    max-inline-size: var(--measure);
+}
+
 :is(.page__body, .case-study__body, .post__body) figcaption {
     margin-block-start: var(--space-2xs);
     font-size: var(--step--1);
@@ -262,10 +272,11 @@ hr {
 
 /*
   Code blocks and tables scroll horizontally rather than forcing the page to.
-  Both need `tabindex="0"` and a label in the markup to be reachable by keyboard;
-  <pre> gets it from the syntax-highlight plugin, tables are noted as an open
-  item because markdown-it emits a bare <table> with nowhere to hang the
-  attribute.
+  Both need `tabindex="0"` to be reachable by keyboard, and a table also needs a
+  label. Neither comes from markdown-it, so the `scrollableRegions` transform in
+  eleventy.config.js adds them to the built HTML — doing it there rather than
+  asking authors to hand-wrap a table means it cannot be forgotten on the next
+  post.
 */
 
 pre {

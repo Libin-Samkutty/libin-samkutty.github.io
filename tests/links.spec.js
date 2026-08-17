@@ -6,10 +6,15 @@ import { contentPages, pages, siteDir } from "./helpers/routes.mjs";
 /**
  * Internal links and asset references only.
  *
- * External links are deliberately not checked here. Rate limiting and transient
- * outages on someone else's server would make every deploy flaky, and a flaky
- * gate gets ignored, which costs more than the broken link it was meant to
- * catch. They belong in a scheduled workflow that reports rather than blocks.
+ * External links are deliberately not checked here, or anywhere. Rate limiting
+ * and transient outages on someone else's server would make every deploy flaky,
+ * and a flaky gate gets ignored, which costs more than the broken link it was
+ * meant to catch.
+ *
+ * The right home for them is a scheduled workflow that reports rather than
+ * blocks. That workflow does not exist yet, so external links are currently
+ * unchecked — said plainly here rather than described as if it were built, which
+ * is what this comment used to do.
  */
 
 

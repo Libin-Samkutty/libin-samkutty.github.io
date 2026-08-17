@@ -13,6 +13,7 @@
     "serve": "eleventy --serve",
     "test:html": "html-validate \"_site/**/*.html\"",
     "test:e2e": "playwright test",
+    "test:visual": "playwright test visual.spec.js",
     "test:perf": "lhci autorun",
     "test": "npm run build && npm run test:html && npm run test:e2e",
     "verify": "npm run clean && npm run test && npm run test:perf",
@@ -21,7 +22,6 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-img": "^7.0.0",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@axe-core/playwright": "^4.13.0",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.62.1",

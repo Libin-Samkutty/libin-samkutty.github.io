@@ -1,7 +1,16 @@
 import { defineConfig, devices } from "@playwright/test";
+import { existsSync } from "node:fs";
 
 const PORT = 8081;
 const baseURL = `http://127.0.0.1:${PORT}`;
+
+// Checked here rather than only in helpers/routes.mjs because `webServer` starts
+// before any test file is imported: with no `_site`, http-server never comes up
+// and the whole run dies after 30 seconds on "Timed out waiting from
+// config.webServer", which says nothing about the actual cause.
+if (!existsSync("_site")) {
+    throw new Error("No build output at ./_site. Run `npm run build` before the e2e suite.");
+}
 
 export default defineConfig({
     testDir: "./tests",
@@ -17,6 +26,36 @@ export default defineConfig({
         trace: "retain-on-failure"
     },
 
+    // Baselines are per project, because a Pixel 7 render and a 1440px render are
+    // different pictures of the same page, not a discrepancy.
+    snapshotPathTemplate: "tests/__screenshots__/{projectName}/{arg}{ext}",
+
+    // Playwright's default is "missing": a screenshot with no baseline is written
+    // and the run fails once, so the second run passes. On a Windows machine that
+    // quietly mints a baseline that can never match the Ubuntu runner, and the
+    // author has no reason to suspect it. "none" makes a missing baseline a plain
+    // failure; the `--update-snapshots` flag still overrides it, which is what
+    // .github/workflows/visual-baselines.yml uses.
+    updateSnapshots: "none",
+
+    expect: {
+        toHaveScreenshot: {
+            // `animations: "disabled"` finishes CSS transitions instead of catching
+            // them mid-flight, which is the single largest source of pixel flake.
+            animations: "disabled",
+            // Compare in CSS pixels so a DPR difference between a local run and the
+            // runner is not a diff.
+            scale: "css",
+            // An absolute cap, not `maxDiffPixelRatio`. Measured on this site:
+            // two identical builds differ by 0 pixels, and re-pointing one colour
+            // token differed by 4,853 — which a 1% ratio passes, because 1% of a
+            // long full-page screenshot is tens of thousands of pixels. A ratio
+            // also gets more permissive the longer the page, which is backwards.
+            // 100 absorbs incidental antialiasing without hiding a component.
+            maxDiffPixels: 100
+        }
+    },
+
     projects: [
         {
             name: "desktop",
@@ -27,11 +66,13 @@ export default defineConfig({
             // on the legacy site — a collapsed nav whose links stayed in the tab
             // order — was only reachable at a narrow viewport.
             //
-            // Only the accessibility suite runs twice. The others assert properties
-            // of the built files, which do not change with viewport, so running
-            // them again would double the gate's runtime and prove nothing.
+            // Only the accessibility and visual suites run twice. The others assert
+            // properties of the built files, which do not change with viewport, so
+            // running them again would double the gate's runtime and prove nothing.
+            // A screenshot is the opposite: the narrow layout is where a broken
+            // grid or a collapsed nav actually shows up.
             name: "mobile",
-            testMatch: /a11y\.spec\.js/,
+            testMatch: /(a11y|visual)\.spec\.js/,
             use: { ...devices["Pixel 7"] }
         }
     ],

@@ -10,7 +10,7 @@ lede: I started as the person who wrote test cases. I am now the person who deci
 
 <p>
     I am the only QA engineer on a digital health platform that answers health questions over
-    WhatsApp in seven languages across {% metric "countries" %} countries. It reaches
+    WhatsApp in nine languages across {% metric "countries" %} countries. It reaches
     {% metric "monthly_users" %}. My job is the evidence layer underneath a claim nobody can make
     by inspection: that a generated answer is safe to send.
 </p>
@@ -18,7 +18,7 @@ lede: I started as the person who wrote test cases. I am now the person who deci
 <p>
     That breaks down into three things. Golden datasets and judge design, which is how we decide
     what good looks like before a release. Production monitoring, which is how we find out we were
-    wrong about it. And the test infrastructure underneath both — Playwright, API and contract
+    wrong about it. And the test infrastructure underneath both: Playwright, API and contract
     suites, and the CI they run in.
 </p>
 
@@ -35,7 +35,7 @@ lede: I started as the person who wrote test cases. I am now the person who deci
 
 <p>
     AI testing started in September 2023 with intent classification and conversational flows. The
-    real shift was Q1 2025, when I built the platform's first LLM-as-a-judge — and then found that
+    real shift was Q1 2025, when I built the platform's first LLM-as-a-judge. I then found that
     it was grading answers produced by the same model family that generated them. Everything I have
     built since traces back to that, because the question it raised is the interesting one:
     <a href="{{ '/work/llm-judge-independence/' | url }}">what makes an evaluation independent
@@ -52,7 +52,7 @@ lede: I started as the person who wrote test cases. I am now the person who deci
 
 <p>
     I write down what went wrong. Every case study on this site has a section on what I would do
-    differently, and at least one item in it is still open. This is not self-deprecation — it is
+    differently, and at least one item in it is still open. This is not self-deprecation. It is
     the only way I know to make the rest of the claims checkable. If someone tells you their
     systems have no limitations, they have not measured them.
 </p>
@@ -75,7 +75,7 @@ lede: I started as the person who wrote test cases. I am now the person who deci
     {% for item in timeline.education %}
     <li>
         <strong>{{ item.qualification }}</strong>, {{ item.institution }} ({{ item.affiliation }}),
-        {{ item.end | year }} — {{ item.result }}
+        {{ item.end | year }} · {{ item.result }}
     </li>
     {% endfor %}
 </ul>
@@ -106,7 +106,7 @@ lede: I started as the person who wrote test cases. I am now the person who deci
 
 <p>
     {{ site.targetRoles | join(", ") }}. The common thread is systems where a wrong answer has a
-    cost — health, finance, safety, anything regulated. I have spent four and a half years learning
+    cost: health, finance, safety, anything regulated. I have spent {% metric "experience_years" %} learning
     how to be specific about that cost, and I would rather keep doing that than move to a domain
     where nobody checks.
 </p>

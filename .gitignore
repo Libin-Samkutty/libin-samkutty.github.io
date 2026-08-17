@@ -12,6 +12,10 @@ playwright-report/
 blob-report/
 playwright/.cache/
 
+# Design-review captures from scripts/ui-shots.mjs. Not baselines: those live in
+# tests/__screenshots__/ and are committed.
+.ui-review/
+
 # Environment
 .env
 .env.*

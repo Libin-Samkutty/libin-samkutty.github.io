@@ -9,10 +9,10 @@ eleventyComputed:
 ---
 <article class="post">
     <header class="post__header">
-        <div class="wrap wrap--measure">
+        <div class="wrap">
             <p class="post__eyebrow">
                 <time datetime="{{ date | isoDate }}">{{ date | readableDate }}</time>
-                <span class="post__reading-time">{{ content | readingTime }} min read</span>
+                <span class="post__reading-time" data-volatile>{{ content | readingTime }} min read</span>
             </p>
             <h1 class="post__title">{{ title }}</h1>
         </div>

@@ -25,13 +25,17 @@
 
         <p class="site-footer__colophon">
             Built with Eleventy. No client-side framework, no third-party requests, no analytics.
-            Accessibility and performance budgets are enforced in CI — if this page had a contrast
+            Accessibility and performance budgets are enforced in CI. If this page had a contrast
             failure or a layout shift, the build that produced it would have failed.
         </p>
 
+        {# `data-volatile` marks text that changes without any design change, so
+           the visual suite can mask it. Without that, editing site.lastUpdated —
+           which happens on most commits — fails every screenshot baseline on the
+           site, and a suite that cries wolf on every PR gets turned off. #}
         <p class="site-footer__meta">
             <span>&copy; {{ site.lastUpdated | year }} {{ site.name }}</span>
-            <span>Last updated <time datetime="{{ site.lastUpdated }}">{{ site.lastUpdated | readableDate }}</time></span>
+            <span data-volatile>Last updated <time datetime="{{ site.lastUpdated }}">{{ site.lastUpdated | readableDate }}</time></span>
         </p>
     </div>
 </footer>

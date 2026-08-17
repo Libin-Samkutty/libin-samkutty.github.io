@@ -22,11 +22,11 @@ Which means disaggregation is not something you do when a result looks suspiciou
 
 Users on the maternal health program send voice notes rather than typing, particularly where typing means a second script on a phone keyboard. Nothing in the platform could process audio, so I ran a benchmark across two providers on the same set of Assamese and English recordings.
 
-The aggregates came out close enough to argue about. Latency favoured one: {% metric "stt_latency" %}. Real, measurable, and not decisive on its own — half a second on a pipeline with several seconds of downstream work is a preference, not a verdict.
+The aggregates came out close enough to argue about. Latency favoured one: {% metric "stt_latency" %}. Real, measurable, and not decisive on its own. Half a second on a pipeline with several seconds of downstream work is a preference, not a verdict.
 
 The decisive number did not exist until the analysis was banded by audio duration: {% metric "stt_duration_banded_collapse" %}.
 
-That is not an aggregate being wrong. Every aggregate over that test set was an honest average of a population containing both behaviours. It simply described nobody. Perfect on the short clips a benchmark set is naturally full of, broken on the lengths people actually record — and the average sat somewhere in between, describing a clip length that did not exist.
+That is not an aggregate being wrong. Every aggregate over that test set was an honest average of a population containing both behaviours. It simply described nobody. Perfect on the short clips a benchmark set is naturally full of, broken on the lengths people actually record. The average sat somewhere in between, describing a clip length that did not exist.
 
 Manual review found the failure that ended the discussion. I listened to source audio against transcripts rather than trusting the automated rate, and found a word meaning "pharmacy" transcribed as a word meaning "toilet". On a system whose job includes telling someone where to seek care, that is a disqualifying class of error, not a tunable edge case. Aggregate accuracy cannot express the difference between a wrong word and a dangerous one, which is a second reason not to let it decide alone.
 
@@ -36,7 +36,7 @@ One limitation worth stating plainly: no ground-truth transcript corpus existed,
 
 Here is the rule the exercise produced: **band by how your users vary, not by how your data is convenient to group.**
 
-The convenient dimensions in that benchmark were provider, language and file format. All three were sitting in the filename. Duration had to be computed from each file, which is precisely why it was the dimension nobody had banded by before — and precisely why it was the one hiding the failure.
+The convenient dimensions in that benchmark were provider, language and file format. All three were sitting in the filename. Duration had to be computed from each file: precisely why it was the dimension nobody had banded by before, and precisely why it was the one hiding the failure.
 
 Two questions surface the right dimension before you have results:
 

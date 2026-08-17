@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { pages, siteDir } from "./helpers/routes.mjs";
 import { pdfText } from "../scripts/pdf-text.mjs";
 
@@ -44,17 +45,49 @@ test.describe("superseded numbers do not reappear", () => {
 });
 
 /**
- * The résumé PDF is served from the same origin as the HTML and is linked from
- * the nav, so it is exactly as public as any page — but it is authored in Word
- * and dropped in by hand, which means it is the one document on the site that
- * the data layer cannot keep honest. The first version shipped here still said
- * "AI Quality Engineer" and "4+ years" months after both were wrong.
+ * The résumé PDF is authored in Word and dropped in by hand, which makes it the
+ * one document here the data layer cannot keep honest. The first version shipped
+ * still saying "AI Quality Engineer" and "4+ years" months after both were wrong.
  *
- * Scanning it costs nothing and closes the only remaining path by which a
- * published fact can contradict the site.
+ * It is currently **withheld from the build**. It lives in `src/_resume/`, which
+ * no passthrough copies, rather than `src/assets/`, which is published wholesale.
+ * Two things are wrong with the document itself — see WITHHELD_BECAUSE below —
+ * and while it sat in `src/assets/` it was fetchable at a guessable URL on the
+ * live site even though nothing linked to it. Unlinked is not unpublished.
+ *
+ * The scans still run, against the source. They are the gate the corrected
+ * document has to clear before it goes back into `src/assets/`.
  */
-const resumePdfPath = join(siteDir(), "assets", "Resume.pdf");
-const resumePdf = existsSync(resumePdfPath) ? pdfText(readFileSync(resumePdfPath)) : null;
+const resumeSourcePath = fileURLToPath(new URL("../src/_resume/Resume.pdf", import.meta.url));
+const resumePublishedPath = join(siteDir(), "assets", "Resume.pdf");
+const resumeReadPath = existsSync(resumePublishedPath) ? resumePublishedPath : resumeSourcePath;
+const resumePdf = existsSync(resumeReadPath) ? pdfText(readFileSync(resumeReadPath)) : null;
+
+/**
+ * Exactly why the PDF is withheld, asserted rather than written in a comment.
+ *
+ * Each entry is expected to STILL match, so these tests pass while the document
+ * is broken and fail the moment someone fixes it — which is the signal to correct
+ * this list, move the PDF back to `src/assets/`, link it from `/resume/`, and let
+ * the ordinary denylist below take over. A comment would have gone stale; this
+ * cannot.
+ */
+const WITHHELD_BECAUSE = [
+    {
+        pattern: /stored XSS/i,
+        why: "names a vulnerability class found on a client system"
+    },
+    {
+        pattern: /from 0% to 75%\+/i,
+        why: "publishes coverage_zero_to_seventyfive, which the site suppresses",
+        metricId: "coverage_zero_to_seventyfive"
+    }
+];
+
+const withheldPatterns = new Set(WITHHELD_BECAUSE.map(({ pattern }) => String(pattern)));
+const withheldMetricIds = new Set(WITHHELD_BECAUSE.map(({ metricId }) => metricId).filter(Boolean));
+
+const resumeIsWithheld = !existsSync(resumePublishedPath);
 
 const denylist = [
         { pattern: /\bAS-\d{3,}\b/, why: "internal ticket ID" },
@@ -86,8 +119,12 @@ test.describe("disclosure policy", () => {
 });
 
 test.describe("the résumé PDF agrees with the site", () => {
-    test("the build published a résumé at all", () => {
-        expect(resumePdf, `no PDF at ${resumePdfPath} — the nav links to a 404`).not.toBeNull();
+    test("a source document exists to scan", () => {
+        expect(
+            resumePdf,
+            `no PDF at ${resumeReadPath}. The résumé source is expected in src/_resume/ ` +
+                `while it is withheld, or src/assets/ once it is republished.`
+        ).not.toBeNull();
     });
 
     test("its text is machine-readable", () => {
@@ -97,9 +134,39 @@ test.describe("the résumé PDF agrees with the site", () => {
         expect(resumePdf.length, "extracted no words; the scan below proves nothing").toBeGreaterThan(1000);
     });
 
+    // The reason the document is withheld, and the trigger to republish it.
+    for (const { pattern, why } of WITHHELD_BECAUSE) {
+        test(`is still withheld because it ${why}`, () => {
+            test.skip(!resumeIsWithheld, "the PDF is published; the denylist below governs it");
+            test.skip(resumePdf === null, "no PDF to read");
+            expect(
+                pattern.test(resumePdf),
+                `${pattern} no longer matches, so this defect looks fixed. If the document is corrected: ` +
+                    `move it back to src/assets/, link it from /resume/, and delete this entry from ` +
+                    `WITHHELD_BECAUSE. Do not delete the entry to make this test pass.`
+            ).toBe(true);
+        });
+    }
+
+    test("is not reachable on the built site while it is withheld", () => {
+        test.skip(!resumeIsWithheld, "the PDF is published on purpose");
+        // The gate that actually keeps the leak closed. Moving the file back into
+        // src/assets/ republishes it wholesale, with no other signal.
+        expect(
+            existsSync(resumePublishedPath),
+            `${resumePublishedPath} exists — a withheld document is being published`
+        ).toBe(false);
+    });
+
     for (const { pattern, why } of denylist) {
         test(`${pattern} does not appear in the PDF (${why})`, () => {
             test.skip(resumePdf === null, "no PDF to read");
+            // Recorded as a reason for withholding rather than asserted clean, so
+            // the suite is not permanently red over a document nobody can reach.
+            test.skip(
+                resumeIsWithheld && withheldPatterns.has(String(pattern)),
+                "known defect; tracked in WITHHELD_BECAUSE"
+            );
             expect(pattern.test(resumePdf), `the résumé PDF publishes a ${why}`).toBe(false);
         });
     }
@@ -120,6 +187,7 @@ test.describe("the résumé PDF agrees with the site", () => {
             // the same unmeasurable claim as "from 0% to 75%+".
             const shape = metric.pdfPattern ? new RegExp(metric.pdfPattern, "i") : null;
             test.skip(shape === null, `${id} has no pdfPattern to match on`);
+            test.skip(resumeIsWithheld && withheldMetricIds.has(id), "known defect; tracked in WITHHELD_BECAUSE");
             expect(shape.test(resumePdf), `the résumé publishes ${id}: ${metric.unpublishedReason}`).toBe(false);
         });
     }

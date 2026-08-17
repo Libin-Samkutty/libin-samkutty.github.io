@@ -45,7 +45,7 @@ lede: Three levels, defined. Every Core claim links to the work that proves it. 
 <h2>Open source</h2>
 {% for project in skills.openSource %}
 <p>
-    <a href="{{ project.url }}" rel="noopener">{{ project.name }}</a> — {{ project.description }}
+    <a href="{{ project.url }}" rel="noopener">{{ project.name }}</a> · {{ project.description }}
     {{ project.language }}, {{ project.license }}. {% metric project.metric %}
 </p>
 {% endfor %}

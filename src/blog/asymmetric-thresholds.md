@@ -38,13 +38,13 @@ Read those two numbers against their two thresholds and they say something speci
 
 The gate earned itself back the first time a classification-schema change went through. Precision dropped under the floor on a staging run, the harness exited non-zero, and the deploy stopped. After the fix, a re-run passed: {% metric "cache_regression_catch" %}.
 
-Two honest notes. It runs manually via a Makefile target rather than in CI, because the staging cache sits inside a VPC our hosted runners cannot reach. A validation tool does not need CI integration to prove real value — it just needs to run before the moment that matters. And the recall shortfall is still open: closing it means loosening the similarity threshold, which moves precision in the wrong direction at the same time, so it is a real trade rather than a free win.
+Two honest notes. It runs manually via a Makefile target rather than in CI, because the staging cache sits inside a VPC our hosted runners cannot reach. A validation tool does not need CI integration to prove real value. It just needs to run before the moment that matters. And the recall shortfall is still open: closing it means loosening the similarity threshold, which moves precision in the wrong direction at the same time, so it is a real trade rather than a free win.
 
 ## Writing the thresholds down
 
 The procedure is four steps and takes an afternoon.
 
-1. **Name the two errors in the system's own vocabulary**, not the confusion matrix's. Not "false positive" — "a stored answer served for a question it doesn't answer".
+1. **Name the two errors in the system's own vocabulary**, not the confusion matrix's. Not "false positive": "a stored answer served for a question it doesn't answer."
 2. **For each, finish the sentence "when this happens, the next thing that happens is ___".** If you cannot finish it, you do not yet know the cost, and any threshold you pick is decoration.
 3. **The error with a safe fallback gets the loose bar. The error that reaches a person unchecked gets the tight one.**
 4. **Say which bar blocks the deploy.** A threshold nobody blocks on is a dashboard.
@@ -64,7 +64,7 @@ Two lines of configuration carrying the entire risk model of the component. Anyo
 
 ## The same reasoning runs the other way too
 
-Asymmetry does not always favour precision. On the same platform, a crisis and adverse-event detection layer is deliberately tuned the opposite way. Missing a genuine case is a reportable compliance event with no second reader; a false positive lands in a human review queue and costs someone a minute. Recall is the gate there, and precision is the thing you are allowed to improve — but only after proving you have not touched recall.
+Asymmetry does not always favour precision. On the same platform, a crisis and adverse-event detection layer is deliberately tuned the opposite way. Missing a genuine case is a reportable compliance event with no second reader; a false positive lands in a human review queue and costs someone a minute. Recall is the gate there, and precision is the thing you are allowed to improve. It only counts once you have proven recall did not move.
 
 That constraint made the tuning work narrower and harder than it looked. Any prompt change had to demonstrate that true-positive detection was unchanged before its false-positive gains counted at all: {% metric "crisis_prompt_fp_testset" %}, with detection of genuine cases holding steady across both versions.
 
@@ -81,7 +81,7 @@ Anywhere a threshold gates a classifier and the two errors take different downst
 
 ## The rule
 
-Before you set a number, name the fallback. The error with a safe fallback gets the loose threshold; the error that reaches a person gets the tight one. If both reach a person, you do not have a threshold problem — you have a design problem, and no choice of number will fix it.
+Before you set a number, name the fallback. The error with a safe fallback gets the loose threshold; the error that reaches a person gets the tight one. If both reach a person, you do not have a threshold problem. You have a design problem, and no choice of number will fix it.
 
 ---
 

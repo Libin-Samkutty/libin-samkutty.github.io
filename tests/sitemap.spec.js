@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { contentPages, redirectStubs, siteDir } from "./helpers/routes.mjs";
+import { contentPages, indexablePages, redirectStubs, siteDir } from "./helpers/routes.mjs";
 
 /**
  * The sitemap has to name exactly the indexable pages — no more, no fewer.
@@ -34,13 +34,24 @@ test("the sitemap lists only HTML pages", () => {
     expect(nonPages, `assets in the sitemap: ${nonPages.join(", ")}`).toEqual([]);
 });
 
-test("every content page is in the sitemap", () => {
-    const absent = contentPages
-        .map(({ url }) => url)
-        .filter((url) => url !== "/404.html")
-        .filter((url) => !listed.includes(url));
+test("every indexable content page is in the sitemap", () => {
+    // `indexablePages` rather than `contentPages`: a page carrying `noindex` is
+    // opting out on purpose, and requiring it in the sitemap would mean handing a
+    // crawler two contradictory instructions about the same URL — the same defect
+    // the redirect-stub test below exists to prevent. The styleguide is the first
+    // page to exercise this.
+    const absent = indexablePages.map(({ url }) => url).filter((url) => !listed.includes(url));
 
     expect(absent, `pages missing from the sitemap: ${absent.join(", ")}`).toEqual([]);
+});
+
+test("no noindex page is in the sitemap", () => {
+    const contradictory = contentPages
+        .filter((page) => !indexablePages.includes(page))
+        .map(({ url }) => url)
+        .filter((url) => listed.includes(url));
+
+    expect(contradictory, `noindex pages advertised in the sitemap: ${contradictory.join(", ")}`).toEqual([]);
 });
 
 test("no redirect stub is in the sitemap", () => {

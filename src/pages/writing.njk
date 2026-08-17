@@ -12,7 +12,7 @@ description: "Essays on evaluating AI systems: asymmetric thresholds, why aggreg
             <p class="page__lede">
                 A case study answers "what did you build?". These answer "what should I do
                 differently on Monday?". Each one is readable with no context about the platform I
-                work on — the work is the worked example, not the subject.
+                work on. The work is the worked example, not the subject.
             </p>
         </div>
     </header>
@@ -23,7 +23,7 @@ description: "Essays on evaluating AI systems: asymmetric thresholds, why aggreg
             <li class="card card--post" data-reveal>
                 <p class="card__eyebrow">
                     <time datetime="{{ item.date | isoDate }}">{{ item.date | readableDate }}</time>
-                    <span>{{ item.templateContent | readingTime }} min read</span>
+                    <span data-volatile>{{ item.templateContent | readingTime }} min read</span>
                 </p>
                 {# h2, not h3. This list sits directly under the page h1 with no
                    section heading between them, so h3 would skip a level. #}

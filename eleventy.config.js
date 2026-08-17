@@ -339,16 +339,28 @@ export default function (eleventyConfig) {
     eleventyConfig.addTransform("scrollableRegions", function (content) {
         if (!this.page.outputPath || !this.page.outputPath.endsWith(".html")) return content;
 
+        // Declared per invocation, so the number a reader hears is the table's
+        // position on the page they are on. A counter in the config closure is
+        // shared by every page in the build: it numbered eight one-table pages
+        // "Table 1" through "Table 8", and the number moved with template build
+        // order, so an incremental rebuild under --serve changed it again.
+        let tableIndex = 0;
+
         return (
             content
                 // <section> rather than a div with role="region": a named section
                 // is the native landmark, so a screen-reader user can jump straight
                 // to the table instead of arrowing into it.
-                .replace(/<table>/g, () => {
+                //
+                // Matching attributes matters even though markdown-it emits a bare
+                // <table>: the closing replace below matches every </table>, so an
+                // open pattern that missed <table class="..."> would leave an
+                // orphan </section> the moment anyone hand-wrote one.
+                .replace(/<table\b[^>]*>/g, (openTag) => {
                     tableIndex += 1;
                     return (
                         `<section class="table-scroll" tabindex="0" ` +
-                        `aria-label="Table ${tableIndex}, scrollable"><table>`
+                        `aria-label="Table ${tableIndex}, scrollable">${openTag}`
                     );
                 })
                 .replace(/<\/table>/g, "</table></section>")
@@ -358,11 +370,6 @@ export default function (eleventyConfig) {
                 // that is already announced as a code block.
                 .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre$1 tabindex="0">')
         );
-    });
-
-    let tableIndex = 0;
-    eleventyConfig.on("eleventy.before", () => {
-        tableIndex = 0;
     });
 
     /* ---------------------------------------------------------------- collections */

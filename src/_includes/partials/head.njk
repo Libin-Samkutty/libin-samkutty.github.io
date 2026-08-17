@@ -18,8 +18,13 @@
 
 <link rel="canonical" href="{{ (canonical or page.url) | absoluteUrl }}">
 
-<meta name="theme-color" content="{{ site.themeColor.light }}" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="{{ site.themeColor.dark }}" media="(prefers-color-scheme: dark)">
+{# Media-scoped so the browser chrome is right with JavaScript off. The `media`
+   attribute is also the problem: both tags track the OS, so once a reader uses
+   the toggle the chrome disagrees with the page. The script below re-points
+   `media` at `all` / `not all` when an explicit theme is in force, which is why
+   each tag carries a `data-theme-color` hook. #}
+<meta name="theme-color" content="{{ site.themeColor.light }}" media="(prefers-color-scheme: light)" data-theme-color="light">
+<meta name="theme-color" content="{{ site.themeColor.dark }}" media="(prefers-color-scheme: dark)" data-theme-color="dark">
 
 {# Open Graph and Twitter. Third person here — first person belongs in body copy,
    not in a card rendered next to someone else's link. #}
@@ -44,7 +49,11 @@
 
 <link rel="stylesheet" href="{{ '/css/main.css' | url }}">
 
+{# The PNG is the fallback for browsers without SVG favicon support, declared
+   second so anything modern takes the vector. It shipped to /assets/ for months
+   referenced by nothing at all, which is the same defect as a broken link. #}
 <link rel="icon" href="{{ '/assets/favicon.svg' | url }}" type="image/svg+xml">
+<link rel="icon" href="{{ '/assets/icon.png' | url }}" sizes="16x16" type="image/png">
 <link rel="alternate" type="application/atom+xml" title="{{ site.name }}" href="{{ '/feed.xml' | url }}">
 
 {# Two lines, synchronous, above the fold. The first resolves the theme before
@@ -58,7 +67,16 @@
         root.classList.add("js");
         try {
             var stored = localStorage.getItem("theme");
-            if (stored === "light" || stored === "dark") root.dataset.theme = stored;
+            if (stored === "light" || stored === "dark") {
+                root.dataset.theme = stored;
+                // The chrome colour has to move with the page on this same first
+                // frame. Duplicated in site.js rather than shared, because an
+                // inline bootstrap cannot import from a module — and a global
+                // just to save four lines is a worse trade.
+                document.querySelectorAll("meta[data-theme-color]").forEach(function (meta) {
+                    meta.media = meta.dataset.themeColor === stored ? "all" : "not all";
+                });
+            }
         } catch (e) {}
     })();
 </script>
