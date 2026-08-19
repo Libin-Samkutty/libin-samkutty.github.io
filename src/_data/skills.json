@@ -115,11 +115,81 @@
     {
       "name": "api-test-data-generator",
       "url": "https://pypi.org/project/api-test-data-generator/",
-      "repo": "https://github.com/Libin-Samkutty",
+      "repo": "https://github.com/Libin-Samkutty/api-test-data-generator",
       "license": "MIT",
       "language": "Python",
       "description": "Schema-driven test data generation for API suites. Published to PyPI in February 2026.",
       "metric": "pypi_downloads"
+    },
+    {
+      "name": "ai-eval-tooling-stack",
+      "url": "https://github.com/Libin-Samkutty/ai-eval-tooling-stack",
+      "license": "MIT",
+      "language": "Python",
+      "description": "A local RAG chatbot wrapped in a full open-source AI evaluation, safety and observability stack, built on real industry-standard libraries rather than reimplemented metrics."
+    },
+    {
+      "name": "rag-chatbot-eval",
+      "url": "https://github.com/Libin-Samkutty/rag-chatbot-eval",
+      "language": "Python",
+      "description": "A localhost chatbot that makes AI evaluation visible: every response shows what was retrieved, what the model answered, and how it scored across eight evaluation dimensions."
+    },
+    {
+      "name": "performance-test-suite",
+      "url": "https://github.com/Libin-Samkutty/performance-test-suite",
+      "license": "MIT",
+      "language": "Python",
+      "description": "An automated JMeter performance suite against public APIs, with CI threshold gating plus an InfluxDB/Grafana trend layer for regressions no single run breaches."
+    },
+    {
+      "name": "botium-chatbot-test-framework",
+      "url": "https://github.com/Libin-Samkutty/botium-chatbot-test-framework",
+      "language": "JavaScript",
+      "description": "Botium tests for a WhatsApp/Messenger health-assistant chatbot's conversational layer, built around a custom HMAC-signed connector and a Redis-backed inbound queue."
+    },
+    {
+      "name": "pytest-api-automation",
+      "url": "https://github.com/Libin-Samkutty/pytest-api-automation",
+      "license": "MIT",
+      "language": "Python",
+      "description": "Pytest API automation against a public FastAPI service: a five-layer test pyramid spanning unit, integration, contract, e2e and performance testing."
+    },
+    {
+      "name": "postman-newman-automation",
+      "url": "https://github.com/Libin-Samkutty/postman-newman-automation",
+      "language": "JavaScript",
+      "description": "A collaborative Postman/Newman API testing layer, sitting above a Pytest suite for exploratory testing, documentation and quick regression checks."
+    },
+    {
+      "name": "robotframework-dashboard-ui-tests",
+      "url": "https://github.com/Libin-Samkutty/robotframework-dashboard-ui-tests",
+      "language": "Robot Framework",
+      "description": "Robot Framework UI and API regression against a public practice site, paired with a sibling Playwright repo documenting the migration off it."
+    },
+    {
+      "name": "playwright-web-api-automation-ts",
+      "url": "https://github.com/Libin-Samkutty/playwright-web-api-automation-ts",
+      "license": "MIT",
+      "language": "TypeScript",
+      "description": "The Playwright destination of a Robot Framework migration: UI, API, network interception and cross-layer test coverage against a public practice site."
+    },
+    {
+      "name": "prompt-regression-tester",
+      "url": "https://github.com/Libin-Samkutty/prompt-regression-tester",
+      "language": "Python",
+      "description": "A lightweight regression-testing framework for LLM prompts, catching semantic drift in model output before it ships."
+    },
+    {
+      "name": "ai-test-case-generator",
+      "url": "https://github.com/Libin-Samkutty/ai-test-case-generator",
+      "language": "JavaScript",
+      "description": "An AI-powered test case generator: paste a spec, PRD or acceptance criteria and get structured, exportable test cases, with multi-provider model support."
+    },
+    {
+      "name": "wordwright",
+      "url": "https://github.com/Libin-Samkutty/wordwright",
+      "language": "TypeScript",
+      "description": "An offline Wordle experience for 4-, 5- and 6-letter words. No backend, no accounts, no network."
     }
   ]
 }

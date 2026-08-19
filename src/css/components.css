@@ -56,9 +56,19 @@
     border-block-end: var(--hairline);
 }
 
+/*
+  Three explicit columns rather than a wrapping flex row. Grid auto-placement
+  skips out-of-flow items, so the same template resolves correctly in both
+  states without a breakpoint rule here: on mobile `.site-nav` is
+  `position: absolute` (excluded), leaving brand / nav-toggle / theme-toggle
+  in one row; at 48em `.nav-toggle` becomes `display: none` (excluded) and
+  `.site-nav` becomes in-flow, leaving brand / nav / theme-toggle. A wrapping
+  flex row put nav-toggle and theme-toggle in the same line only when both
+  fit, so the theme toggle dropped to its own row at narrow widths.
+*/
 .site-header__inner {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
     align-items: center;
     gap: var(--space-s);
     padding-block: var(--space-xs);
@@ -223,6 +233,31 @@
 /* Body scroll lock while the drawer is open. */
 .is-nav-open {
     overflow: hidden;
+}
+
+/* ---------------------------------------------------------------- email copy */
+
+/*
+  Injected by site.js next to a plain-text mailto link — never present
+  without JS, so there is nothing here to hide for a no-JS reader.
+*/
+.email-copy {
+    display: inline-flex;
+    align-items: center;
+    margin-inline-start: var(--space-2xs);
+    padding: 0.1em 0.6em;
+    border: var(--hairline-strong);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--color-text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    cursor: pointer;
+}
+
+.email-copy:hover {
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-text);
 }
 
 /* ---------------------------------------------------------------- theme toggle */
@@ -534,14 +569,18 @@ html:not(.js) .theme-toggle {
     mask-image: linear-gradient(to bottom, #000 78%, transparent 98%);
 }
 
-@media (min-width: 64em) {
-    .hero {
-        padding-block: var(--space-2xl) var(--space-3xl);
-    }
-
+/*
+  48em, not 64em: the site's own tablet boundary everywhere else (site.js's
+  nav matchMedia, tokens.css). Below this the hero used to stay single-column
+  with the portrait ordered first, which meant the eyebrow, H1, lede and both
+  CTAs all landed below a full-height portrait — at 768px the fold closed
+  before the lede; at 390px the H1 itself was cut mid-sentence. Switching to
+  two columns here, same as desktop, lets the copy lead at tablet width too.
+*/
+@media (min-width: 48em) {
     .hero__inner {
         grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-        gap: var(--space-xl);
+        gap: var(--space-l);
 
         /* Centering a shorter portrait against a taller text column drops its
            top edge below the headline's. Top-aligning puts the two where a
@@ -551,12 +590,34 @@ html:not(.js) .theme-toggle {
 
     .hero__portrait {
         order: 0;
-        max-inline-size: none;
+        max-inline-size: 16rem;
         justify-self: end;
     }
 }
 
+@media (min-width: 64em) {
+    .hero {
+        padding-block: var(--space-2xl) var(--space-3xl);
+    }
+
+    .hero__inner {
+        gap: var(--space-xl);
+    }
+
+    .hero__portrait {
+        max-inline-size: none;
+    }
+}
+
 /* ================================================================ buttons */
+
+/* Shared by every high-intent moment that pairs a primary and a ghost
+   button: the hero, the homepage closing CTA, a case study's closing CTA. */
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+}
 
 .button {
     display: inline-flex;
@@ -795,6 +856,17 @@ html:not(.js) .theme-toggle {
     color: var(--color-accent-text);
 }
 
+/*
+  The scan-first reader's answer, sitting between the hook title and the
+  fuller body copy so both a skim and a read are served without flattening
+  the title itself into generic problem/solution phrasing.
+*/
+.card__outcome {
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
+    max-inline-size: var(--measure);
+}
+
 .card__body {
     color: var(--color-text-muted);
     max-inline-size: var(--measure);
@@ -812,6 +884,7 @@ html:not(.js) .theme-toggle {
    the depth is the space, not a shadow. */
 .card--case-study,
 .card--post {
+    position: relative;
     border: var(--hairline);
     border-radius: var(--radius-s);
     background-color: var(--color-surface);
@@ -824,16 +897,45 @@ html:not(.js) .theme-toggle {
     border-color: var(--color-border-interactive);
 }
 
+/*
+  There is exactly one link in each of these cards (the title), so extending
+  its hit area to the card's own bounds is unambiguous: a screen reader still
+  sees one link named for the title, and a pointer user can click anywhere in
+  the card. `position: relative` above on `.card--case-study`/`.card--post` is
+  what this positions against, not the `<h3>` in between, which sets no
+  position of its own.
+*/
+.card--case-study .card__title a::after,
+.card--post .card__title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+/*
+  The one entry a hiring manager evaluating AI-evaluation work should read
+  first. A colour change on a border most readers never consciously notice,
+  paired with a labelled eyebrow flag that says the actual reason: content,
+  not decoration.
+*/
+.card--flagship {
+    border-color: var(--color-accent);
+}
+
+.card--flagship:hover {
+    border-color: var(--color-accent-text);
+}
+
+.card__flag {
+    color: var(--color-accent-text);
+}
+
 /* An unbordered card for things that are a statement. A single accent rule at
    the top instead of a box. */
 .card--plain {
     border-block-start: 2px solid var(--color-accent);
     padding-block-start: var(--space-s);
     background: none;
-}
-
-.card--plain + .card--plain {
-    margin-block-start: var(--space-l);
 }
 
 /* ================================================================ numbered list */
@@ -1011,6 +1113,17 @@ html:not(.js) .theme-toggle {
     gap: var(--space-l);
 }
 
+/*
+  2 columns, not 3: these items carry more per-item content (eyebrow, chips,
+  body, up to three meta lines) than a case-study or post card, so 6 items
+  read better as 3 rows of 2 than 2 rows of 3.
+*/
+@media (min-width: 60em) {
+    .other-systems {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 .other-systems__item {
     border-block-start: var(--hairline);
     padding-block-start: var(--space-m);
@@ -1069,7 +1182,8 @@ html:not(.js) .theme-toggle {
     .site-footer__list a,
     .site-footer__profiles a,
     .contact-list a,
-    .capability__evidence {
+    .capability__evidence,
+    .email-copy {
         min-block-size: 44px;
         display: inline-flex;
         align-items: center;

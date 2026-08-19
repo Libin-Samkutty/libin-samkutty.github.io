@@ -93,6 +93,14 @@ throws if its metric is missing or unpublished, so a chart cannot outrun the dat
     <a class="button button--ghost" href="{{ '/contact/' | url }}">Ghost action</a>
 </p>
 
+<p>A paired primary and ghost button, used at every high-intent moment: the
+hero, the homepage closing CTA and the end of a case study.</p>
+
+<p class="button-row">
+    <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
+    <a class="button button--ghost" href="{{ '/resume/' | url }}">Résumé</a>
+</p>
+
 <h2>Evidence record</h2>
 
 <p>The signature component. A grade — confidence tag plus basis, from
@@ -161,12 +169,23 @@ hairline-ruled list than as three cards the eye has to scan independently.</p>
 
 <h2>Cards</h2>
 
+<p>The whole card is clickable: the title's own link is the only link inside
+it, extended to the card's bounds. There is nothing here for a screen reader
+to disambiguate, and nothing here breaks if a card ever gains a second link.</p>
+
 <ul class="card-list">
     <li class="card card--case-study">
         <p class="card__eyebrow">2025 – 2026</p>
         <h3 class="card__title"><a href="{{ '/work/' | url }}">Case study card</a></h3>
+        <p class="card__outcome">The one-line, number-free answer for a reader who is scanning rather than reading.</p>
         <p class="card__body">The card used on the work index, with an eyebrow, a
         linked title and a body.</p>
+    </li>
+    <li class="card card--case-study card--flagship">
+        <p class="card__eyebrow">2025 – 2026 <span class="card__flag">Start here</span></p>
+        <h3 class="card__title"><a href="{{ '/work/' | url }}">Flagship case study card</a></h3>
+        <p class="card__body">The one entry a reader hiring for this specific
+        work should read first. The flag is a real signal, not decoration.</p>
     </li>
     <li class="card card--post">
         <p class="card__eyebrow"><time datetime="2026-01-01">1 January 2026</time></p>
@@ -216,6 +235,14 @@ what.</p>
     <div class="context-strip__row context-strip__row--attribution">
         <dt>What wasn't mine</dt>
         <dd>The attribution row, which is styled apart from the others on purpose.</dd>
+    </div>
+    <div class="context-strip__row">
+        <dt>Public demos</dt>
+        <dd>
+            <ul class="chips">
+                <li><a class="chip chip--link" href="{{ site.profiles.github }}" rel="noopener">example-public-repo</a></li>
+            </ul>
+        </dd>
     </div>
 </dl>
 

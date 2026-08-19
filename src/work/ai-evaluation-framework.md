@@ -3,6 +3,13 @@ layout: layouts/case-study.njk
 title: One evaluation framework, six product lines, three generation architectures
 shortTitle: One framework, three architectures
 description: How Libin built one evaluation framework across six AI product lines and three generation architectures without pretending they were the same system.
+outcome: One reusable evaluation framework, driven by a single field on each test case, now gates six AI product lines across three different generation architectures instead of running six separate systems.
+flagship: true
+demos:
+  - name: ai-eval-tooling-stack
+    url: https://github.com/Libin-Samkutty/ai-eval-tooling-stack
+  - name: rag-chatbot-eval
+    url: https://github.com/Libin-Samkutty/rag-chatbot-eval
 number: 2
 order: 2
 period: Q1 2025 – present
@@ -33,6 +40,12 @@ The harder half was scope. The obvious framing ("build a RAG evaluation framewor
 {% architectureNote "long" %}
 
 So one framework had to run against a retrieval pipeline, a classifier-plus-snippets pipeline with a semantic cache in front of it, and a dispatcher over a journey graph. Context Precision is meaningful for the first and meaningless for the other two. Scale: {% metric "platform_scale" %}, serving {% metric "monthly_users" %}.
+
+{% diagram "rag-architecture" %}
+
+{% diagram "snippets-architecture" %}
+
+{% diagram "dispatcher-architecture" %}
 
 ## Constraints
 

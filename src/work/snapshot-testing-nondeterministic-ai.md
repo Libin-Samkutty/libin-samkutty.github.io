@@ -3,6 +3,10 @@ layout: layouts/case-study.njk
 title: Making a non-deterministic model produce a stable snapshot
 shortTitle: Snapshot testing a non-deterministic AI
 description: How Libin made a non-deterministic classifier produce stable snapshots, with bit-field-aware diffing and a four-level regression severity taxonomy.
+outcome: A bit-field-aware diff and a four-level severity taxonomy turned a non-deterministic classifier's output into something a snapshot suite could actually gate on.
+demos:
+  - name: prompt-regression-tester
+    url: https://github.com/Libin-Samkutty/prompt-regression-tester
 number: 5
 order: 5
 period: October 2024 – May 2025

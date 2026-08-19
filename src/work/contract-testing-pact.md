@@ -3,6 +3,7 @@ layout: layouts/case-study.njk
 title: The refactor that broke every journey with perfectly valid JSON
 shortTitle: Contract testing with Pact
 description: A classifier refactor broke every user's journey with valid, schema-conformant JSON. Consumer-driven contract tests failed it; the schema diff passed it.
+outcome: Consumer-driven contracts catch what a schema diff cannot, a refactor that changes what a field means while leaving its shape perfectly valid.
 number: 4
 order: 4
 period: Q4 2024 – Q4 2025

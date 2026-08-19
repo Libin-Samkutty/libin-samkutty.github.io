@@ -32,7 +32,8 @@
     "title": "Performance baselines and regression gate",
     "context": "Proposed and built the platform's first load-testing practice with no mandate requiring it, then added trend dashboards after a threshold-only gate missed a slow latency creep that never broke any single run.",
     "stack": ["JMeter", "Jenkins", "InfluxDB", "Grafana"],
-    "href": "/writing/threshold-gates-vs-trend-views/"
+    "href": "/writing/threshold-gates-vs-trend-views/",
+    "repo": "https://github.com/Libin-Samkutty/performance-test-suite"
   },
   {
     "year": "2024–2026",
@@ -72,13 +73,15 @@
     "year": "2022–2026",
     "title": "Botium conversational test automation",
     "context": "Built the chatbot's first automated regression layer around routing behaviour rather than exact reply text, since a conversational AI's wording is never going to be identical twice, then shared the approach with the wider engineering organisation.",
-    "stack": ["Botium", "Python", "JavaScript", "AWS EC2"]
+    "stack": ["Botium", "Python", "JavaScript", "AWS EC2"],
+    "repo": "https://github.com/Libin-Samkutty/botium-chatbot-test-framework"
   },
   {
     "year": "2022–2026",
     "title": "REST API regression suite across backend services",
     "context": "Replaced manual smoke testing with a fixture-driven suite that checks each service's actual database state after a write, not just what the API response claims happened.",
-    "stack": ["Python", "Pytest", "Requests", "MongoDB", "jsonschema"]
+    "stack": ["Python", "Pytest", "Requests", "MongoDB", "jsonschema"],
+    "repo": "https://github.com/Libin-Samkutty/pytest-api-automation"
   },
   {
     "year": "2022–2026",
@@ -108,7 +111,8 @@
     "year": "2026",
     "title": "api-test-data-generator (open-source Python package)",
     "context": "Published a schema-driven test-data generator with native Pytest fixture support to PyPI, born out of rewriting the same fixture-shaping code across every suite.",
-    "stack": ["Python", "Faker", "Pytest", "PyPI"]
+    "stack": ["Python", "Faker", "Pytest", "PyPI"],
+    "repo": "https://github.com/Libin-Samkutty/api-test-data-generator"
   },
   {
     "year": "2026",
@@ -207,7 +211,8 @@
     "year": "2023–2024",
     "title": "Shared Postman collections for API testing",
     "context": "Built environment-scoped collections with automatic auth-token chaining so external partners and internal engineers could exercise the API without reconstructing every request from scratch, then narrowed its role once complex workflows moved to Pytest.",
-    "stack": ["Postman", "Newman", "JavaScript", "Jenkins"]
+    "stack": ["Postman", "Newman", "JavaScript", "Jenkins"],
+    "repo": "https://github.com/Libin-Samkutty/postman-newman-automation"
   },
   {
     "year": "2022–2023",

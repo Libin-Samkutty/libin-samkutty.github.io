@@ -45,6 +45,12 @@
         display: none;
     }
 
+    /* Buttons are a screen affordance; the address they point to is already
+       printed as literal text in the Contact section below. */
+    .resume__scan .button-row {
+        display: none;
+    }
+
     /* Chrome the reader did not ask to print. */
     .site-header,
     .site-footer,
@@ -165,6 +171,12 @@
        heading scale so a full career fits the sheet. */
     .resume {
         font-size: 9.75pt;
+        display: block;
+    }
+
+    .resume__scan {
+        border-inline-end: 0;
+        padding-inline-end: 0;
     }
 
     .resume h1 {

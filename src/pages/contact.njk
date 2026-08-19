@@ -6,9 +6,13 @@ shortTitle: Contact
 description: How to reach Libin Samkutty about senior AI quality engineering roles, evaluation system design, or anything on this site that looks wrong.
 lede: Email is best. There is no form on this page on purpose.
 ---
+<p class="button-row">
+    <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
+    <a class="button button--ghost" href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a>
+</p>
+
 <ul class="contact-list">
     <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-    <li><a href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a></li>
     <li><a href="{{ site.profiles.github }}" rel="me noopener">GitHub</a></li>
     <li><a href="{{ site.profiles.pypi }}" rel="noopener">PyPI</a></li>
 </ul>
@@ -19,6 +23,10 @@ lede: Email is best. There is no form on this page on purpose.
     {{ site.targetRoles | join(", ") }}. Also happy to talk about evaluation design without a role
     attached: judge calibration, golden dataset construction, and what to do when your only
     ground truth is a domain expert's time.
+</p>
+
+<p class="button-row">
+    <a class="button button--primary" href="mailto:{{ site.email }}">Email me about a role</a>
 </p>
 
 {#

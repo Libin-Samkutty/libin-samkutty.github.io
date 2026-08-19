@@ -109,8 +109,12 @@
     --font-body: "IBM Plex Serif", "IBM Plex Serif Fallback", Georgia, Cambria, serif;
     --font-mono: "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 
-    /* Fluid across 20rem–80rem (320–1280px). Below and above, the clamp holds. */
-    --step--2: clamp(0.75rem, 0.729rem + 0.104vw, 0.8125rem);
+    /* Fluid across 20rem–80rem (320–1280px). Below and above, the clamp holds.
+       --step--2 carries every eyebrow, tag and metadata label sitewide —
+       bumped from 12–13px to 13–14px, since scanning for what was built and
+       what it cost depends on exactly this text being easy to read, not on
+       it visibly signalling "secondary" through size alone. */
+    --step--2: clamp(0.8125rem, 0.79rem + 0.104vw, 0.875rem);
     --step--1: clamp(0.875rem, 0.854rem + 0.104vw, 0.9375rem);
     --step-0: clamp(1rem, 0.979rem + 0.104vw, 1.0625rem);
     --step-1: clamp(1.2rem, 1.167rem + 0.167vw, 1.3rem);

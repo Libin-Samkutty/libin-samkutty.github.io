@@ -19,7 +19,10 @@ lede: The case studies are the deep version of six systems. This is the breadth 
         {% for item in archive %}
         <tr>
             <td>{{ item.year }}</td>
-            <td>{% if item.href %}<a href="{{ item.href | url }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</td>
+            <td>
+                {% if item.href %}<a href="{{ item.href | url }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}
+                {% if item.repo %}<br><a href="{{ item.repo }}" rel="noopener">Public demo</a>{% endif %}
+            </td>
             <td>{{ item.context }}</td>
             <td>{{ item.stack | join(", ") }}</td>
         </tr>

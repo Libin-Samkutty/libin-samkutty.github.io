@@ -6,38 +6,48 @@ shortTitle: Colophon
 description: How this site is built, the performance and accessibility budgets enforced on every commit, and why it carries no AI-generated or stock imagery.
 lede: Publishing the budgets and what enforces them is a stronger argument for quality discipline than claiming it in prose would be.
 ---
-<h2>Budgets, enforced</h2>
+<div class="colophon">
+    <section class="colophon__budgets" aria-labelledby="colophon-budgets">
+        <h2 id="colophon-budgets">Budgets, enforced</h2>
 
-<p>
-    A quality-focused Lighthouse CI run gates every pull request against fixed budgets, not
-    targets. If a build exceeds one, the build fails. That is the same discipline described in the
-    case studies, applied to this site's own delivery.
-</p>
+        <p>
+            A quality-focused Lighthouse CI run gates every pull request against fixed budgets, not
+            targets. If a build exceeds one, the build fails. That is the same discipline described in the
+            case studies, applied to this site's own delivery.
+        </p>
 
-<ul>
-    <li>{% metric "a11y_budgets" %}</li>
-    <li>{% metric "perf_budgets" %}</li>
-    <li>{% metric "weight_budgets" %}</li>
-</ul>
+        <ul>
+            <li>{% metric "a11y_budgets" %}</li>
+            <li>{% metric "perf_budgets" %}</li>
+            <li>{% metric "weight_budgets" %}</li>
+        </ul>
 
-<p>
-    Per the Web Almanac's 2025 crawl, most of the web fails the contrast and focus-visibility
-    checks this site's accessibility budget requires on every route, in both themes, at both a
-    desktop and a mobile viewport.
-</p>
+        <p>
+            Per the Web Almanac's 2025 crawl, most of the web fails the contrast and focus-visibility
+            checks this site's accessibility budget requires on every route, in both themes, at both a
+            desktop and a mobile viewport.
+        </p>
+    </section>
 
-<h2>Stack</h2>
+    <div class="colophon__aside">
+        <section class="colophon__stack" aria-labelledby="colophon-stack">
+            <h2 id="colophon-stack">Stack</h2>
 
-<p>
-    Eleventy, Lightning CSS and Playwright are all build-time only: none of them ship a byte to the
-    browser. Vanilla JavaScript with no client-side framework. Every font is self-hosted; every
-    request on the published site resolves to this site's own origin.
-</p>
+            <p>
+                Eleventy, Lightning CSS and Playwright are all build-time only: none of them ship a byte to the
+                browser. Vanilla JavaScript with no client-side framework. Every font is self-hosted; every
+                request on the published site resolves to this site's own origin.
+            </p>
+        </section>
 
-<h2>No AI-generated or stock imagery</h2>
+        <section class="colophon__imagery" aria-labelledby="colophon-imagery">
+            <h2 id="colophon-imagery">No AI-generated or stock imagery</h2>
 
-<p>
-    Every photograph on this site is a real photograph of the person it depicts. There is no
-    stock photography, no illustration set, and no AI-generated imagery anywhere on the site. The
-    diagrams and charts are hand-authored SVG, drawn from this site's own published data.
-</p>
+            <p>
+                Every photograph on this site is a real photograph of the person it depicts. There is no
+                stock photography, no illustration set, and no AI-generated imagery anywhere on the site. The
+                diagrams and charts are hand-authored SVG, drawn from this site's own published data.
+            </p>
+        </section>
+    </div>
+</div>

@@ -84,68 +84,84 @@ bodyClass: home
 </section>
 
 <section class="section" aria-labelledby="work-title">
-    <div class="wrap wrap--measure">
+    <div class="wrap">
         <h2 class="section__title" id="work-title">Selected work</h2>
 
-        <ol class="numbered-list">
+        <ul class="card-list card-list--three">
             {% for item in collections.caseStudies %}
                 {% if item.fileSlug in projects.featuredCaseStudies %}
-                <li class="numbered-list__item" data-reveal>
-                    <p class="numbered-list__eyebrow">{{ item.data.period }}</p>
-                    <div>
-                        <h3 class="numbered-list__title">
-                            <a href="{{ item.url }}">{{ item.data.title }}</a>
-                        </h3>
-                        <p class="numbered-list__body">{{ item.data.description }}</p>
-                    </div>
+                <li class="card card--case-study{% if item.data.flagship %} card--flagship{% endif %}" data-reveal>
+                    <p class="card__eyebrow">
+                        <span>{{ item.data.period }}</span>
+                        {% if item.data.flagship %}<span class="card__flag">Start here</span>{% endif %}
+                    </p>
+                    <h3 class="card__title"><a href="{{ item.url }}">{{ item.data.title }}</a></h3>
+                    {% if item.data.outcome %}<p class="card__outcome">{{ item.data.outcome }}</p>{% endif %}
+                    <p class="card__body">{{ item.data.description }}</p>
+                    <ul class="chips">
+                        {% for tech in item.data.stack | limit(4) %}<li class="chip">{{ tech }}</li>{% endfor %}
+                    </ul>
                 </li>
                 {% endif %}
             {% endfor %}
-        </ol>
+        </ul>
 
         <p class="section__more"><a href="{{ '/work/' | url }}">All work, including the systems that didn't warrant a case study</a></p>
     </div>
 </section>
 
 <section class="section section--emphasis" aria-labelledby="wrong-title">
-    <div class="wrap wrap--measure">
+    <div class="wrap">
         <h2 class="section__title" id="wrong-title">Things that didn't work</h2>
 
-        <p>
+        <p class="section__intro">
             Every case study on this site carries a section like this one.
         </p>
 
-        <div class="callout callout--limitation">
-            <h3 class="callout__title">I built an evaluation system that could not fail</h3>
-            <p>
-                The platform's first LLM-as-a-judge used the same model family that had generated
-                the answers it was grading. It scored well. It scored well because a model asked to
-                grade its own reasoning agrees with itself. That is not an independent check. It is
-                closer to a mirror.
-            </p>
-            <p><a href="{{ '/work/llm-judge-independence/' | url }}">How I found it and what replaced it</a></p>
-        </div>
+        <div class="callout-grid">
+            <div class="callout callout--limitation">
+                <h3 class="callout__title">I built an evaluation system that could not fail</h3>
+                <p>
+                    The platform's first LLM-as-a-judge used the same model family that had generated
+                    the answers it was grading. It scored well. It scored well because a model asked to
+                    grade its own reasoning agrees with itself. That is not an independent check. It is
+                    closer to a mirror.
+                </p>
+                <p><a href="{{ '/work/llm-judge-independence/' | url }}">How I found it and what replaced it</a></p>
+            </div>
 
-        <div class="callout">
-            <h3 class="callout__title">Four testing layers all missed the same gap</h3>
-            <p>
-                Golden-dataset regression, the conversational suite, retrieval faithfulness scoring
-                and manual spot-checks were all green while a class of clinically important query
-                was getting a sympathetic non-answer. Every layer was testing what we had thought to
-                write down. None of them was reading what users were actually sending.
-            </p>
-            <p><a href="{{ '/work/production-evaluation-pipeline/' | url }}">What the production pipeline caught</a></p>
-        </div>
+            <div class="callout">
+                <h3 class="callout__title">Four testing layers all missed the same gap</h3>
+                <p>
+                    Golden-dataset regression, the conversational suite, retrieval faithfulness scoring
+                    and manual spot-checks were all green while a class of clinically important query
+                    was getting a sympathetic non-answer. Every layer was testing what we had thought to
+                    write down. None of them was reading what users were actually sending.
+                </p>
+                <p><a href="{{ '/work/production-evaluation-pipeline/' | url }}">What the production pipeline caught</a></p>
+            </div>
 
-        <div class="callout">
-            <h3 class="callout__title">I spent two years optimising a framework I then retired</h3>
-            <p>
-                Parallelisation, containerisation, flake reduction: real gains, all of them. Then
-                the suite grew and the gains eroded, because the cost I kept optimising around was
-                structural to the framework rather than to my configuration of it. Recognising that
-                took longer than the migration did.
-            </p>
-            <p><a href="{{ '/work/from-robot-to-playwright/' | url }}">The diagnosis and the migration</a></p>
+            <div class="callout">
+                <h3 class="callout__title">I spent two years optimising a framework I then retired</h3>
+                <p>
+                    Parallelisation, containerisation, flake reduction: real gains, all of them. Then
+                    the suite grew and the gains eroded, because the cost I kept optimising around was
+                    structural to the framework rather than to my configuration of it. Recognising that
+                    took longer than the migration did.
+                </p>
+                <p><a href="{{ '/work/from-robot-to-playwright/' | url }}">The diagnosis and the migration</a></p>
+            </div>
+
+            <div class="callout">
+                <h3 class="callout__title">Before automation existed, a human had to catch this by hand</h3>
+                <p>
+                    {% metric "live_misconfiguration_users" %}, from a health recommendation set in a
+                    dashboard's UI layer without a matching update to the backend conversation JSON.
+                    No automated check would have caught it, because none existed yet. It is one of the
+                    reasons the suite below got built.
+                </p>
+                <p><a href="{{ '/work/from-robot-to-playwright/' | url }}">Why the suite got built</a></p>
+            </div>
         </div>
     </div>
 </section>
@@ -195,9 +211,9 @@ bodyClass: home
             {{ site.targetRoles | join(", ") }}. If you are building something where a wrong answer
             has a cost, that is the problem I want.
         </p>
-        <ul class="contact-list">
-            <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-            <li><a href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a></li>
-        </ul>
+        <p class="button-row">
+            <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
+            <a class="button button--ghost" href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a>
+        </p>
     </div>
 </section>

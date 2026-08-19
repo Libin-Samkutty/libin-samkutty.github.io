@@ -28,12 +28,14 @@ description: Six case studies on AI evaluation systems, production monitoring an
 
             <ul class="card-list card-list--posts">
                 {% for item in collections.caseStudies %}
-                <li class="card card--case-study" data-reveal>
+                <li class="card card--case-study{% if item.data.flagship %} card--flagship{% endif %}" data-reveal>
                     <p class="card__eyebrow">
                         <span>Case study {{ item.data.number }}</span>
                         <span>{{ item.data.period }}</span>
+                        {% if item.data.flagship %}<span class="card__flag">Start here</span>{% endif %}
                     </p>
                     <h3 class="card__title"><a href="{{ item.url }}">{{ item.data.title }}</a></h3>
+                    {% if item.data.outcome %}<p class="card__outcome">{{ item.data.outcome }}</p>{% endif %}
                     <p class="card__body">{{ item.data.description }}</p>
                     <ul class="chips">
                         {% for tech in item.data.stack | limit(4) %}<li class="chip">{{ tech }}</li>{% endfor %}
@@ -45,9 +47,9 @@ description: Six case studies on AI evaluation systems, production monitoring an
     </section>
 
     <section class="section" id="oss" aria-labelledby="other-title">
-        <div class="wrap wrap--measure">
+        <div class="wrap">
             <h2 class="section__title" id="other-title">Other systems I built or own</h2>
-            <p>
+            <p class="section__intro">
                 These did not warrant a case study. They are here because breadth is part of the
                 honest picture of a sole-QA role, and because two of them are where I learned things
                 that show up everywhere else on this site.
@@ -66,6 +68,7 @@ description: Six case studies on AI evaluation systems, production monitoring an
                     <p class="card__body">{{ project.body }}</p>
                     {% if project.metric %}<p class="card__meta">{% metric project.metric %}</p>{% endif %}
                     {% if project.relatedPost %}<p class="card__meta"><a href="{{ project.relatedPost | url }}">The general version of this lesson</a></p>{% endif %}
+                    {% if project.repo %}<p class="card__meta"><a href="{{ project.repo }}" rel="noopener">Public demo of this pattern</a></p>{% endif %}
                 </li>
                 {% endfor %}
             </ul>
@@ -73,16 +76,23 @@ description: Six case studies on AI evaluation systems, production monitoring an
     </section>
 
     <section class="section" id="open-source" aria-labelledby="oss-title">
-        <div class="wrap wrap--measure">
+        <div class="wrap">
             <h2 class="section__title" id="oss-title">Open source</h2>
 
-            {% for project in skills.openSource %}
-            <div class="card card--plain">
-                <h3 class="card__title"><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a></h3>
-                <p class="card__body">{{ project.description }}</p>
-                <p class="card__meta">{{ project.language }} · {{ project.license }} · {% metric project.metric %}</p>
-            </div>
-            {% endfor %}
+            <ul class="card-list card-list--posts">
+                {% for project in skills.openSource %}
+                <li class="card card--plain">
+                    <h3 class="card__title"><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a></h3>
+                    <p class="card__body">{{ project.description }}</p>
+                    <p class="card__meta">
+                        {{ project.language }}
+                        {% if project.license %}· {{ project.license }}{% endif %}
+                        {% if project.metric %}· {% metric project.metric %}{% endif %}
+                        {% if project.repo and project.repo != project.url %}· <a href="{{ project.repo }}" rel="noopener">Code</a>{% endif %}
+                    </p>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </section>
 </article>

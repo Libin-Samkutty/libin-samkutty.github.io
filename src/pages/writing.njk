@@ -7,7 +7,13 @@ description: "Essays on evaluating AI systems: asymmetric thresholds, why aggreg
 ---
 <article class="page">
     <header class="page__header">
-        <div class="wrap wrap--measure">
+        {#
+          Plain `.wrap`, not `.wrap--measure` — see layouts/page.njk for why.
+          `.page__lede` already caps its own inline-size to the reading
+          measure (article.css), so it reads at the right width while the
+          header stays flush with the card grid below it.
+        #}
+        <div class="wrap">
             <h1 class="page__title">Writing</h1>
             <p class="page__lede">
                 A case study answers "what did you build?". These answer "what should I do

@@ -98,6 +98,13 @@ lede: I started as the person who wrote test cases. I am now the person who deci
             {% for highlight in role.highlights %}<li>{{ highlight }}</li>{% endfor %}
         </ul>
         {% endif %}
+        {% if role.id == "associate-qa-engineer" %}
+        <p>
+            Concretely, over that year: {% metric "defect_escape_rate_reduction" %} after the new
+            process took hold, {% metric "associate_defects_caught" %}, and
+            {% metric "etl_anomalies_surfaced" %}.
+        </p>
+        {% endif %}
     </li>
     {% endfor %}
 </ol>

@@ -1,6 +1,6 @@
 /**
- * Site behaviour. Under 6 KB, no dependencies, loaded as a module so it is
- * deferred by default.
+ * Site behaviour. No dependencies, loaded as a module so it is deferred by
+ * default. Comfortably inside the 15 KB script budget in lighthouserc.cjs.
  *
  * Three rules hold throughout:
  *   1. Every block guards its own elements. The old script.js bound a listener to
@@ -124,6 +124,43 @@ const root = document.documentElement;
     // drawer.
     window.matchMedia("(min-width: 48em)").addEventListener("change", (event) => {
         if (event.matches) setOpen(false);
+    });
+})();
+
+/* -------------------------------------------------------------- copy email */
+
+(function copyEmail() {
+    // Only the plain-text mailto links (contact list, footer, résumé contact
+    // block) — a `.button`-styled "Email me" CTA already states its action
+    // clearly and does not need a second control glued to it.
+    const links = document.querySelectorAll('a[href^="mailto:"]:not(.button)');
+    if (!links.length || !navigator.clipboard) return;
+
+    links.forEach((link) => {
+        const address = link.getAttribute("href").replace(/^mailto:/, "").split("?")[0];
+        if (!address) return;
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "email-copy";
+        button.textContent = "Copy";
+        button.setAttribute("aria-label", `Copy ${address} to clipboard`);
+
+        button.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(address);
+                button.textContent = "Copied";
+                button.setAttribute("aria-label", `${address} copied to clipboard`);
+                setTimeout(() => {
+                    button.textContent = "Copy";
+                    button.setAttribute("aria-label", `Copy ${address} to clipboard`);
+                }, 2000);
+            } catch (e) {
+                /* Clipboard permission denied. The mailto link still works. */
+            }
+        });
+
+        link.insertAdjacentElement("afterend", button);
     });
 })();
 

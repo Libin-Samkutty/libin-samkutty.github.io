@@ -244,7 +244,7 @@ export default function (eleventyConfig) {
 
         const width = 640;
         const height = 220;
-        const padding = { top: 16, right: 16, bottom: 40, left: 16 };
+        const padding = { top: 28, right: 16, bottom: 40, left: 16 };
         const plotWidth = width - padding.left - padding.right;
         const plotHeight = height - padding.top - padding.bottom;
 
@@ -330,7 +330,12 @@ export default function (eleventyConfig) {
                     (available.length ? `Available: ${available.join(", ")}` : `The diagrams directory does not exist yet.`)
             );
         }
-        return fs.readFileSync(file, "utf8");
+        // A blank line inside the SVG source is invisible on /styleguide/,
+        // which is pure Nunjucks and never touches markdown-it. Inside a
+        // case study's markdown body it is not invisible: markdown-it's raw
+        // HTML block ends at the first blank line, so everything after one
+        // fell out of the block and got individually paragraph-wrapped.
+        return fs.readFileSync(file, "utf8").replace(/\n[ \t]*\n/g, "\n");
     });
 
     /**
@@ -457,6 +462,14 @@ export default function (eleventyConfig) {
 
     eleventyConfig.addFilter("byLevel", (skills, level) => skills.filter((skill) => skill.level === level));
 
+    // Flattens skills.groups into one ordered list of Core skill names, for
+    // the résumé's scannable header — the "Core capabilities" section below
+    // it needs the group structure to attribute each skill, the scan block
+    // just needs the names.
+    eleventyConfig.addFilter("coreSkillNames", (groups) =>
+        groups.flatMap((group) => group.skills.filter((skill) => skill.level === "core").map((skill) => skill.name))
+    );
+
     eleventyConfig.addFilter("otherThan", (items, url) => items.filter((item) => item.url !== url));
 
     /**
@@ -509,18 +522,23 @@ export default function (eleventyConfig) {
                 // is the native landmark, so a screen-reader user can jump straight
                 // to the table instead of arrowing into it.
                 //
-                // Matching attributes matters even though markdown-it emits a bare
-                // <table>: the closing replace below matches every </table>, so an
-                // open pattern that missed <table class="..."> would leave an
-                // orphan </section> the moment anyone hand-wrote one.
-                .replace(/<table\b[^>]*>/g, (openTag) => {
+                // Matches the whole table element (tables in this codebase never
+                // nest) rather than the open and close tags separately, so a
+                // visually-hidden table — the one {% chart %} emits for its data,
+                // never meant to render — can be skipped as a single unit. Wrapping
+                // it would add a pointless focus stop for a table nobody sees, and
+                // .table-scroll table's `min-inline-size: 100%` would override the
+                // 1px `.visually-hidden` sets, overflowing the page for real.
+                .replace(/<table\b[^>]*>[\s\S]*?<\/table>/g, (tableBlock) => {
+                    if (/class="[^"]*\bvisually-hidden\b[^"]*"/.test(tableBlock)) {
+                        return tableBlock;
+                    }
                     tableIndex += 1;
                     return (
                         `<section class="table-scroll" tabindex="0" ` +
-                        `aria-label="Table ${tableIndex}, scrollable">${openTag}`
+                        `aria-label="Table ${tableIndex}, scrollable">${tableBlock}</section>`
                     );
                 })
-                .replace(/<\/table>/g, "</table></section>")
                 // Code blocks overflow horizontally on a phone for the same reason
                 // and are unreachable for the same reason. tabindex on the <pre>
                 // itself is enough; wrapping it would add a landmark for something

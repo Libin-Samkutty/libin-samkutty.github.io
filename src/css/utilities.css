@@ -27,6 +27,19 @@
     border: 0;
 }
 
+/*
+  Every external link in this codebase already carries `rel="noopener"` or
+  `rel="me noopener"`, and no internal link ever does — the attribute the
+  templates already use to mean "leaves the site" doubles as the hook here,
+  so no template needs to know about a new class.
+*/
+a[rel~="noopener"]::after {
+    content: "\2197";
+    display: inline-block;
+    margin-inline-start: 0.2em;
+    text-decoration: none;
+}
+
 .text-balance {
     text-wrap: balance;
 }

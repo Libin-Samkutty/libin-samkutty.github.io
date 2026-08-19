@@ -257,6 +257,55 @@
       "publish": true
     },
 
+    "defect_escape_rate_reduction": {
+      "value": 15,
+      "display": "15% reduction in defect escape rate",
+      "confidence": "approximate",
+      "basis": "Observed from pre- versus post-process defect leakage across the Associate QA period; not tracked in a dedicated metrics dashboard at the time.",
+      "asOf": "2023-05-31",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-010",
+      "publish": true,
+      "scopeNote": "Attributed to co-building the project's first structured QA process: test case templates, coverage matrices, severity standards and defect governance, adopted across three-plus teams."
+    },
+
+    "associate_defects_caught": {
+      "value": 20,
+      "display": "20+ critical and high-severity defects caught pre-release",
+      "confidence": "approximate",
+      "basis": "JIRA defect records, May 2022 to May 2023.",
+      "asOf": "2023-05-31",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-012",
+      "publish": true,
+      "scopeNote": "Surfaced through systematic negative testing, boundary value analysis and exploratory testing across multi-channel user flows, before any automated coverage existed."
+    },
+
+    "etl_anomalies_surfaced": {
+      "value": 15,
+      "display": "15+ data anomalies surfaced pre-production",
+      "confidence": "approximate",
+      "basis": "SQL validation test reports and defect records, May 2022 to May 2023, across six-plus data pipelines.",
+      "asOf": "2023-05-31",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-013",
+      "publish": true
+    },
+
+    "live_misconfiguration_users": {
+      "value": 130,
+      "display": "130+ users",
+      "unit": "users in a health journey who received incorrect health recommendations",
+      "confidence": "approximate",
+      "basis": "Author's own recollection of the incident and its resolution; no formal defect-tracking record was cited in the source material.",
+      "asOf": "2022-06-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-044",
+      "publish": true,
+      "scopeNote": "Caught through manual spot-checking, before any automated regression coverage existed: a health recommendation had been configured in the CMS dashboard's UI layer without a matching update to the backend conversation JSON that actually drove responses. The largest of three data-consistency issues caught this way in about four months, and one of the concrete incidents behind building the platform's first automated suite."
+    },
+
     "e2e_latency_2026": {
       "value": { "from": 28.3, "to": 3.2 },
       "display": "28.3s → 3.2s median end-to-end latency",
@@ -300,6 +349,51 @@
       "source": "vault://metrics.md#MET-047",
       "publish": true,
       "scopeNote": "Mandatory context wherever RAG latency improvement is mentioned. Collapsing 20 sequential cross-encoder inference calls into one batched tensor pass accounts for the overwhelming majority of it. Omitting this credit would make the latency work read as mine."
+    },
+
+    "pipeline_latency_progression": {
+      "value": { "from": 27, "to": 5.5 },
+      "display": "26–28s → 12–18s → 4–7s median end-to-end latency",
+      "unit": "AI pipeline response latency, January to June 2026 tracking period",
+      "confidence": "exact",
+      "basis": "Production monitoring instrumentation from a six-month benchmarking and observability suite, tracked continuously rather than sampled once.",
+      "asOf": "2026-06-01",
+      "attribution": "team",
+      "credit": "the pipeline engineering team",
+      "role": "building and running the benchmarking suite that measured this and directed where the team optimised, not the pipeline changes themselves",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-005",
+      "publish": true,
+      "scopeNote": "Distinct from e2e_latency_2026, a separate later-stage staging regression (an expanded retrieval candidate pool pushing the reranker back into a bottleneck) and its June 2026 fix. This figure is the broader six-month tracking-period result that preceded and enabled that finding."
+    },
+
+    "nlp_intent_latency": {
+      "value": { "from": 2.5, "to": 0.9 },
+      "display": "2–3s → ~900ms",
+      "unit": "NLP intent classification step latency",
+      "confidence": "exact",
+      "basis": "Component-level instrumentation from the same benchmarking suite as pipeline_latency_progression.",
+      "asOf": "2026-06-01",
+      "attribution": "team",
+      "credit": "the pipeline engineering team",
+      "role": "benchmarking and validation, not the classifier optimisation itself",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-006",
+      "publish": true
+    },
+
+    "cache_hit_latency": {
+      "value": 350,
+      "display": "~350ms",
+      "unit": "latency for a request that hits the semantic cache layer",
+      "confidence": "exact",
+      "basis": "Production monitoring instrumentation, latest measurement June 2026.",
+      "asOf": "2026-06-01",
+      "attribution": "context",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-007",
+      "publish": true,
+      "scopeNote": "A system characteristic rather than an improvement claim: what a cache hit costs, not a before/after reduction."
     },
 
     "pact_blast_radius": {

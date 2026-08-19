@@ -40,6 +40,14 @@
     max-inline-size: var(--measure-tight);
 }
 
+/*
+  For a prose intro paragraph sitting directly in a plain `.wrap` (a grid
+  section, not one of the `*__body` wrappers that self-cap their own prose).
+*/
+.section__intro {
+    max-inline-size: var(--measure);
+}
+
 .section__more {
     margin-block-start: var(--space-l);
     font-size: var(--step--1);

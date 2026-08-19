@@ -302,7 +302,8 @@ hr {
   above it.
 */
 .case-study__body :is(p, li, blockquote),
-.page__body :is(p, li, blockquote) {
+.page__body :is(p, li, blockquote),
+.post__body :is(p, li, blockquote) {
     max-inline-size: var(--measure);
 }
 

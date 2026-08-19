@@ -14,7 +14,7 @@
         <text x="240" y="32">Unit and API tests</text>
         <text x="240" y="78">Contract and integration tests</text>
         <text x="240" y="124">End-to-end suites</text>
-        <text x="240" y="170">AI evaluation against a golden dataset</text>
+        <text x="240" y="170">AI eval vs. golden dataset</text>
         <text x="240" y="216">Production monitoring</text>
     </g>
 
