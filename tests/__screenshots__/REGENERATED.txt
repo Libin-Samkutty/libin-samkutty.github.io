@@ -1,4 +1,4 @@
-Regenerated: First-ever baseline generation after merging the resumed visual/prose review (PR #25) — styleguide, home, ai-evaluation-framework, aggregate-metrics-hide-the-failure and resume never had baselines.
-Commit:      12b98446830aeacdb12f13d0f92feae42c477275
-Ref:         refs/heads/main
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/32047224050
+Regenerated: Retry after two apt-mirror hangs during Install Chromium on the previous dispatch attempts. Regenerating after PR #28: résumé sidebar layout, homepage callout grid + timeline detail, /work/ column grids, colophon 2-col layout, chart padding fix, and prior in-progress branch changes. Confirmed via diff images that all failing routes/themes are intentional, cumulative changes, not regressions.
+Commit:      07680fb4fba29c8311ca0bbf9f2432861f5ccc0f
+Ref:         refs/heads/feature/instrument-rebuild
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/32305702439
