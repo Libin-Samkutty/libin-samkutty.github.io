@@ -345,13 +345,6 @@ html:not(.js) .theme-toggle {
     gap: var(--space-2xs) var(--space-m);
 }
 
-.site-footer__colophon {
-    max-inline-size: var(--measure);
-    color: var(--color-text-muted);
-    border-inline-start: 2px solid var(--color-border-strong);
-    padding-inline-start: var(--space-s);
-}
-
 .site-footer__meta {
     display: flex;
     flex-wrap: wrap;
@@ -364,28 +357,14 @@ html:not(.js) .theme-toggle {
 
 @media (min-width: 64em) {
     .site-footer__inner {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--space-l) var(--space-xl);
     }
 
-    .site-footer__nav {
-        grid-column: 1;
-    }
-
-    .site-footer__list {
-        flex-direction: column;
-        gap: var(--space-3xs);
-    }
-
+    .site-footer__list,
     .site-footer__profiles {
-        grid-column: 1;
         flex-direction: column;
         gap: var(--space-3xs);
-    }
-
-    .site-footer__colophon {
-        grid-column: 2;
-        grid-row: 1 / span 2;
     }
 
     .site-footer__meta {
@@ -506,6 +485,15 @@ html:not(.js) .theme-toggle {
     line-height: var(--leading-normal);
     color: var(--color-text-muted);
     max-inline-size: 52ch;
+}
+
+/* Same fix as .page__lede (article.css) and for the same reason: --step-1
+   drops below a 45-character line at narrow widths before the column has
+   room to grow. */
+@media (max-width: 48em) {
+    .hero__lede {
+        font-size: var(--step-0);
+    }
 }
 
 .hero__actions {
@@ -647,13 +635,12 @@ html:not(.js) .theme-toggle {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--space-l);
     }
-}
 
-@media (min-width: 64em) {
-    .stat-rail__list {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
+    /*
+      Spanning the wide stat as soon as the grid goes multi-column — not just
+      at the 4-column breakpoint — keeps the other four stats dividing evenly
+      into full rows instead of leaving one orphaned in a half-empty row.
+    */
     .stat--wide {
         grid-column: 1 / -1;
         border-block-start: var(--hairline);
@@ -663,6 +650,12 @@ html:not(.js) .theme-toggle {
     .stat--wide .stat__value {
         font-size: var(--step-1);
         font-family: var(--font-body);
+    }
+}
+
+@media (min-width: 64em) {
+    .stat-rail__list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
 
@@ -679,6 +672,19 @@ html:not(.js) .theme-toggle {
     .card-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--space-l);
+    }
+
+    /* Exactly 3 items, always (the homepage's featured case studies and its
+       latest-posts list): the 2-column stage above can never balance an odd
+       count, so this skips it, same reasoning as .grid--three. */
+    .card-list--three {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 60em) {
+    .card-list--three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 

@@ -102,7 +102,7 @@ That last line repeats across all three extensions: writing down what the curren
 
 ## Related links
 
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/) — the evaluation layer above these structural checks
-- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/) — the same class of failure, one service boundary away
-- [Decompose by tool call](/writing/decompose-by-tool-call/) — evaluating a classifier by structure rather than by prose
-- [Audit your own traffic](/writing/audit-your-own-traffic/) — how a canonical set should be derived
+- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): the evaluation layer above these structural checks
+- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/): the same class of failure, one service boundary away
+- [Decompose by tool call](/writing/decompose-by-tool-call/): evaluating a classifier by structure rather than by prose
+- [Audit your own traffic](/writing/audit-your-own-traffic/): how a canonical set should be derived

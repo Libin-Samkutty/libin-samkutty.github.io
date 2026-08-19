@@ -99,7 +99,7 @@ The RAG pipeline this framework evaluates is the engineering team's work. I eval
 
 ## Related links
 
-- [Rebuilding an LLM judge that was grading its own homework](/work/llm-judge-independence/) — the judge design this depends on
-- [Judging live production traffic](/work/production-evaluation-pipeline/) — what this framework structurally cannot see
-- [Don't call it RAG](/writing/dont-call-it-rag/) — the architecture distinction in general form
-- [Asymmetric thresholds](/writing/asymmetric-thresholds/) — why the cache gates precision and recall differently
+- [Rebuilding an LLM judge that was grading its own homework](/work/llm-judge-independence/): the judge design this depends on
+- [Judging live production traffic](/work/production-evaluation-pipeline/): what this framework structurally cannot see
+- [Don't call it RAG](/writing/dont-call-it-rag/): the architecture distinction in general form
+- [Asymmetric thresholds](/writing/asymmetric-thresholds/): why the cache gates precision and recall differently

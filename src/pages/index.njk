@@ -14,11 +14,11 @@ bodyClass: home
             <h1 class="hero__title">{{ site.tagline }}</h1>
 
             <p class="hero__lede">
-                I am the only QA engineer on a digital health platform that answers questions about
-                pregnancy, contraception and vaccination in seven languages across six countries.
-                The interesting part of that job is not finding bugs. It is deciding, on evidence,
-                whether a generated answer is good enough to send to someone who is worried about
-                a symptom.
+                The platform I test answers questions about pregnancy, contraception and
+                vaccination over WhatsApp, in nine languages across six countries. I am its only
+                QA engineer, and the interesting part of that job is not finding bugs. It is
+                deciding, on evidence, whether a generated answer is good enough to send to
+                someone who is worried about a symptom.
             </p>
 
             <p class="hero__actions">
@@ -86,7 +86,7 @@ bodyClass: home
     <div class="wrap">
         <h2 class="section__title" id="work-title">Selected work</h2>
 
-        <ul class="card-list">
+        <ul class="card-list card-list--three">
             {% for item in collections.caseStudies %}
                 {% if item.fileSlug in projects.featuredCaseStudies %}
                 <li class="card card--case-study" data-reveal>
@@ -109,8 +109,7 @@ bodyClass: home
         <h2 class="section__title" id="wrong-title">Things that didn't work</h2>
 
         <p>
-            This section is the fastest way to show you what I am actually like to work with, not
-            an exercise in modesty, and every case study on this site carries one like it.
+            Every case study on this site carries a section like this one.
         </p>
 
         <div class="callout callout--limitation">
@@ -124,7 +123,7 @@ bodyClass: home
             <p><a href="{{ '/work/llm-judge-independence/' | url }}">How I found it and what replaced it</a></p>
         </div>
 
-        <div class="callout callout--limitation">
+        <div class="callout">
             <h3 class="callout__title">Four testing layers all missed the same gap</h3>
             <p>
                 Golden-dataset regression, the conversational suite, retrieval faithfulness scoring
@@ -135,7 +134,7 @@ bodyClass: home
             <p><a href="{{ '/work/production-evaluation-pipeline/' | url }}">What the production pipeline caught</a></p>
         </div>
 
-        <div class="callout callout--limitation">
+        <div class="callout">
             <h3 class="callout__title">I spent two years optimising a framework I then retired</h3>
             <p>
                 Parallelisation, containerisation, flake reduction: real gains, all of them. Then
@@ -152,7 +151,7 @@ bodyClass: home
     <div class="wrap">
         <h2 class="section__title" id="writing-title">Latest writing</h2>
 
-        <ul class="card-list card-list--posts">
+        <ul class="card-list card-list--three">
             {% for item in collections.posts | limit(3) %}
             <li class="card card--post" data-reveal>
                 <p class="card__eyebrow"><time datetime="{{ item.date | isoDate }}">{{ item.date | readableDate }}</time></p>

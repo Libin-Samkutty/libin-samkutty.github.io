@@ -101,7 +101,7 @@ That is the whole argument for running both layers, and why I do not call the sc
 
 ## Related links
 
-- [From Robot Framework to Playwright](/work/from-robot-to-playwright/) — the fixture layer built here later absorbed the last Robot suite
-- [Decompose by tool call](/writing/decompose-by-tool-call/) — testing a classifier by what downstream reads
-- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/) — why the provider's own view of correctness is not enough
-- [Zero net writes](/writing/zero-net-writes/) — the test-data isolation underneath the API layer
+- [From Robot Framework to Playwright](/work/from-robot-to-playwright/): the fixture layer built here later absorbed the last Robot suite
+- [Decompose by tool call](/writing/decompose-by-tool-call/): testing a classifier by what downstream reads
+- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/): why the provider's own view of correctness is not enough
+- [Zero net writes](/writing/zero-net-writes/): the test-data isolation underneath the API layer

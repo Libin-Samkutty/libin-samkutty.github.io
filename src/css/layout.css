@@ -71,6 +71,26 @@
     max-inline-size: var(--measure-tight);
 }
 
+/*
+  `.section + .section` (above) zeroes the top padding of any plain section
+  that follows another plain section, so two stacked sections don't double
+  their gap. It also matches these band sections whenever a plain .section
+  precedes them, stripping the top half of their padding and leaving their
+  content pressed against the band's own top edge while the bottom keeps
+  its full padding. A tinted or bordered band is a distinct visual passage
+  and needs its own symmetric padding regardless of what precedes it.
+*/
+.section--emphasis.section,
+.section--cta.section {
+    padding-block-start: var(--space-2xl);
+}
+
+/* Two plain paragraphs with nothing between them (the closing line and the
+   button) have no margin of their own after the reset. */
+.section--cta p + p {
+    margin-block-start: var(--space-l);
+}
+
 /* ---------------------------------------------------------------- grid */
 
 .grid {
@@ -78,15 +98,14 @@
     gap: var(--space-m);
 }
 
-@media (min-width: 48em) {
-    .grid--three {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: var(--space-l);
-    }
-}
-
-@media (min-width: 64em) {
+/*
+  Exactly 3 items, always. A 2-column intermediate step before this can never
+  balance an odd count — it orphans the third card in a half-empty row — so
+  this goes straight from 1 column to 3 at a single breakpoint instead.
+*/
+@media (min-width: 60em) {
     .grid--three {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-l);
     }
 }

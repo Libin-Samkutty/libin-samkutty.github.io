@@ -113,6 +113,6 @@ The conversational suite depends on `botium-core`, whose community adoption coll
 
 ## Related links
 
-- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/) — the fixture layer that absorbed the retired API suite
-- [Making a non-deterministic model produce a stable snapshot](/work/snapshot-testing-nondeterministic-ai/) — testing the conversational layer
-- [Threshold gates vs trend views](/writing/threshold-gates-vs-trend-views/) — the trend argument, learned here
+- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/): the fixture layer that absorbed the retired API suite
+- [Making a non-deterministic model produce a stable snapshot](/work/snapshot-testing-nondeterministic-ai/): testing the conversational layer
+- [Threshold gates vs trend views](/writing/threshold-gates-vs-trend-views/): the trend argument, learned here

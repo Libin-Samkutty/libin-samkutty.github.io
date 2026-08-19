@@ -10,7 +10,7 @@ layout: layouts/base.njk
         </div>
     </header>
 
-    <div class="page__body wrap wrap--measure">
+    <div class="page__body wrap{% if bodyWidth != "wide" %} wrap--measure{% endif %}">
         {{ content | safe }}
     </div>
 </article>

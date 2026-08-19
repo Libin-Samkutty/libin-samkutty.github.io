@@ -1,8 +1,4 @@
-{#
-  Footer. Carries the demoted nav items, the profiles, and a colophon — the
-  colophon is not decoration here, it is the shortest honest statement of how the
-  site is built and is the first thing an engineer reading this page will check.
-#}
+{# Footer. Carries the demoted nav items and the profiles. #}
 <footer class="site-footer">
     <div class="wrap site-footer__inner">
         <nav class="site-footer__nav" aria-label="Footer">
@@ -22,12 +18,6 @@
             <li><a href="{{ site.profiles.github }}" rel="me noopener">GitHub</a></li>
             <li><a href="{{ site.profiles.pypi }}" rel="noopener">PyPI</a></li>
         </ul>
-
-        <p class="site-footer__colophon">
-            Built with Eleventy. No client-side framework, no third-party requests, no analytics.
-            Accessibility and performance budgets are enforced in CI. If this page had a contrast
-            failure or a layout shift, the build that produced it would have failed.
-        </p>
 
         {# `data-volatile` marks text that changes without any design change, so
            the visual suite can mask it. Without that, editing site.lastUpdated —

@@ -105,7 +105,7 @@ The RAG retrieval latency improvement was the engineering team's work, not mine.
 
 ## Related links
 
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/) — the offline layer this complements
-- [Rebuilding an LLM judge that was grading its own homework](/work/llm-judge-independence/) — the judge design inside this pipeline
-- [Audit your own traffic](/writing/audit-your-own-traffic/) — reading what users actually send
-- [Aggregate metrics hide the failure](/writing/aggregate-metrics-hide-the-failure/) — why an average would not have found this
+- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): the offline layer this complements
+- [Rebuilding an LLM judge that was grading its own homework](/work/llm-judge-independence/): the judge design inside this pipeline
+- [Audit your own traffic](/writing/audit-your-own-traffic/): reading what users actually send
+- [Aggregate metrics hide the failure](/writing/aggregate-metrics-hide-the-failure/): why an average would not have found this

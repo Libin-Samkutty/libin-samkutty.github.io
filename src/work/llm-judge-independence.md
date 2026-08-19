@@ -109,7 +109,7 @@ The calibration sets were annotated by the health content team: a doctor, a nurs
 
 ## Related links
 
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/) — these four constraints applied at scale
-- [Judging live production traffic](/work/production-evaluation-pipeline/) — the same judge running on real conversations
-- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/) — the general form of the circularity problem
-- [Don't call it RAG](/writing/dont-call-it-rag/) — why only one of six programs is evaluated for retrieval quality
+- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): these four constraints applied at scale
+- [Judging live production traffic](/work/production-evaluation-pipeline/): the same judge running on real conversations
+- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/): the general form of the circularity problem
+- [Don't call it RAG](/writing/dont-call-it-rag/): why only one of six programs is evaluated for retrieval quality
