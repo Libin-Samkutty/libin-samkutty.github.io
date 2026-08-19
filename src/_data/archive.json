@@ -2,7 +2,7 @@
   {
     "year": "2025–2026",
     "title": "AI evaluation framework for a maternal-health chatbot",
-    "context": "Built the evaluation layer for a maternal-health chatbot from nothing — an LLM-as-a-judge, a curated multilingual golden dataset, and RAGAS/G-Eval metrics — then reused the same design when a pharma partner's HPV chatbot programs launched across new countries.",
+    "context": "Built the evaluation layer for a maternal-health chatbot from nothing: an LLM-as-a-judge, a curated multilingual golden dataset, and RAGAS/G-Eval metrics. Reused the same design when a pharma partner's HPV chatbot programs launched across new countries.",
     "stack": ["Python", "DeepEval", "RAGAS", "GitHub Actions", "BigQuery"],
     "href": "/work/ai-evaluation-framework/"
   },

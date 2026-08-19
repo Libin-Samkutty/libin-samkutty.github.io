@@ -134,10 +134,10 @@
     /* ---------------------------------------------------------------- measure */
 
     /* `ch` is the advance width of "0". IBM Plex Serif's average character is
-       somewhat narrower than that, so a column set to 66ch renders close to the
-       60–70-characters-per-line target measured against rendered paragraphs,
-       not chosen by eye. */
-    --measure: 66ch;
+       narrower than that — 66ch measured at 84 real characters per line against
+       rendered paragraphs, confirmed with scripts/ui-shots.mjs, well past the
+       60–70 target. 51ch was the value that brought it back into range. */
+    --measure: 51ch;
     --measure-tight: 46ch;
     --measure-title: 18ch;
 

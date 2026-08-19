@@ -1034,7 +1034,7 @@
       "display": "34+ sprints",
       "unit": "sprints as Scrum Master",
       "confidence": "exact",
-      "basis": "Serving as Scrum Master since April 2025, concurrent with QA and analytics ownership — sprint planning, stand-ups and sprint showcases.",
+      "basis": "Serving as Scrum Master since April 2025, concurrent with QA and analytics ownership: sprint planning, stand-ups and sprint showcases.",
       "asOf": "2026-06-01",
       "attribution": "self",
       "source": "vault://career.md",
@@ -1064,7 +1064,7 @@
       "attribution": "self",
       "source": "vault://metrics.md#MET-021",
       "publish": true,
-      "scopeNote": "Found in a pipeline I had built and owned — my own daily validation checks reused the same flawed logic and had not caught it. Nobody reported it; it surfaced during unrelated work."
+      "scopeNote": "Found in a pipeline I had built and owned. My own daily validation checks reused the same flawed logic and had not caught it. Nobody reported it; it surfaced during unrelated work."
     },
 
     "pypi_downloads_30d": {

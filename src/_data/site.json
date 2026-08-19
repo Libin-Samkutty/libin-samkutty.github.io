@@ -4,7 +4,7 @@
   "titleEffective": "2026-06-01",
   "titleSuffix": " | Libin Samkutty",
   "tagline": "I build the evaluation systems that decide whether an AI answer is safe to ship.",
-  "plainClaim": "I catch it when an AI gives an unsafe answer to a health question — before a real person ever sees it.",
+  "plainClaim": "I catch unsafe AI answers to health questions before a real person ever sees them.",
   "targetRoles": [
     "Senior AI QA Engineer",
     "Lead AI Quality Engineer",
