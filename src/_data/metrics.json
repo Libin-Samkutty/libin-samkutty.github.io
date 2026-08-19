@@ -131,6 +131,18 @@
       "scopeNote": "This is scope of responsibility, not personal achievement. It is the honest way to carry the platform's user numbers: I am accountable for quality across them, I did not build them."
     },
 
+    "languages": {
+      "value": 9,
+      "display": "9",
+      "unit": "languages the platform's chatbots operate in",
+      "confidence": "exact",
+      "basis": "Counted from the seven country programs' language lists: English, Hindi, Assamese, Marathi, Kannada, Bahasa Indonesia, Thai, Swahili and Hausa.",
+      "asOf": "2026-08-01",
+      "attribution": "context",
+      "source": "src/_data/programs.json",
+      "publish": true
+    },
+
     "countries": {
       "value": 6,
       "display": "6",
