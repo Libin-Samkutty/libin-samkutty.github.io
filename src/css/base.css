@@ -368,13 +368,19 @@ th {
 
   Gated on `.js`, which the inline script in <head> adds synchronously — with
   JavaScript off the class never appears, no rule below matches, and every
-  element sits at its unconditional default (fully visible, no transform).
-  That gate is the only thing site.js still contributes to this mechanism: the
+  element sits at its unconditional default (no transform). That gate is the
+  only thing site.js still contributes to this mechanism: the
   IntersectionObserver is gone. Scroll-driven `animation-timeline: view()`
   drives the reveal itself, so nothing here listens for a scroll event either.
-  `animation-range: entry 0% entry 40%` means an element finds its settled
-  place well before it reaches the middle of the viewport and then simply
-  stays there — it does not reverse on scroll-up.
+
+  Deliberately `translate` only, never `opacity`. An opacity-driven version was
+  the first attempt, and it failed axe's colour-contrast check on every route
+  with more than one screen of content: axe evaluates the DOM immediately after
+  load with no scroll performed, so anything below the fold was still
+  genuinely at opacity 0 — indistinguishable, to a scanner or a screen
+  magnifier, from a real contrast failure. A reader loses nothing this way:
+  the element is fully legible the instant it exists, and only its position
+  animates in.
 */
 
 @supports (animation-timeline: view()) {
@@ -387,12 +393,10 @@ th {
 
         @keyframes reveal-in {
             from {
-                opacity: 0;
                 translate: 0 var(--reveal-shift);
             }
 
             to {
-                opacity: 1;
                 translate: none;
             }
         }
