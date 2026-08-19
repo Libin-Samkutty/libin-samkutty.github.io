@@ -23,6 +23,7 @@
     flex-wrap: wrap;
     gap: var(--space-2xs) var(--space-s);
     align-items: baseline;
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-wide);
@@ -108,7 +109,7 @@
 .context-strip {
     margin-block-end: var(--space-xl);
     border: var(--hairline);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     background-color: var(--color-surface-sunken);
     padding: var(--space-m);
     font-size: var(--step--1);
@@ -121,6 +122,7 @@
 }
 
 .context-strip dt {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
@@ -144,7 +146,7 @@
 @media (min-width: 48em) {
     .context-strip__row {
         display: grid;
-        grid-template-columns: 11rem minmax(0, 1fr);
+        grid-template-columns: var(--rail-width) minmax(0, 1fr);
         gap: var(--space-m);
         align-items: baseline;
     }
@@ -174,7 +176,7 @@
     overflow-x: auto;
     overscroll-behavior-x: contain;
     border: var(--hairline);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     padding: var(--space-s);
 }
 
@@ -200,6 +202,7 @@
     border: var(--hairline-strong);
     border-radius: var(--radius-pill);
     background-color: var(--color-surface);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     color: var(--color-text-muted);
     white-space: nowrap;
@@ -229,6 +232,7 @@
 */
 
 .metric {
+    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
 }
 
@@ -258,6 +262,7 @@
 }
 
 .metric__credit {
+    font-family: var(--font-body);
     font-style: italic;
 }
 
@@ -269,7 +274,8 @@
     display: block;
     margin-block-start: var(--space-3xs);
     padding-inline-start: var(--space-2xs);
-    border-inline-start: 2px solid var(--color-highlight);
+    border-inline-start: 2px solid var(--color-signal);
+    font-family: var(--font-body);
     font-size: 0.82em;
     line-height: var(--leading-normal);
     color: var(--color-text-muted);
@@ -286,7 +292,7 @@
 [data-confidence="projection"] .metric__value,
 [data-confidence="estimate"] .metric__value {
     text-decoration: underline dotted from-font;
-    text-decoration-color: var(--color-highlight);
+    text-decoration-color: var(--color-signal);
     text-underline-offset: 0.25em;
 }
 
@@ -312,6 +318,7 @@
 .architecture-note__label {
     display: inline-block;
     margin-inline-end: var(--space-2xs);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
@@ -326,7 +333,7 @@
     padding: var(--space-m);
     border: var(--hairline);
     border-inline-start: 3px solid var(--color-accent);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     background-color: var(--color-surface);
 }
 
@@ -340,24 +347,24 @@
 }
 
 /*
-  The signature component, and amber's entire job on this site.
+  The signature component, and rust's entire job on this site.
 
-  Everything else is navy and lavender precisely so this reads as a different
-  register the moment it appears. If amber shows up more than twice in a viewport
-  the design has stopped saying "this is the part where I was wrong" and started
-  saying "this is a warning box".
+  Everything else is ink and teal precisely so this reads as a different
+  register the moment it appears. If rust shows up more than twice in a
+  viewport the design has stopped saying "this is the part where I was wrong"
+  and started saying "this is a warning box".
 */
 .callout--limitation {
-    border-inline-start-color: var(--color-highlight);
-    background-color: var(--color-surface-highlight);
+    border-inline-start-color: var(--color-signal);
+    background-color: var(--color-surface-signal);
 }
 
 .callout--limitation .callout__title {
-    color: var(--color-highlight-text);
+    color: var(--color-signal-text);
 }
 
 .callout--limitation a {
-    color: var(--color-highlight-text);
+    color: var(--color-signal-text);
 }
 
 /* ================================================================ capability matrix */
@@ -375,7 +382,7 @@
     margin-block-end: var(--space-xl);
     padding: var(--space-m);
     border: var(--hairline);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     background-color: var(--color-surface-sunken);
     font-size: var(--step--1);
 }
@@ -386,6 +393,7 @@
 }
 
 .level-key__item dt {
+    font-family: var(--font-display);
     font-weight: var(--weight-semibold);
     color: var(--color-accent-text);
     margin-block-end: var(--space-3xs);
@@ -424,7 +432,7 @@
   its written definition are the honest version of the same claim.
 */
 .capability__level-title {
-    font-family: var(--font-body);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
@@ -448,6 +456,7 @@
 }
 
 .capability__name {
+    font-family: var(--font-display);
     font-weight: var(--weight-semibold);
     font-size: var(--step-0);
 }
@@ -460,6 +469,7 @@
 
 .capability__evidence {
     justify-self: start;
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-wide);
@@ -513,6 +523,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3xs) var(--space-s);
+    font-family: var(--font-mono);
     font-size: var(--step--1);
     color: var(--color-text-subtle);
     margin-block-end: var(--space-2xs);
@@ -538,8 +549,8 @@
 }
 
 .related__title {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
-    font-family: var(--font-body);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
@@ -570,6 +581,7 @@
 .chips > li + li,
 .card-list > li + li,
 .other-systems > li + li,
-.timeline > li + li {
+.timeline > li + li,
+.numbered-list > li + li {
     margin-block-start: 0;
 }

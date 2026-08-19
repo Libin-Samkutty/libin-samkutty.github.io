@@ -1,24 +1,25 @@
 /*
-  Layout primitives. Four of them, and they compose — `.wrap` is applied
-  alongside a block's own class in the templates (`class="wrap site-header__inner"`),
-  so the container and the component never fight over width.
+  Layout primitives. `.wrap` composes alongside a block's own class in the
+  templates (`class="wrap site-header__inner"`), so the container and the
+  component never fight over width.
 */
 
 /*
   The container.
 
   `min(100% - 2 * gutter, max)` gives a gutter that is always present and a
-  ceiling that is always respected. The legacy `width: 90vw` had neither: it
-  scaled to 3000px on a wide monitor and produced a 30-character line, and it
-  ignored the scrollbar, which is where the horizontal overflow came from.
+  ceiling that is always respected. A bare `width: 90vw` has neither: it scales
+  to 3000px on a wide monitor and produces a 30-character line, and it ignores
+  the scrollbar, which is where horizontal overflow comes from.
 */
 .wrap {
     inline-size: min(100% - 2 * var(--gutter), var(--wrap-max));
     margin-inline: auto;
 }
 
-/* The reading column. 68 characters, which is where an essay stops being a
-   paragraph and starts being a wall. */
+/* The reading column, sized to the measure token rather than to a raw
+   character count, so IBM Plex Serif's own average character width decides
+   where a paragraph stops being a line and starts being a wall. */
 .wrap--measure {
     inline-size: min(100% - 2 * var(--gutter), var(--measure));
 }
@@ -107,5 +108,53 @@
     .grid--three {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: var(--space-l);
+    }
+}
+
+/* ---------------------------------------------------------------- record */
+
+/*
+  The record layout: a fixed mono rail (a date, a section number, a grade)
+  beside a wide prose or data column. This is the layout concept the whole
+  rebuild is named for — a case study's context strip, a page's dated
+  sections and the homepage's evidence rows are all one `.record` row, sized
+  once from `--rail-width` in tokens.css so the rail never drifts between
+  contexts.
+
+  Single column below 48em: the rail sits above its content rather than
+  squeezing beside it, which is also how a narrow lab notebook actually reads.
+*/
+.record {
+    display: grid;
+    gap: var(--space-3xs) var(--space-m);
+}
+
+@media (min-width: 48em) {
+    .record {
+        grid-template-columns: var(--rail-width) minmax(0, 1fr);
+        align-items: baseline;
+    }
+}
+
+/*
+  A list of record rows that must line up with each other — the evidence
+  section's three rows, a case study's dated sections. `subgrid` shares the
+  parent's column tracks with every row, so the rail width is set once on the
+  list rather than recomputed per row, and a row with a short value never
+  misaligns the next row's rail.
+*/
+.record-list {
+    display: grid;
+    gap: var(--space-l);
+}
+
+@media (min-width: 48em) {
+    .record-list {
+        grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    }
+
+    .record-list > .record {
+        grid-column: 1 / -1;
+        grid-template-columns: subgrid;
     }
 }

@@ -1,6 +1,12 @@
 /*
   Site chrome and the homepage components.
 
+  Body text defaults to the serif reading face (base.css), so every interface
+  element below — nav, buttons, the toggle, footer links — sets IBM Plex Sans
+  explicitly rather than inheriting it. Anything that is a short uppercase
+  label, a date or a count sets IBM Plex Mono explicitly for the same reason,
+  in the other direction.
+
   Flat single-class BEM throughout. `is-` classes are state written by site.js;
   `data-` attributes are behaviour hooks. Neither is renamed here, because
   site.js queries the `data-` hooks and toggles the `is-` classes and nothing
@@ -28,6 +34,7 @@
     border-start-end-radius: 0;
     border-end-start-radius: var(--radius-s);
     border-end-end-radius: var(--radius-s);
+    font-family: var(--font-display);
     text-decoration: none;
     font-size: var(--step--1);
     font-weight: var(--weight-medium);
@@ -74,6 +81,7 @@
 }
 
 .site-header__role {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     color: var(--color-text-subtle);
     letter-spacing: var(--tracking-wide);
@@ -90,6 +98,7 @@
     border: 1px solid var(--color-border-interactive);
     border-radius: var(--radius-s);
     color: var(--color-text);
+    font-family: var(--font-display);
     font-size: var(--step--1);
     font-weight: var(--weight-medium);
 }
@@ -191,6 +200,7 @@
     display: block;
     padding: var(--space-2xs) 0;
     color: var(--color-text);
+    font-family: var(--font-display);
     text-decoration: none;
     font-size: var(--step-0);
     font-weight: var(--weight-medium);
@@ -201,8 +211,8 @@
 }
 
 /*
-  Current page. The rule is the signal, not the colour — a lavender link that is
-  merely a slightly different lavender would be colour carrying meaning alone.
+  Current page. The rule is the signal, not the colour — an accent link that is
+  merely a slightly different accent would be colour carrying meaning alone.
   Weight changes too.
 */
 .site-nav__link[aria-current] {
@@ -328,6 +338,7 @@ html:not(.js) .theme-toggle {
     border-block-start: var(--hairline);
     background-color: var(--color-surface-sunken);
     padding-block: var(--space-xl);
+    font-family: var(--font-display);
     font-size: var(--step--1);
 }
 
@@ -350,6 +361,7 @@ html:not(.js) .theme-toggle {
     flex-wrap: wrap;
     gap: var(--space-2xs) var(--space-m);
     color: var(--color-text-subtle);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     padding-block-start: var(--space-s);
     border-block-start: var(--hairline);
@@ -379,15 +391,15 @@ html:not(.js) .theme-toggle {
 
   1. A dot grid at 4% opacity. It reads as graph paper rather than as texture,
      which is the only decorative element on the site that is allowed to exist
-     purely because it looks like the subject matter.
-  2. A lavender radial glow positioned behind the head. This is the one place the
-     accent earns its keep at scale: it echoes the shirt in the portrait and
-     separates a navy jacket from a near-black ground, which otherwise merge into
-     an unreadable silhouette in dark mode.
+     purely because it looks like the subject matter — an instrument reads its
+     measurements against a grid.
+  2. A teal radial glow positioned behind the head. This is the one place the
+     accent earns its keep at scale: it separates a dark jacket from a
+     near-black ground, which would otherwise merge into an unreadable
+     silhouette in dark mode.
   3. A feathered bottom mask on the portrait itself. Without it the photo ends in
      a straight horizontal cut through the jacket and reads as something pasted
-     onto the page. This one detail is the difference between "transparent PNG"
-     and "art direction".
+     onto the page.
 
   All three are painted with `background-image` and `mask-image`, so none of them
   can shift layout, and the LCP element is untouched.
@@ -412,8 +424,8 @@ html:not(.js) .theme-toggle {
     opacity: 0.04;
 
     /* Fades out toward the bottom so the grid does not collide with the hairline
-       above the stat rail, which is doing structural work and should not have to
-       compete with decoration. */
+       above the evidence list, which is doing structural work and should not
+       have to compete with decoration. */
     mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
 }
 
@@ -442,8 +454,8 @@ html:not(.js) .theme-toggle {
     background-image: radial-gradient(
         circle closest-side,
         light-dark(
-            color-mix(in oklab, var(--lavender-500) 13%, transparent),
-            color-mix(in oklab, var(--lavender-500) 34%, transparent)
+            color-mix(in oklab, var(--teal-500) 11%, transparent),
+            color-mix(in oklab, var(--teal-500) 30%, transparent)
         ),
         transparent 88%
     );
@@ -461,6 +473,7 @@ html:not(.js) .theme-toggle {
 }
 
 .hero__eyebrow {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-wide);
@@ -553,6 +566,7 @@ html:not(.js) .theme-toggle {
     padding: var(--space-2xs) var(--space-m);
     border-radius: var(--radius-s);
     border: 1px solid transparent;
+    font-family: var(--font-display);
     font-size: var(--step--1);
     font-weight: var(--weight-medium);
     line-height: 1.5;
@@ -589,74 +603,128 @@ html:not(.js) .theme-toggle {
     color: var(--color-accent-text);
 }
 
-/* ================================================================ stat rail */
+/* ================================================================ evidence record */
 
-.stat-rail {
-    border-block: var(--hairline);
-    background-color: var(--color-surface-sunken);
-    padding-block: var(--space-l);
+/*
+  The signature component. Every published figure on the homepage renders as a
+  full-width row: a grade in the rail (confidence tag plus its basis, from
+  `{% grade %}`), a bare value and a plain-language label in the main column
+  (from `{% metric %}`). No other portfolio grades its own claims, and grading
+  them in the layout rather than in a footnote is the point.
+*/
+
+.evidence__item {
+    padding-block: var(--space-m);
+    border-block-start: var(--hairline);
 }
 
-.stat-rail__list {
-    display: grid;
-    gap: var(--space-m);
+.evidence__item:first-child {
+    border-block-start: none;
+    padding-block-start: 0;
 }
 
-.stat {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    gap: var(--space-3xs);
-}
-
-.stat__label {
+.evidence__grade {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
-    line-height: var(--leading-snug);
+    line-height: var(--leading-normal);
+    color: var(--color-text-subtle);
+}
+
+.evidence__grade .grade__label {
+    display: inline-block;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
     color: var(--color-text-muted);
-    max-inline-size: 34ch;
 }
 
 /*
-  The number leads visually but follows in the DOM: `column-reverse` puts the
-  <dd> on top while the <dt>/<dd> pairing a screen reader relies on stays intact.
-  Everything inside `.metric` sizes in `em`, so the whole assembly — hedge, value,
-  basis, credit — scales from this one declaration.
+  A projected or estimated figure earns the signal colour on its grade tag —
+  reinforcement, not the only cue: the word "approximate" or "projected" is
+  already there in the tag text either way.
 */
-.stat__value {
-    font-family: var(--font-display);
+[data-confidence="projection"] .evidence__grade .grade__label,
+[data-confidence="estimate"] .evidence__grade .grade__label {
+    color: var(--color-signal-text);
+}
+
+.evidence__grade .grade__basis {
+    display: block;
+    margin-block-start: var(--space-3xs);
+    max-inline-size: 30ch;
+}
+
+.evidence__value {
+    font-family: var(--font-mono);
     font-size: var(--step-3);
     font-weight: var(--weight-semibold);
-    line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
 }
 
-@media (min-width: 30em) {
-    .stat-rail__list {
+.evidence__label {
+    margin-block-start: var(--space-3xs);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure-tight);
+}
+
+@media (min-width: 48em) {
+    .evidence__value {
+        font-size: var(--step-4);
+    }
+}
+
+/* ================================================================ gate */
+
+/*
+  The secondary motif. A result and the limitation that sits beside it, always
+  paired and always named — "pass" and "fail" are in the text, so the colour is
+  reinforcement rather than the only signal a colour-blind reader gets.
+*/
+
+.gate {
+    display: grid;
+    gap: var(--space-m);
+    margin-block: var(--space-l);
+}
+
+@media (min-width: 48em) {
+    .gate {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: var(--space-l);
-    }
-
-    /*
-      Spanning the wide stat as soon as the grid goes multi-column — not just
-      at the 4-column breakpoint — keeps the other four stats dividing evenly
-      into full rows instead of leaving one orphaned in a half-empty row.
-    */
-    .stat--wide {
-        grid-column: 1 / -1;
-        border-block-start: var(--hairline);
-        padding-block-start: var(--space-m);
-    }
-
-    .stat--wide .stat__value {
-        font-size: var(--step-1);
-        font-family: var(--font-body);
+        align-items: start;
     }
 }
 
-@media (min-width: 64em) {
-    .stat-rail__list {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+.gate__item {
+    padding: var(--space-m);
+    border: var(--hairline);
+    border-inline-start-width: 3px;
+}
+
+.gate__tag {
+    display: inline-block;
+    margin-inline-end: var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+}
+
+.gate__item--pass {
+    border-inline-start-color: var(--color-accent);
+}
+
+.gate__item--pass .gate__tag {
+    color: var(--color-accent-text);
+}
+
+.gate__item--fail {
+    border-inline-start-color: var(--color-signal);
+}
+
+.gate__item--fail .gate__tag {
+    color: var(--color-signal-text);
 }
 
 /* ================================================================ cards */
@@ -704,6 +772,7 @@ html:not(.js) .theme-toggle {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2xs) var(--space-s);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-wide);
@@ -734,6 +803,7 @@ html:not(.js) .theme-toggle {
 .card__meta {
     margin-block-start: auto;
     padding-block-start: var(--space-2xs);
+    font-family: var(--font-mono);
     font-size: var(--step--1);
     color: var(--color-text-subtle);
 }
@@ -743,7 +813,7 @@ html:not(.js) .theme-toggle {
 .card--case-study,
 .card--post {
     border: var(--hairline);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     background-color: var(--color-surface);
     padding: var(--space-m);
     transition: border-color var(--duration-base) var(--ease-standard);
@@ -764,6 +834,108 @@ html:not(.js) .theme-toggle {
 
 .card--plain + .card--plain {
     margin-block-start: var(--space-l);
+}
+
+/* ================================================================ numbered list */
+
+/*
+  Selected work and the archive both read as a numbered list rather than a card
+  grid — content that is genuinely a ranked or dated sequence, which is the one
+  case the frontend-design brief calls out numbered markers as earning their
+  keep rather than decorating.
+*/
+
+.numbered-list {
+    list-style: none;
+    padding: 0;
+    counter-reset: numbered-list;
+}
+
+.numbered-list__item {
+    counter-increment: numbered-list;
+    display: grid;
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    gap: var(--space-3xs) var(--space-m);
+    padding-block: var(--space-l);
+    border-block-start: var(--hairline);
+}
+
+.numbered-list__item:first-child {
+    border-block-start: none;
+    padding-block-start: 0;
+}
+
+.numbered-list__item::before {
+    content: counter(numbered-list, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-text-subtle);
+}
+
+.numbered-list__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+}
+
+.numbered-list__title {
+    font-size: var(--step-1);
+    margin-block-start: var(--space-3xs);
+}
+
+.numbered-list__title a {
+    color: inherit;
+}
+
+.numbered-list__body {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+}
+
+@media (max-width: 47.99em) {
+    .numbered-list__item {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .numbered-list__item::before {
+        grid-row: 1;
+    }
+}
+
+/* ================================================================ definition list */
+
+/*
+  "What I own" as a hairline-ruled definition list rather than a three-card
+  grid — three short statements read faster as a list than as three boxes the
+  eye has to scan independently.
+*/
+
+.definition-list {
+    display: grid;
+    gap: 0;
+}
+
+.definition-list__item {
+    padding-block: var(--space-m);
+    border-block-start: var(--hairline);
+}
+
+.definition-list__item:first-child {
+    border-block-start: none;
+    padding-block-start: 0;
+}
+
+.definition-list__term {
+    font-size: var(--step-1);
+}
+
+.definition-list__description {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
 }
 
 /* ================================================================ timeline */
@@ -813,6 +985,7 @@ html:not(.js) .theme-toggle {
 }
 
 .timeline__period {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;

@@ -1,18 +1,21 @@
 /*
-  Design tokens — Ink + Indigo.
+  Design tokens — Instrument.
 
   This is the only file in the system permitted to contain a hex colour. Every
   other file addresses colour through a semantic token, so a palette change is a
   change to one file rather than a search across the codebase.
 
-  The palette is taken from the portrait: navy suit, lavender shirt. Navy is
-  structure, lavender is emphasis, amber is rare. Amber's job is the
-  `--limitation` callout and almost nothing else.
+  The palette is warm-neutral ink on paper — a lab notebook, not a landing page —
+  plus exactly two signal colours: a deep teal for PASS and interactive elements,
+  and a warm rust for FAIL and limitations. Both were chosen for lightness
+  separation as well as hue, so the distinction survives deuteranopia, and both
+  are always paired with a text label rather than relied on alone. The portrait is
+  the only other colour on the site.
 
   Semantic colours are declared ONCE with `light-dark()`. The theme attribute set
   by the no-flash script flips `color-scheme`, and every token re-resolves. There
   is no second palette to keep in sync — the only per-theme overrides in the whole
-  system are `color-scheme` and the shadow recipes, because a shadow's geometry
+  system are `color-scheme` and the shadow recipe, because a shadow's geometry
   differs between themes and `light-dark()` only returns colours.
 
   Breakpoints are em-based and there is one set: 30em/48em/64em/80em/96em
@@ -27,86 +30,84 @@
     /* ---------------------------------------------------------------- palette */
     /* Raw ramps. Referenced only by the semantic tokens below. */
 
-    --navy-900: #0B0F1A;
-    --navy-850: #070A12;
-    --navy-800: #131A2A;
-    --navy-750: #141B2C;
-    --navy-700: #252F47;
-    --navy-600: #36415C;
-    --navy-500: #5F6C88;
-    --navy-450: #78839C;
-    --navy-400: #5A6580;
-    --navy-350: #9AA5BE;
-    --navy-300: #A9B3CA;
-    --navy-250: #4A5570;
-    --navy-200: #BFC6D6;
-    --navy-150: #DCE0EA;
-    --navy-100: #F2F4F9;
-    --navy-050: #FBFBFD;
+    --ink-950: #171310;
+    --ink-900: #211B15;
+    --ink-850: #100D0A;
+    --ink-800: #241F17;
+    --ink-700: #362F26;
+    --ink-600: #453C30;
+    --ink-500: #6E6450;
+    --ink-450: #7A6F58;
+    --ink-400: #5C5340;
+    --ink-300: #9C9078;
+    --ink-200: #A89C80;
+    --ink-150: #B8AC90;
+    --ink-100: #D2C6AE;
+    --ink-050: #E3DACB;
+    --ink-025: #EDE6D6;
 
-    --lavender-700: #6D28D9;
-    --lavender-500: #A78BFA;
-    --lavender-300: #C4B5FD;
-    --lavender-100: #F0EBFE;
-    --lavender-900: #1A1733;
+    --paper-000: #FFFFFF;
+    --paper-100: #FAF6EE;
+    --paper-050: #F1EADC;
 
-    --amber-700: #8A5A18;
-    --amber-500: #C8873A;
-    --amber-300: #E7B168;
-    --amber-100: #FBF1E1;
-    --amber-900: #221A0F;
+    --teal-900: #12302D;
+    --teal-700: #0B5E58;
+    --teal-500: #1C8C86;
+    --teal-300: #5FC2B8;
+    --teal-100: #E1F0EE;
 
-    --white: #FFFFFF;
-    --mist: #E9EDF6;
+    --rust-900: #3A1D10;
+    --rust-700: #8A3A18;
+    --rust-500: #B8501F;
+    --rust-300: #E28F62;
+    --rust-100: #FBEAE0;
 
     /* ---------------------------------------------------------------- surfaces */
 
-    --color-bg: light-dark(var(--navy-050), var(--navy-900));
-    --color-surface: light-dark(var(--white), var(--navy-750));
-    --color-surface-sunken: light-dark(var(--navy-100), var(--navy-850));
-    --color-surface-accent: light-dark(var(--lavender-100), var(--lavender-900));
-    --color-surface-highlight: light-dark(var(--amber-100), var(--amber-900));
-    --color-surface-inverse: light-dark(var(--navy-800), var(--lavender-300));
+    --color-bg: light-dark(var(--paper-100), var(--ink-950));
+    --color-surface: light-dark(var(--paper-000), var(--ink-900));
+    --color-surface-sunken: light-dark(var(--paper-050), var(--ink-850));
+    --color-surface-accent: light-dark(var(--teal-100), var(--teal-900));
+    --color-surface-signal: light-dark(var(--rust-100), var(--rust-900));
+    --color-surface-inverse: light-dark(var(--ink-800), var(--ink-025));
 
     /* ---------------------------------------------------------------- text */
     /*
-      `--color-accent` and `--color-highlight` are DECORATIVE FILLS. In the light
-      theme they measure 2.72:1 and 3.01:1 against white and fail AA as text. The
-      `-text` variants are the readable ones and are what any rule setting `color`
-      must use. This distinction is the single most common way this palette gets
-      broken.
+      `--color-accent` and `--color-signal` are DECORATIVE FILLS, held constant
+      across both themes because they read correctly against a light and a dark
+      ground alike. The `-text` variants are the readable ones and are what any
+      rule setting `color` must use — this distinction is the single most common
+      way this palette gets broken.
     */
 
-    --color-text: light-dark(var(--navy-800), var(--mist));
-    --color-text-muted: light-dark(var(--navy-250), var(--navy-300));
-    --color-text-subtle: light-dark(var(--navy-400), var(--navy-350));
-    --color-text-inverse: light-dark(var(--navy-050), var(--navy-900));
+    --color-text: light-dark(var(--ink-800), var(--ink-025));
+    --color-text-muted: light-dark(var(--ink-400), var(--ink-150));
+    --color-text-subtle: light-dark(var(--ink-500), var(--ink-200));
+    --color-text-inverse: light-dark(var(--paper-100), var(--ink-950));
 
-    /* Identical in both themes: the decorative fills read correctly against a
-       light and a dark ground, and only their readable counterparts flip. */
-    --color-accent: var(--lavender-500);
-    --color-accent-text: light-dark(var(--lavender-700), var(--lavender-300));
+    --color-accent: var(--teal-500);
+    --color-accent-text: light-dark(var(--teal-700), var(--teal-300));
 
-    --color-highlight: var(--amber-500);
-    --color-highlight-text: light-dark(var(--amber-700), var(--amber-300));
+    --color-signal: var(--rust-500);
+    --color-signal-text: light-dark(var(--rust-700), var(--rust-300));
 
     /* ---------------------------------------------------------------- lines */
 
-    --color-border: light-dark(var(--navy-150), var(--navy-700));
-    --color-border-strong: light-dark(var(--navy-200), var(--navy-600));
-    /* 3.68:1 light, 3.63:1 dark — the boundary of an interactive control has to
-       clear 3:1 as a non-text contrast, which the hairline above does not. */
-    --color-border-interactive: light-dark(var(--navy-450), var(--navy-500));
-    --color-focus: light-dark(var(--lavender-700), var(--lavender-300));
+    --color-border: light-dark(var(--ink-050), var(--ink-700));
+    --color-border-strong: light-dark(var(--ink-100), var(--ink-600));
+    /* 4.59:1 light, 5.87:1 dark — comfortably past the 3:1 a control's edge needs
+       as non-text contrast, which the hairline above does not attempt to clear. */
+    --color-border-interactive: light-dark(var(--ink-450), var(--ink-300));
+    --color-focus: light-dark(var(--teal-700), var(--teal-300));
 
     --hairline: 1px solid var(--color-border);
     --hairline-strong: 1px solid var(--color-border-strong);
 
     /* ---------------------------------------------------------------- type */
 
-    --font-display: "Source Serif 4", "Source Serif 4 Fallback", Georgia, Cambria, serif;
-    --font-body: Inter, "Inter Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --font-display: "IBM Plex Sans", "IBM Plex Sans Fallback", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-body: "IBM Plex Serif", "IBM Plex Serif Fallback", Georgia, Cambria, serif;
+    --font-mono: "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 
     /* Fluid across 20rem–80rem (320–1280px). Below and above, the clamp holds. */
     --step--2: clamp(0.75rem, 0.729rem + 0.104vw, 0.8125rem);
@@ -123,8 +124,8 @@
     --leading-normal: 1.65;
     --leading-loose: 1.75;
 
-    --tracking-tight: -0.018em;
-    --tracking-wide: 0.06em;
+    --tracking-tight: -0.012em;
+    --tracking-wide: 0.07em;
 
     --weight-regular: 400;
     --weight-medium: 500;
@@ -132,15 +133,18 @@
 
     /* ---------------------------------------------------------------- measure */
 
-    /* `ch` is the advance width of "0". In a proportional face most letters are
-       narrower than that, so a column set to 68ch renders closer to 88 characters
-       of Inter body copy per line — past the 75-character upper bound of the
-       readability range. 52ch was chosen by measuring rendered characters per
-       line against real paragraphs, not by eye, to land the reading column near
-       the 60–70 target. */
-    --measure: 52ch;
+    /* `ch` is the advance width of "0". IBM Plex Serif's average character is
+       somewhat narrower than that, so a column set to 66ch renders close to the
+       60–70-characters-per-line target measured against rendered paragraphs,
+       not chosen by eye. */
+    --measure: 66ch;
     --measure-tight: 46ch;
     --measure-title: 18ch;
+
+    /* The mono rail's fixed width in the record layout — a case study's date,
+       grade or section number sits here beside the wide prose column. Tokenised
+       because layout.css, article.css and the context strip all share it. */
+    --rail-width: 11rem;
 
     /* ---------------------------------------------------------------- space */
 
@@ -157,9 +161,13 @@
     --gutter: clamp(1.25rem, 0.917rem + 1.667vw, 2.25rem);
     --wrap-max: 75rem;
 
-    --radius-xs: 2px;
-    --radius-s: 4px;
-    --radius-m: 8px;
+    /* Near-zero and deliberately uneven rather than a single repeated radius —
+       a card, a chip and a tag are different levels of the same hierarchy and
+       read as such. --radius-pill is the one exception, for anything that is
+       actually a track (the theme toggle's disc, the skip link's pill). */
+    --radius-xs: 1px;
+    --radius-s: 2px;
+    --radius-m: 4px;
     --radius-pill: 999px;
 
     /* ---------------------------------------------------------------- motion */
@@ -185,7 +193,7 @@
       acquires it.
     */
 
-    --shadow-overlay: 0 1px 2px rgb(19 26 42 / 0.06), 0 18px 40px -18px rgb(19 26 42 / 0.24);
+    --shadow-overlay: 0 1px 2px rgb(23 19 16 / 0.06), 0 18px 40px -18px rgb(23 19 16 / 0.24);
 }
 
 /* 75rem holds up to 96em (1536px). Past that, a fixed band leaves more than a
@@ -200,15 +208,15 @@
 /*
   The only theme overrides in the system.
 
-  `color-scheme` re-resolves every `light-dark()` token above. The shadows are
-  re-declared because a dark surface cannot borrow a light theme's shadow: a black
-  umbra on a near-black ground is invisible, so depth in dark comes from an inset
-  top highlight (the edge catching light) over a deeper, wider umbra.
+  `color-scheme` re-resolves every `light-dark()` token above. The shadow is
+  re-declared because a dark surface cannot borrow a light theme's shadow: a
+  black umbra on a near-black ground is invisible, so depth in dark comes from an
+  inset top highlight (the edge catching light) over a deeper, wider umbra.
 */
 
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-        --shadow-overlay: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 24px 56px -20px rgb(0 0 0 / 0.85);
+        --shadow-overlay: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 24px 56px -20px rgb(0 0 0 / 0.85);
     }
 }
 
@@ -218,7 +226,7 @@
 
 :root[data-theme="dark"] {
     color-scheme: dark;
-    --shadow-overlay: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 24px 56px -20px rgb(0 0 0 / 0.85);
+    --shadow-overlay: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 24px 56px -20px rgb(0 0 0 / 0.85);
 }
 
 /*
