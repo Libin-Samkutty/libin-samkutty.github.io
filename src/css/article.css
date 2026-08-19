@@ -55,6 +55,7 @@
     font-size: var(--step-1);
     line-height: var(--leading-normal);
     color: var(--color-text-muted);
+    max-inline-size: var(--measure);
 }
 
 /* At narrow widths the lede's own font step drops the line below the 45ch

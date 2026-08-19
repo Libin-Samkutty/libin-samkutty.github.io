@@ -292,15 +292,14 @@ hr {
 }
 
 /*
-  `.case-study__body` itself sits on the full composition band, not the
-  reading measure, so tables and architecture notes can use the width they
-  need. Prose still reads at the target line length — it just gets there
-  directly on the element instead of inheriting it from the container.
-  `.page__body` carries the same rule for the same reason: a page with
-  `bodyWidth: wide` in its front matter (the capability matrix) drops
-  `.wrap--measure` on the container so its grids can use the full band, and
-  this keeps its lede and paragraphs from following the container out to
-  that width.
+  `.case-study__body` and `.page__body` both sit on the full composition band,
+  not the reading measure, so a table, a grid or an architecture note can use
+  the width it needs. Prose still reads at the target line length — it just
+  gets there directly on the element instead of inheriting it from the
+  container. Capping the container itself (`.wrap--measure`) instead of the
+  element was the earlier approach, and it independently re-centers a narrower
+  box, which visibly indents the body away from the left edge of the header
+  above it.
 */
 .case-study__body :is(p, li, blockquote),
 .page__body :is(p, li, blockquote) {
