@@ -366,20 +366,20 @@ th {
 /*
   Scroll reveal, CSS-native.
 
-  The settled state — fully visible, no transform — is every element's only
-  unconditional rule, so a browser with no JavaScript and a browser with no
-  `animation-timeline` support both just show the content. Only where both
-  scroll-driven animation is supported AND the reader has not asked for reduced
-  motion does an element animate FROM a hidden/offset state TOWARD that default,
-  driven by its own position in the viewport rather than an
-  IntersectionObserver. `animation-range: entry 0% entry 40%` means an element
-  finds its settled place well before it reaches the middle of the viewport and
-  then simply stays there — it does not reverse on scroll-up.
+  Gated on `.js`, which the inline script in <head> adds synchronously — with
+  JavaScript off the class never appears, no rule below matches, and every
+  element sits at its unconditional default (fully visible, no transform).
+  That gate is the only thing site.js still contributes to this mechanism: the
+  IntersectionObserver is gone. Scroll-driven `animation-timeline: view()`
+  drives the reveal itself, so nothing here listens for a scroll event either.
+  `animation-range: entry 0% entry 40%` means an element finds its settled
+  place well before it reaches the middle of the viewport and then simply
+  stays there — it does not reverse on scroll-up.
 */
 
 @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-        [data-reveal] {
+        .js [data-reveal] {
             animation: reveal-in linear both;
             animation-timeline: view();
             animation-range: entry 0% entry 40%;

@@ -1,5 +1,5 @@
 /**
- * Site behaviour. Roughly 3 KB, no dependencies, loaded as a module so it is
+ * Site behaviour. Under 6 KB, no dependencies, loaded as a module so it is
  * deferred by default.
  *
  * Three rules hold throughout:
@@ -125,41 +125,6 @@ const root = document.documentElement;
     window.matchMedia("(min-width: 48em)").addEventListener("change", (event) => {
         if (event.matches) setOpen(false);
     });
-})();
-
-/* -------------------------------------------------------------- scroll reveal */
-
-(function reveal() {
-    const targets = document.querySelectorAll("[data-reveal]");
-    if (!targets.length) return;
-
-    // Honour the OS setting by not observing at all. Reduced motion is also
-    // handled in CSS, but not creating the observer avoids doing work whose only
-    // possible outcome is a no-op.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        targets.forEach((target) => target.classList.add("is-revealed"));
-        return;
-    }
-
-    if (!("IntersectionObserver" in window)) {
-        targets.forEach((target) => target.classList.add("is-revealed"));
-        return;
-    }
-
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add("is-revealed");
-                // Fire once. Re-hiding on scroll-up is the single most irritating
-                // pattern in this category — the reader has already read it.
-                observer.unobserve(entry.target);
-            });
-        },
-        { rootMargin: "0px 0px -10% 0px", threshold: 0.01 }
-    );
-
-    targets.forEach((target) => observer.observe(target));
 })();
 
 /* -------------------------------------------------------------- skip link focus */
