@@ -76,6 +76,16 @@ shortcode, never typed, which is what stops it drifting from the evidence.</p>
 
 {% architectureNote "short" %}
 
+<h2>Charts and diagrams</h2>
+
+<p>Hand-authored SVG, drawn from the site's own published data or a fixed
+architecture description — never a stock illustration. <code>{% raw %}{% chart %}{% endraw %}</code>
+throws if its metric is missing or unpublished, so a chart cannot outrun the data layer.</p>
+
+{% chart "golden_dataset_growth" %}
+
+{% diagram "test-pyramid" %}
+
 <h2>Buttons</h2>
 
 <p>
@@ -83,19 +93,70 @@ shortcode, never typed, which is what stops it drifting from the evidence.</p>
     <a class="button button--ghost" href="{{ '/contact/' | url }}">Ghost action</a>
 </p>
 
-<h2>Stat rail</h2>
+<h2>Evidence record</h2>
 
-<div class="stat-rail">
-    <dl class="stat-rail__list">
-        <div class="stat">
-            <dt class="stat__label">Golden-dataset cases gating every India Maternal Health release</dt>
-            <dd class="stat__value">{% metric "golden_dataset_india_mh" %}</dd>
+<p>The signature component. A grade — confidence tag plus basis, from
+<code>{% raw %}{% grade %}{% endraw %}</code> — sits in the rail; the bare value and a
+plain-language label sit in the main column.</p>
+
+<ol class="record-list evidence">
+    <li class="record evidence__item" data-confidence="exact">
+        <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
+        <div>
+            <p class="evidence__value">{% metric "golden_dataset_india_mh" %}</p>
+            <p class="evidence__label">Golden-dataset cases gating every India Maternal Health release</p>
         </div>
-        <div class="stat">
-            <dt class="stat__label">Cost of a full nightly evaluation run</dt>
-            <dd class="stat__value">{% metric "nightly_eval_cost" %}</dd>
+    </li>
+    <li class="record evidence__item" data-confidence="estimate">
+        <div class="evidence__grade">{% grade "anomaly_sampling_yield" %}</div>
+        <div>
+            <p class="evidence__value">{% metric "anomaly_sampling_yield" %}</p>
+            <p class="evidence__label">More judge-worthy edge cases surfaced per week, same cost</p>
         </div>
-    </dl>
+    </li>
+</ol>
+
+<h2>Gate</h2>
+
+<p>The secondary motif. A result and the limitation beside it, always paired and
+always named in text — colour is reinforcement, never the only signal.</p>
+
+<div class="gate">
+    <div class="gate__item gate__item--pass">
+        <p><span class="gate__tag">Pass</span> Clinical Safety PASS rate reached
+        {% metric "clinical_safety_pass" %} after the danger-sign fix shipped.</p>
+    </div>
+    <div class="gate__item gate__item--fail">
+        <p><span class="gate__tag">Fail</span> {% metric "annotation_override_rate" %} — the
+        judge is still too conservative on non-urgent symptom mentions.</p>
+    </div>
+</div>
+
+<h2>Numbered list</h2>
+
+<p>For genuinely sequential or ranked content — the homepage's selected work, the
+archive's dated entries. Not used for anything that is not actually a sequence.</p>
+
+<ol class="numbered-list">
+    <li class="numbered-list__item">
+        <p class="numbered-list__eyebrow">2025 – 2026</p>
+        <div>
+            <h3 class="numbered-list__title"><a href="{{ '/work/' | url }}">Numbered item title</a></h3>
+            <p class="numbered-list__body">One line naming the problem and the outcome.</p>
+        </div>
+    </li>
+</ol>
+
+<h2>Definition list</h2>
+
+<p>"What I own" on the homepage — three short statements read faster as a
+hairline-ruled list than as three cards the eye has to scan independently.</p>
+
+<div class="definition-list">
+    <div class="definition-list__item">
+        <h3 class="definition-list__term">A definition term</h3>
+        <p class="definition-list__description">Its one-sentence description.</p>
+    </div>
 </div>
 
 <h2>Cards</h2>
@@ -127,7 +188,7 @@ shortcode, never typed, which is what stops it drifting from the evidence.</p>
 
 <div class="callout callout--limitation">
     <h3 class="callout__title">The limitation callout</h3>
-    <p>Carries the amber highlight token rather than a warning icon, because the
+    <p>Carries the rust signal token rather than a warning icon, because the
     heading already says what it is.</p>
 </div>
 

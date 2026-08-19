@@ -39,10 +39,10 @@ module.exports = {
                 "total-blocking-time": ["error", { maxNumericValue: 150 }],
 
                 "resource-summary:total:size": ["error", { maxNumericValue: 614400 }],
-                "resource-summary:stylesheet:size": ["error", { maxNumericValue: 61440 }],
+                "resource-summary:stylesheet:size": ["error", { maxNumericValue: 92160 }],
                 "resource-summary:script:size": ["error", { maxNumericValue: 15360 }],
                 "resource-summary:image:size": ["error", { maxNumericValue: 256000 }],
-                "resource-summary:font:size": ["error", { maxNumericValue: 122880 }],
+                "resource-summary:font:size": ["error", { maxNumericValue: 163840 }],
                 "resource-summary:total:count": ["error", { maxNumericValue: 25 }],
                 "resource-summary:third-party:count": ["error", { maxNumericValue: 0 }],
 

@@ -9,6 +9,8 @@
   ],
   "secondary": [
     { "label": "Stack", "url": "/skills/" },
+    { "label": "Archive", "url": "/archive/" },
+    { "label": "Colophon", "url": "/colophon/" },
     { "label": "Feed", "url": "/feed.xml" }
   ]
 }

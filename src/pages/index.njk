@@ -11,14 +11,14 @@ bodyClass: home
         <div class="hero__content">
             <p class="hero__eyebrow">{{ site.title }} · {{ site.location.city }}, {{ site.location.country }}</p>
 
-            <h1 class="hero__title">{{ site.tagline }}</h1>
+            <h1 class="hero__title">{{ site.plainClaim }}</h1>
 
             <p class="hero__lede">
-                The platform I test answers questions about pregnancy, contraception and
-                vaccination over WhatsApp, in nine languages across six countries. I am its only
-                QA engineer, and the interesting part of that job is not finding bugs. It is
-                deciding, on evidence, whether a generated answer is good enough to send to
-                someone who is worried about a symptom.
+                The platform is a digital health chatbot that answers questions about pregnancy,
+                contraception and vaccination over WhatsApp, in nine languages across
+                {% metric "countries" %} countries. I am its only QA engineer. If you hire for
+                quality, safety review or AI evaluation, the case studies below show exactly how I
+                work, including the parts that did not work the first time.
             </p>
 
             <p class="hero__actions">
@@ -36,32 +36,33 @@ bodyClass: home
     </div>
 </section>
 
-<section class="stat-rail" aria-labelledby="stat-rail-title">
-    <div class="wrap">
-        <h2 class="visually-hidden" id="stat-rail-title">Evidence</h2>
+<section class="section" aria-labelledby="evidence-title">
+    <div class="wrap wrap--measure">
+        <h2 class="visually-hidden" id="evidence-title">Evidence</h2>
 
-        <dl class="stat-rail__list">
-            <div class="stat">
-                <dt class="stat__label">Golden-dataset cases gating every India Maternal Health release</dt>
-                <dd class="stat__value">{% metric "golden_dataset_india_mh" %}</dd>
-            </div>
-            <div class="stat">
-                <dt class="stat__label">Cost of a full nightly evaluation run</dt>
-                <dd class="stat__value">{% metric "nightly_eval_cost" %}</dd>
-            </div>
-            <div class="stat">
-                <dt class="stat__label">Prompt-regression review, per version</dt>
-                <dd class="stat__value">{% metric "prompt_review_time" %}</dd>
-            </div>
-            <div class="stat">
-                <dt class="stat__label">Full CI regression suite</dt>
-                <dd class="stat__value">{% metric "regression_suite_runtime" %}</dd>
-            </div>
-            <div class="stat stat--wide">
-                <dt class="stat__label">What that covers</dt>
-                <dd class="stat__value">{% metric "platform_scale" %}</dd>
-            </div>
-        </dl>
+        <ol class="record-list evidence">
+            <li class="record evidence__item" data-confidence="exact">
+                <div class="evidence__grade">{% grade "platform_scale" %}</div>
+                <div>
+                    <p class="evidence__value">{% metric "platform_scale" %}</p>
+                    <p class="evidence__label">What the evaluation systems on this site cover</p>
+                </div>
+            </li>
+            <li class="record evidence__item" data-confidence="exact">
+                <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
+                <div>
+                    <p class="evidence__value">{% metric "golden_dataset_india_mh" %}</p>
+                    <p class="evidence__label">Golden-dataset cases gating every India Maternal Health release</p>
+                </div>
+            </li>
+            <li class="record evidence__item" data-confidence="approximate">
+                <div class="evidence__grade">{% grade "nightly_eval_cost" %}</div>
+                <div>
+                    <p class="evidence__value">{% metric "nightly_eval_cost" %}</p>
+                    <p class="evidence__label">Cost of the full nightly evaluation run</p>
+                </div>
+            </li>
+        </ol>
     </div>
 </section>
 
@@ -69,11 +70,11 @@ bodyClass: home
     <div class="wrap">
         <h2 class="section__title" id="own-title">What I own</h2>
 
-        <div class="grid grid--three">
+        <div class="definition-list">
             {% for item in projects.whatIOwn %}
-            <div class="card card--plain" data-reveal>
-                <h3 class="card__title">{{ item.title }}</h3>
-                <p class="card__body">{{ item.body }}</p>
+            <div class="definition-list__item" data-reveal>
+                <h3 class="definition-list__term">{{ item.title }}</h3>
+                <p class="definition-list__description">{{ item.body }}</p>
             </div>
             {% endfor %}
         </div>
@@ -83,22 +84,24 @@ bodyClass: home
 </section>
 
 <section class="section" aria-labelledby="work-title">
-    <div class="wrap">
+    <div class="wrap wrap--measure">
         <h2 class="section__title" id="work-title">Selected work</h2>
 
-        <ul class="card-list card-list--three">
+        <ol class="numbered-list">
             {% for item in collections.caseStudies %}
                 {% if item.fileSlug in projects.featuredCaseStudies %}
-                <li class="card card--case-study" data-reveal>
-                    <p class="card__eyebrow">{{ item.data.period }}</p>
-                    <h3 class="card__title">
-                        <a href="{{ item.url }}">{{ item.data.title }}</a>
-                    </h3>
-                    <p class="card__body">{{ item.data.description }}</p>
+                <li class="numbered-list__item" data-reveal>
+                    <p class="numbered-list__eyebrow">{{ item.data.period }}</p>
+                    <div>
+                        <h3 class="numbered-list__title">
+                            <a href="{{ item.url }}">{{ item.data.title }}</a>
+                        </h3>
+                        <p class="numbered-list__body">{{ item.data.description }}</p>
+                    </div>
                 </li>
                 {% endif %}
             {% endfor %}
-        </ul>
+        </ol>
 
         <p class="section__more"><a href="{{ '/work/' | url }}">All work, including the systems that didn't warrant a case study</a></p>
     </div>
@@ -165,34 +168,18 @@ bodyClass: home
     </div>
 </section>
 
-<section class="section" aria-labelledby="oss-title">
-    <div class="wrap wrap--measure">
-        <h2 class="section__title" id="oss-title">Open source</h2>
-
-        {% for project in skills.openSource %}
-        <div class="card card--plain">
-            <h3 class="card__title"><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a></h3>
-            <p class="card__body">{{ project.description }}</p>
-            <p class="card__meta">{{ project.language }} · {{ project.license }} · {% metric project.metric %}</p>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
 <section class="section" aria-labelledby="timeline-title">
     <div class="wrap wrap--measure">
         <h2 class="section__title" id="timeline-title">Where I've been</h2>
 
         <ol class="timeline">
-            {% for role in timeline.roles %}
-            <li class="timeline__item{% if role.current %} timeline__item--current{% endif %}">
+            {% for marker in timeline.markers %}
+            <li class="timeline__item{% if loop.last %} timeline__item--current{% endif %}">
                 <p class="timeline__period">
-                    <time datetime="{{ role.start | isoDate }}">{{ role.start | monthYear }}</time>
-                    –
-                    {% if role.end %}<time datetime="{{ role.end | isoDate }}">{{ role.end | monthYear }}</time>{% else %}present{% endif %}
+                    <time datetime="{{ marker.date | isoDate }}">{{ marker.date | monthYear }}</time>
                 </p>
-                <h3 class="timeline__title">{{ role.title }}</h3>
-                <p class="timeline__org">{{ role.employer }} · client {{ site.client.name }}</p>
+                <h3 class="timeline__title">{{ marker.label }}</h3>
+                {% if marker.detail %}<p class="timeline__org">{{ marker.detail }}</p>{% endif %}
             </li>
             {% endfor %}
         </ol>
@@ -208,6 +195,9 @@ bodyClass: home
             {{ site.targetRoles | join(", ") }}. If you are building something where a wrong answer
             has a cost, that is the problem I want.
         </p>
-        <p><a class="button button--primary" href="{{ '/contact/' | url }}">Get in touch</a></p>
+        <ul class="contact-list">
+            <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            <li><a href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a></li>
+        </ul>
     </div>
 </section>

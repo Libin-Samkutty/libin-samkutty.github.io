@@ -18,49 +18,49 @@
     "title": "Precision/recall validation harness for a response cache",
     "context": "Built the first labelled correctness check for a chatbot's semantic response cache, deliberately setting a looser threshold for a cache miss than for a false hit because the two failures carry very different risk.",
     "stack": ["Python", "BigQuery", "Valkey", "Make"],
-    "href": "/blog/asymmetric-thresholds/"
+    "href": "/writing/asymmetric-thresholds/"
   },
   {
     "year": "2026",
     "title": "Traffic audit of an input-routing classifier",
     "context": "Analysed real production traffic patterns to find why routine acknowledgements and non-medical input were reaching the LLM unnecessarily, then handed engineering a prioritised, vocabulary-level fix.",
     "stack": ["Python", "SQL", "BigQuery"],
-    "href": "/blog/audit-your-own-traffic/"
+    "href": "/writing/audit-your-own-traffic/"
   },
   {
     "year": "2023–2026",
     "title": "Performance baselines and regression gate",
     "context": "Proposed and built the platform's first load-testing practice with no mandate requiring it, then added trend dashboards after a threshold-only gate missed a slow latency creep that never broke any single run.",
     "stack": ["JMeter", "Jenkins", "InfluxDB", "Grafana"],
-    "href": "/blog/threshold-gates-vs-trend-views/"
+    "href": "/writing/threshold-gates-vs-trend-views/"
   },
   {
     "year": "2024–2026",
     "title": "Service virtualization for the WhatsApp messaging provider",
     "context": "Replaced a flaky third-party messaging sandbox with a mock that reproduces its real failure modes, then extended the same discipline into a write-blocking test-data isolation layer for shared staging and production infrastructure.",
     "stack": ["Node.js", "TypeScript", "Docker", "nock", "PostgreSQL"],
-    "href": "/blog/zero-net-writes/"
+    "href": "/writing/zero-net-writes/"
   },
   {
     "year": "2026",
     "title": "Speech-to-text provider evaluation and voice pipeline",
     "context": "Ran a head-to-head evaluation of two speech-to-text providers on real voice notes, ruled one out after finding a dangerous mistranscription in a clinical context, then used the launch to show voice queries carry meaningfully different signal than typed text.",
     "stack": ["Python", "Sarvam AI SDK", "BigQuery"],
-    "href": "/blog/aggregate-metrics-hide-the-failure/"
+    "href": "/writing/aggregate-metrics-hide-the-failure/"
   },
   {
     "year": "2026",
     "title": "Requirements decomposition for a chatbot entry-point console",
     "context": "Turned an unstructured product requirements document into an execution-ready plan of stories and tasks, tracing each AI tool call back to the data it needed and surfacing a sequencing blocker before development started.",
     "stack": ["Jira", "Requirements analysis"],
-    "href": "/blog/decompose-by-tool-call/"
+    "href": "/writing/decompose-by-tool-call/"
   },
   {
     "year": "2023–2026",
     "title": "Analytics data platform for country health programs",
     "context": "Owned the pipeline lifecycle end to end, from raw regional event data to dashboard-ready metrics, and later found that its own daily validation checks shared a blind spot with the very pipeline they were meant to catch.",
     "stack": ["BigQuery", "SQL", "Looker Studio", "Google Apps Script"],
-    "href": "/blog/your-validation-script-shares-the-bug/"
+    "href": "/writing/your-validation-script-shares-the-bug/"
   },
   {
     "year": "2023–2026",

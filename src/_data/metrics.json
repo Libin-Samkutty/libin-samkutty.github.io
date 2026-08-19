@@ -1117,6 +1117,42 @@
       "provenSlug": "zero-net-writes",
       "source": "vault://projects.md#PROJ-024",
       "publish": true
+    },
+
+    "perf_budgets": {
+      "value": { "lcp": 2000, "fcp": 1400, "cls": 0.05, "tbt": 150, "requests": 25, "thirdParty": 0 },
+      "display": "LCP ≤ 2000ms · FCP ≤ 1400ms · CLS ≤ 0.05 · TBT ≤ 150ms · ≤ 25 requests · 0 third-party",
+      "unit": "Lighthouse CI performance budgets",
+      "confidence": "exact",
+      "basis": "Enforced in lighthouserc.cjs. The build fails, not warns, if any budget is exceeded.",
+      "asOf": "2026-08-19",
+      "attribution": "self",
+      "source": "lighthouserc.cjs",
+      "publish": true
+    },
+
+    "a11y_budgets": {
+      "value": { "accessibility": 1, "bestPractices": 1, "seo": 1, "performance": 0.95 },
+      "display": "Accessibility 1.00 · Best Practices 1.00 · SEO 1.00 · Performance ≥ 0.95",
+      "unit": "Lighthouse CI category-score budgets",
+      "confidence": "exact",
+      "basis": "Enforced in lighthouserc.cjs against every route in the sample set on every build.",
+      "asOf": "2026-08-19",
+      "attribution": "self",
+      "source": "lighthouserc.cjs",
+      "publish": true
+    },
+
+    "weight_budgets": {
+      "value": { "css": 92160, "font": 163840, "script": 15360, "total": 614400 },
+      "display": "CSS ≤ 90KB · fonts ≤ 160KB · script ≤ 15KB · total ≤ 600KB",
+      "unit": "Lighthouse CI resource-weight budgets",
+      "confidence": "exact",
+      "basis": "Enforced in lighthouserc.cjs via resource-summary assertions.",
+      "asOf": "2026-08-19",
+      "attribution": "self",
+      "source": "lighthouserc.cjs",
+      "publish": true
     }
   },
 

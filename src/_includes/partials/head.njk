@@ -44,8 +44,11 @@
 
 {% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}
 
-<link rel="preload" href="{{ '/assets/fonts/inter-var.woff2' | url }}" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ '/assets/fonts/source-serif-var.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+{# Only the two above-the-fold faces: Sans carries the hero heading and every
+   other page's <h1>, Serif carries the hero lede and all body prose. Mono's
+   eyebrow line is small enough to arrive on its own without a preload. #}
+<link rel="preload" href="{{ '/assets/fonts/ibm-plex-sans-var.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ '/assets/fonts/ibm-plex-serif-400.woff2' | url }}" as="font" type="font/woff2" crossorigin>
 
 <link rel="stylesheet" href="{{ '/css/main.css' | url }}">
 

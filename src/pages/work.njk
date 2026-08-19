@@ -71,4 +71,18 @@ description: Six case studies on AI evaluation systems, production monitoring an
             </ul>
         </div>
     </section>
+
+    <section class="section" id="open-source" aria-labelledby="oss-title">
+        <div class="wrap wrap--measure">
+            <h2 class="section__title" id="oss-title">Open source</h2>
+
+            {% for project in skills.openSource %}
+            <div class="card card--plain">
+                <h3 class="card__title"><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a></h3>
+                <p class="card__body">{{ project.description }}</p>
+                <p class="card__meta">{{ project.language }} · {{ project.license }} · {% metric project.metric %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
 </article>
