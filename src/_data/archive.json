@@ -1,0 +1,218 @@
+[
+  {
+    "year": "2025–2026",
+    "title": "AI evaluation framework for a maternal-health chatbot",
+    "context": "Built the evaluation layer for a maternal-health chatbot from nothing — an LLM-as-a-judge, a curated multilingual golden dataset, and RAGAS/G-Eval metrics — then reused the same design when a pharma partner's HPV chatbot programs launched across new countries.",
+    "stack": ["Python", "DeepEval", "RAGAS", "GitHub Actions", "BigQuery"],
+    "href": "/work/ai-evaluation-framework/"
+  },
+  {
+    "year": "2025–2026",
+    "title": "Real-time production evaluation pipeline",
+    "context": "Co-designed a streaming pipeline that samples live chatbot traffic, runs it through an automated judge, and routes disagreements to the health content team, catching real failure modes the golden-dataset tests never saw.",
+    "stack": ["AWS MSK (Kafka)", "AWS Lambda", "LangSmith", "Prometheus", "Grafana"],
+    "href": "/work/production-evaluation-pipeline/"
+  },
+  {
+    "year": "2026",
+    "title": "Precision/recall validation harness for a response cache",
+    "context": "Built the first labelled correctness check for a chatbot's semantic response cache, deliberately setting a looser threshold for a cache miss than for a false hit because the two failures carry very different risk.",
+    "stack": ["Python", "BigQuery", "Valkey", "Make"],
+    "href": "/blog/asymmetric-thresholds/"
+  },
+  {
+    "year": "2026",
+    "title": "Traffic audit of an input-routing classifier",
+    "context": "Analysed real production traffic patterns to find why routine acknowledgements and non-medical input were reaching the LLM unnecessarily, then handed engineering a prioritised, vocabulary-level fix.",
+    "stack": ["Python", "SQL", "BigQuery"],
+    "href": "/blog/audit-your-own-traffic/"
+  },
+  {
+    "year": "2023–2026",
+    "title": "Performance baselines and regression gate",
+    "context": "Proposed and built the platform's first load-testing practice with no mandate requiring it, then added trend dashboards after a threshold-only gate missed a slow latency creep that never broke any single run.",
+    "stack": ["JMeter", "Jenkins", "InfluxDB", "Grafana"],
+    "href": "/blog/threshold-gates-vs-trend-views/"
+  },
+  {
+    "year": "2024–2026",
+    "title": "Service virtualization for the WhatsApp messaging provider",
+    "context": "Replaced a flaky third-party messaging sandbox with a mock that reproduces its real failure modes, then extended the same discipline into a write-blocking test-data isolation layer for shared staging and production infrastructure.",
+    "stack": ["Node.js", "TypeScript", "Docker", "nock", "PostgreSQL"],
+    "href": "/blog/zero-net-writes/"
+  },
+  {
+    "year": "2026",
+    "title": "Speech-to-text provider evaluation and voice pipeline",
+    "context": "Ran a head-to-head evaluation of two speech-to-text providers on real voice notes, ruled one out after finding a dangerous mistranscription in a clinical context, then used the launch to show voice queries carry meaningfully different signal than typed text.",
+    "stack": ["Python", "Sarvam AI SDK", "BigQuery"],
+    "href": "/blog/aggregate-metrics-hide-the-failure/"
+  },
+  {
+    "year": "2026",
+    "title": "Requirements decomposition for a chatbot entry-point console",
+    "context": "Turned an unstructured product requirements document into an execution-ready plan of stories and tasks, tracing each AI tool call back to the data it needed and surfacing a sequencing blocker before development started.",
+    "stack": ["Jira", "Requirements analysis"],
+    "href": "/blog/decompose-by-tool-call/"
+  },
+  {
+    "year": "2023–2026",
+    "title": "Analytics data platform for country health programs",
+    "context": "Owned the pipeline lifecycle end to end, from raw regional event data to dashboard-ready metrics, and later found that its own daily validation checks shared a blind spot with the very pipeline they were meant to catch.",
+    "stack": ["BigQuery", "SQL", "Looker Studio", "Google Apps Script"],
+    "href": "/blog/your-validation-script-shares-the-bug/"
+  },
+  {
+    "year": "2023–2026",
+    "title": "Playwright end-to-end and integration test suite",
+    "context": "Authored and grew the platform's browser-level regression coverage after the framework migration, folding a portion of scenarios down into pure API tests where a browser was never actually needed.",
+    "stack": ["Playwright", "TypeScript", "Python", "GitHub Actions"]
+  },
+  {
+    "year": "2022–2026",
+    "title": "Botium conversational test automation",
+    "context": "Built the chatbot's first automated regression layer around routing behaviour rather than exact reply text, since a conversational AI's wording is never going to be identical twice, then shared the approach with the wider engineering organisation.",
+    "stack": ["Botium", "Python", "JavaScript", "AWS EC2"]
+  },
+  {
+    "year": "2022–2026",
+    "title": "REST API regression suite across backend services",
+    "context": "Replaced manual smoke testing with a fixture-driven suite that checks each service's actual database state after a write, not just what the API response claims happened.",
+    "stack": ["Python", "Pytest", "Requests", "MongoDB", "jsonschema"]
+  },
+  {
+    "year": "2022–2026",
+    "title": "Multi-suite CI/CD pipeline orchestration",
+    "context": "Integrated the UI, chatbot and API test suites into a single pipeline with stage-appropriate triggers, removing manual pre-deployment testing as a release bottleneck.",
+    "stack": ["GitHub Actions", "CircleCI", "Allure", "Docker"]
+  },
+  {
+    "year": "2026",
+    "title": "AI pipeline performance benchmarking suite",
+    "context": "Instrumented the distributed chatbot pipeline end-to-end and stage-by-stage so optimisation work could be prioritised from measured data instead of guesswork.",
+    "stack": ["Python", "AWS Lambda", "BigQuery", "Looker Studio"]
+  },
+  {
+    "year": "2023–2026",
+    "title": "Semantic cache and intent-classification regression suite",
+    "context": "Built tiered regression coverage around the cache's near-duplicate similarity boundary, the exact spot where a routing misclassification and a later embedding-model upgrade both surfaced as real bugs.",
+    "stack": ["Python", "Pytest", "fastembed", "Valkey"]
+  },
+  {
+    "year": "2023–2026",
+    "title": "Company-wide API automation framework",
+    "context": "Co-owned a shared Robot Framework base used across multiple engineering teams, reviewing contributions for keyword design and reuse standards, and used it as a teaching framework for engineers new to automation.",
+    "stack": ["Robot Framework", "Python", "REST API"]
+  },
+  {
+    "year": "2026",
+    "title": "api-test-data-generator (open-source Python package)",
+    "context": "Published a schema-driven test-data generator with native Pytest fixture support to PyPI, born out of rewriting the same fixture-shaping code across every suite.",
+    "stack": ["Python", "Faker", "Pytest", "PyPI"]
+  },
+  {
+    "year": "2026",
+    "title": "Guardrail prompt tuning for adverse-event detection",
+    "context": "Diagnosed and tightened an intentionally over-inclusive safety-detection prompt for a pharma partner's HPV chatbot programs, using the evaluation framework to prove the fix held true-positive detection steady across every market.",
+    "stack": ["Python", "DeepEval", "Prompt engineering"]
+  },
+  {
+    "year": "2025–2026",
+    "title": "First structured security testing program",
+    "context": "Stood up the platform's first recurring authenticated security scan after evaluating and ruling out two other automation approaches, turning ad hoc code review into a documented, repeatable practice.",
+    "stack": ["OWASP ZAP", "JWT", "DAST"]
+  },
+  {
+    "year": "2026",
+    "title": "Retiring the last Robot Framework test suite",
+    "context": "Ported the platform's remaining legacy API regression suite into the existing Pytest framework and ran both in parallel until confidence was earned, closing out a migration that had started years earlier with the UI layer.",
+    "stack": ["Python", "Pytest", "Robot Framework", "Jenkins", "Docker"]
+  },
+  {
+    "year": "2026",
+    "title": "Pre-merge micro-benchmark suite for the NLP pipeline",
+    "context": "Built an in-process benchmark suite that isolates each stage of the classification pipeline and gates a pull request the moment a stage's latency drifts, turning production-only performance observations into a reproducible pre-merge check.",
+    "stack": ["Python", "pytest-benchmark", "GitHub Actions"]
+  },
+  {
+    "year": "2026",
+    "title": "Acceptance-criteria-driven test suite for chatbot edge cases",
+    "context": "Wrote acceptance criteria and a fully traceable test suite for a multi-variant chatbot's edge-case handling epic, executed in strict severity order, and caught a compound bug that a single case-by-case bug report would have missed.",
+    "stack": ["Jira", "Test case design", "Severity-based prioritization"]
+  },
+  {
+    "year": "2024–2025",
+    "title": "Consumer-driven contract testing between chatbot services",
+    "context": "Introduced Pact between the intent-classification service and the journey engine so an incompatible API change fails the provider's own build instead of silently breaking routing in production.",
+    "stack": ["Python", "Pytest", "Pact", "Docker", "GitHub Actions"],
+    "href": "/work/contract-testing-pact/"
+  },
+  {
+    "year": "2024–2025",
+    "title": "Snapshot regression testing for NLP classification prompts",
+    "context": "Built a snapshot framework that runs a fixed set of utterances through the classification pipeline on every prompt version bump, replacing hours of manual label review with an automated diff and catching several silent label regressions before they reached production.",
+    "stack": ["Python", "Pytest", "Claude API", "GitHub Actions"],
+    "href": "/work/snapshot-testing-nondeterministic-ai/"
+  },
+  {
+    "year": "2024–2025",
+    "title": "Virtual scheduler for re-engagement messaging",
+    "context": "Built a controllable-clock mock of the messaging provider's scheduled-send behaviour so a multi-day nudge sequence could be tested in seconds, catching duplicate-message bugs before they reached opted-out users.",
+    "stack": ["Node.js", "TypeScript", "AWS Lambda", "GitHub Actions"]
+  },
+  {
+    "year": "2025",
+    "title": "Structural snapshot validation for chatbot journey configs",
+    "context": "Extended the prompt-snapshot framework to diff chatbot journey configuration graphs structurally, catching mis-wired routing edges that had previously reached user-acceptance testing instead of code review.",
+    "stack": ["Python", "JSON graph diffing", "pytest", "GitHub Actions"]
+  },
+  {
+    "year": "2025",
+    "title": "Multilingual template rendering validation",
+    "context": "Built a snapshot suite that renders every approved WhatsApp message template against fixed test values across every supported language, catching encoding and placeholder-substitution bugs that had previously required emergency re-approval.",
+    "stack": ["Python", "Unicode normalization", "pytest", "GitHub Actions"]
+  },
+  {
+    "year": "2025",
+    "title": "Multi-environment configuration management for LLM pipelines",
+    "context": "Replaced hardcoded model and prompt-version environment variables with a version-controlled config tree across every country and environment, closing the gap that had let an unapproved prompt version reach production by accident.",
+    "stack": ["Python", "YAML", "AWS Lambda", "GitHub Actions"]
+  },
+  {
+    "year": "2025",
+    "title": "Cache endpoint configuration management",
+    "context": "Extended the same config-management approach to the semantic cache's endpoint configuration, adding a cold-start health check so a misconfigured cache falls back to direct generation instead of silently serving the wrong country's data.",
+    "stack": ["Python", "YAML", "AWS ElastiCache (Valkey)", "CloudWatch"]
+  },
+  {
+    "year": "2025",
+    "title": "End-to-end test design for a clinic-referral hand-off",
+    "context": "Designed structured test coverage for a multi-system referral flow spanning a chatbot, a companion web map and a database-backed voucher step, and specified a fix for a session-breaking gap the original flowchart never depicted.",
+    "stack": ["SQL", "Manual test design", "Exploratory testing"]
+  },
+  {
+    "year": "2022–2024",
+    "title": "Migrating UI automation from Robot Framework to Playwright",
+    "context": "Diagnosed the ceiling a heavily optimised Robot Framework suite had reached against an increasingly asynchronous, AI-driven interface, then led the cutover to Playwright and its native CI sharding.",
+    "stack": ["Playwright", "Robot Framework", "Python", "TypeScript", "GitHub Actions"],
+    "href": "/work/from-robot-to-playwright/"
+  },
+  {
+    "year": "2024",
+    "title": "Playwright visual regression suite",
+    "context": "Added screenshot-diff coverage to the dashboard's highest-risk visual surfaces after functional tests kept passing on releases where the rendered page was actually wrong.",
+    "stack": ["Playwright", "GitHub Actions"]
+  },
+  {
+    "year": "2023–2024",
+    "title": "Shared Postman collections for API testing",
+    "context": "Built environment-scoped collections with automatic auth-token chaining so external partners and internal engineers could exercise the API without reconstructing every request from scratch, then narrowed its role once complex workflows moved to Pytest.",
+    "stack": ["Postman", "Newman", "JavaScript", "Jenkins"]
+  },
+  {
+    "year": "2022–2023",
+    "title": "QA process foundation from zero",
+    "context": "Co-built the team's first structured test-case templates, coverage matrices, severity classification and defect workflows where none had existed before, and improvised a way to share automated test results with non-engineers before any dashboarding tool existed.",
+    "stack": ["JIRA (Xray)", "GitHub Actions"]
+  }
+]

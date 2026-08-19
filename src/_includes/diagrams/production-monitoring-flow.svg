@@ -1,0 +1,35 @@
+<svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="prod-mon-title prod-mon-desc" class="diagram">
+    <title id="prod-mon-title">Production monitoring pipeline</title>
+    <desc id="prod-mon-desc">Live traffic is sampled, checked with structural assertions, scored by an LLM judge, routed to a human annotation queue, and the results feed back into the golden dataset.</desc>
+    <defs>
+        <marker id="prod-mon-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor" />
+        </marker>
+    </defs>
+
+    <g fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="4" y="44" width="100" height="32" />
+        <rect x="140" y="44" width="120" height="32" />
+        <rect x="296" y="44" width="88" height="32" />
+        <rect x="420" y="44" width="120" height="32" />
+        <rect x="576" y="44" width="60" height="32" />
+    </g>
+
+    <g font-family="var(--font-mono, monospace)" font-size="11.5" text-anchor="middle" fill="currentColor">
+        <text x="54" y="64">Sample</text>
+        <text x="200" y="64">Structural checks</text>
+        <text x="340" y="64">Judge</text>
+        <text x="480" y="64">Annotation queue</text>
+        <text x="606" y="64">Dataset</text>
+    </g>
+
+    <g stroke="currentColor" stroke-width="1.5" marker-end="url(#prod-mon-arrow)">
+        <path d="M104,60 L140,60" fill="none" />
+        <path d="M260,60 L296,60" fill="none" />
+        <path d="M384,60 L420,60" fill="none" />
+        <path d="M540,60 L576,60" fill="none" />
+    </g>
+
+    <path d="M606,76 C606,110 340,110 340,76" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#prod-mon-arrow)" />
+    <text x="470" y="126" font-family="var(--font-mono, monospace)" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.7">Annotated cases become new golden-dataset cases</text>
+</svg>

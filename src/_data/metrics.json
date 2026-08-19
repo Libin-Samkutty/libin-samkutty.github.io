@@ -1015,6 +1015,108 @@
       "source": "vault://projects.md#PROJ-013",
       "publish": true,
       "scopeNote": "Part of the runtime improvement is not speed at all. Work removed from a suite is faster than work optimised inside it."
+    },
+
+    "scrum_master_sprints": {
+      "value": 34,
+      "display": "34+ sprints",
+      "unit": "sprints as Scrum Master",
+      "confidence": "exact",
+      "basis": "Serving as Scrum Master since April 2025, concurrent with QA and analytics ownership — sprint planning, stand-ups and sprint showcases.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "source": "vault://career.md",
+      "publish": true
+    },
+
+    "data_platform_scope": {
+      "value": { "pipelines": 8, "dashboards": 7 },
+      "display": "8 pipelines · 7 dashboards",
+      "unit": "BigQuery analytics pipelines and the program dashboards they feed",
+      "confidence": "approximate",
+      "basis": "Architected end-to-end (extract from regional datasets → SQL transforms → views → dashboard feeds) with no dedicated data engineer on the team, plus a daily validation script running 5 SQL integrity checks with email alerting.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "source": "vault://projects.md#PROJ-012",
+      "publish": true,
+      "scopeNote": "Ongoing since June 2023, alongside QA responsibilities rather than instead of them."
+    },
+
+    "attribution_undercount": {
+      "value": { "users": 14, "records": 800, "days": 2, "markets": 3 },
+      "display": "14% of users · 800+ records · 3 markets · fixed in 2 days",
+      "unit": "a journey-attribution gap in one of my own analytics pipelines",
+      "confidence": "approximate",
+      "basis": "Direct cross-verification of a fresh data pull against live dashboard numbers, aggregated across the three affected country markets. The undercount and record-count figures are Medium confidence; the two-day fix-and-regression-validation window is directly observed and High confidence.",
+      "asOf": "2026-05-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-021",
+      "publish": true,
+      "scopeNote": "Found in a pipeline I had built and owned — my own daily validation checks reused the same flawed logic and had not caught it. Nobody reported it; it surfaced during unrelated work."
+    },
+
+    "pypi_downloads_30d": {
+      "value": 391,
+      "display": "391",
+      "unit": "PyPI downloads in the trailing 30 days",
+      "confidence": "approximate",
+      "basis": "PyPI stats including mirror traffic, measured at the same time as the 1,824 cumulative total.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-011",
+      "publish": true
+    },
+
+    "botium_session_reach": {
+      "value": 80,
+      "display": "80+ engineers",
+      "unit": "attendees at a company-wide chatbot-testing knowledge-sharing session",
+      "confidence": "approximate",
+      "basis": "First time the broader organisation had a structured overview of the chatbot testing tooling and methodology; produced adoption interest from another client team.",
+      "asOf": "2023-01-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-045",
+      "publish": true
+    },
+
+    "loadconversation_p95": {
+      "value": { "from": 4200, "to": 600 },
+      "display": "4.2s → 600ms",
+      "unit": "p95 response time on a conversation-loading endpoint",
+      "confidence": "exact",
+      "basis": "First JMeter test plan against the endpoint (10 concurrent users, 5-minute steady-state run), before and after a fix to a payload that grew linearly with active conversations in a journey.",
+      "asOf": "2023-02-01",
+      "attribution": "self",
+      "provenSlug": "threshold-gates-vs-trend-views",
+      "source": "vault://metrics.md#MET-039",
+      "publish": true,
+      "scopeNote": "Closed the engineering story with a measured p95 instead of a developer's local impression of feeling faster."
+    },
+
+    "golden_dataset_growth": {
+      "value": { "from": 165, "to": 351 },
+      "display": "165 → 351 cases",
+      "unit": "India Maternal Health golden-dataset cases",
+      "confidence": "exact",
+      "basis": "165 clinical cases (120 English + 45 Hindi) in mid-2026, grown to the current 303 clinical + 48 adversarial/safety cases by August 2026 as coverage expanded to Assamese and adversarial/safety scenarios.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-037",
+      "publish": true
+    },
+
+    "scheduler_config_coverage": {
+      "value": { "from": 0, "to": 12 },
+      "display": "0 → 12 scenarios",
+      "unit": "automated re-engagement scenarios covering every nudge-timing and opt-out combination",
+      "confidence": "exact",
+      "basis": "Counted from the test suite for the two-nudge re-engagement cycle (T+0 → T+24h → T+72h): every timing and opt-out combination, previously untested.",
+      "asOf": "2025-01-01",
+      "attribution": "self",
+      "provenSlug": "zero-net-writes",
+      "source": "vault://projects.md#PROJ-024",
+      "publish": true
     }
   },
 

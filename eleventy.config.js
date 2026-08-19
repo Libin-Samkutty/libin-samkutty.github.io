@@ -1,9 +1,11 @@
+import fs from "node:fs";
 import path from "node:path";
 import Image from "@11ty/eleventy-img";
 import { bundle } from "lightningcss";
 import site from "./src/_data/site.json" with { type: "json" };
 import metrics from "./src/_data/metrics.json" with { type: "json" };
 import programs from "./src/_data/programs.json" with { type: "json" };
+import charts from "./src/_data/charts.json" with { type: "json" };
 
 /**
  * Escapes text destined for an HTML text node or a double-quoted attribute.
@@ -174,6 +176,161 @@ export default function (eleventyConfig) {
             `${escapeHtml(note)} ` +
             `<a href="${escapeHtml(programs.architectureNote.canonicalPost)}">Why the distinction matters</a>.</p>`
         );
+    });
+
+    /**
+     * Just the confidence tag and its basis — for record rows where the value and
+     * its grade sit in different columns and {% metric %}'s wrapper would nest
+     * the value twice.
+     */
+    const GRADE_LABEL = {
+        exact: "measured",
+        approximate: "approximate",
+        estimate: "estimated",
+        projection: "projected"
+    };
+
+    eleventyConfig.addShortcode("grade", (id) => {
+        const metric = metrics.items[id];
+        if (!metric) throw new Error(`{% grade "${id}" %} — no such metric in src/_data/metrics.json.`);
+        if (metric.publish === false) throw new Error(`{% grade "${id}" %} — this metric is publish: false.`);
+
+        const label = GRADE_LABEL[metric.confidence];
+        if (!label) {
+            throw new Error(
+                `{% grade "${id}" %} — unknown confidence "${metric.confidence}". Expected one of: ${Object.keys(GRADE_LABEL).join(", ")}.`
+            );
+        }
+
+        let html = `<span class="grade" data-confidence="${escapeHtml(metric.confidence)}">`;
+        html += `<span class="grade__label">${escapeHtml(label)}</span>`;
+        if (metric.basis) html += ` <span class="grade__basis">${escapeHtml(metric.basis)}</span>`;
+        html += `</span>`;
+        return html;
+    });
+
+    /**
+     * Inline SVG charts, drawn from charts.json rather than authored per-page, so
+     * a chart cannot cite a number the data layer does not carry. currentColor
+     * throughout means one source works in both themes. A `.visually-hidden`
+     * table carries the same values for screen readers and for CSS-off reading.
+     */
+    eleventyConfig.addShortcode("chart", (id) => {
+        const chart = charts.items[id];
+        if (!chart) {
+            throw new Error(
+                `{% chart "${id}" %} — no such chart in src/_data/charts.json.\n` +
+                    `Known keys: ${Object.keys(charts.items).join(", ")}`
+            );
+        }
+
+        const metric = metrics.items[chart.metric];
+        if (!metric) {
+            throw new Error(`{% chart "${id}" %} — references metric "${chart.metric}", which does not exist in metrics.json.`);
+        }
+        if (metric.publish === false) {
+            throw new Error(
+                `{% chart "${id}" %} — references metric "${chart.metric}", which is publish: false. A chart cannot draw an unpublished number.`
+            );
+        }
+
+        const entries = chart.series;
+        if (!Array.isArray(entries) || entries.length === 0) {
+            throw new Error(`{% chart "${id}" %} — "series" must be a non-empty array.`);
+        }
+
+        const titleId = `chart-${id}-title`;
+        const descId = `chart-${id}-desc`;
+
+        const width = 640;
+        const height = 220;
+        const padding = { top: 16, right: 16, bottom: 40, left: 16 };
+        const plotWidth = width - padding.left - padding.right;
+        const plotHeight = height - padding.top - padding.bottom;
+
+        const values = entries.flatMap((entry) => [entry.value, entry.measured].filter((value) => typeof value === "number"));
+        const max = Math.max(...values, 0);
+
+        let body = "";
+
+        if (chart.type === "decay") {
+            const stepX = entries.length > 1 ? plotWidth / (entries.length - 1) : 0;
+            const points = entries.map((entry, index) => ({
+                x: padding.left + stepX * index,
+                y: padding.top + plotHeight * (1 - (max ? entry.value / max : 0)),
+                entry
+            }));
+
+            const path = points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
+            body += `<path d="${path}" fill="none" stroke="currentColor" stroke-width="2" class="chart__line" />`;
+
+            for (const point of points) {
+                body += `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="4" fill="currentColor" class="chart__point" />`;
+                body += `<text x="${point.x.toFixed(1)}" y="${(point.y - 10).toFixed(1)}" class="chart__value" text-anchor="middle">${escapeHtml(String(point.entry.value))}</text>`;
+                body += `<text x="${point.x.toFixed(1)}" y="${height - 10}" class="chart__label" text-anchor="middle">${escapeHtml(point.entry.label)}</text>`;
+            }
+        } else if (chart.type === "before-after" || chart.type === "comparison") {
+            const barGap = 24;
+            const barWidth = (plotWidth - barGap * (entries.length - 1)) / entries.length;
+
+            entries.forEach((entry, index) => {
+                const x = padding.left + index * (barWidth + barGap);
+                const barHeight = max ? (entry.value / max) * plotHeight : 0;
+                const y = padding.top + (plotHeight - barHeight);
+
+                body += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${barHeight.toFixed(1)}" class="chart__bar" fill="currentColor" />`;
+
+                if (typeof entry.measured === "number") {
+                    const tickY = padding.top + plotHeight * (1 - entry.measured / max);
+                    body += `<line x1="${x.toFixed(1)}" x2="${(x + barWidth).toFixed(1)}" y1="${tickY.toFixed(1)}" y2="${tickY.toFixed(1)}" class="chart__threshold" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3" />`;
+                }
+
+                body += `<text x="${(x + barWidth / 2).toFixed(1)}" y="${(y - 6).toFixed(1)}" class="chart__value" text-anchor="middle">${escapeHtml(String(entry.value))}</text>`;
+                body += `<text x="${(x + barWidth / 2).toFixed(1)}" y="${height - 10}" class="chart__label" text-anchor="middle">${escapeHtml(entry.label)}</text>`;
+            });
+        } else {
+            throw new Error(`{% chart "${id}" %} — unknown type "${chart.type}". Expected before-after, decay or comparison.`);
+        }
+
+        const rows = entries
+            .map((entry) => {
+                const measured = typeof entry.measured === "number" ? `<td>${escapeHtml(String(entry.measured))}</td>` : "";
+                return `<tr><th scope="row">${escapeHtml(entry.label)}</th><td>${escapeHtml(String(entry.value))}</td>${measured}</tr>`;
+            })
+            .join("");
+
+        return (
+            `<figure class="chart">` +
+            `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="${titleId} ${descId}" class="chart__svg">` +
+            `<title id="${titleId}">${escapeHtml(chart.title)}</title>` +
+            `<desc id="${descId}">${escapeHtml(chart.unit)}, ${entries.length} data points.</desc>` +
+            body +
+            `</svg>` +
+            `<table class="visually-hidden"><caption>${escapeHtml(chart.title)} (${escapeHtml(chart.unit)})</caption>` +
+            `<thead><tr><th scope="col">Label</th><th scope="col">Value</th></tr></thead>` +
+            `<tbody>${rows}</tbody></table>` +
+            `</figure>`
+        );
+    });
+
+    /**
+     * Hand-authored SVG partials, inlined rather than <img>-referenced so
+     * currentColor picks up the page's own theme instead of a rasterised palette.
+     */
+    const DIAGRAMS_DIR = path.join(process.cwd(), "src/_includes/diagrams");
+
+    eleventyConfig.addShortcode("diagram", (name) => {
+        const file = path.join(DIAGRAMS_DIR, `${name}.svg`);
+        if (!fs.existsSync(file)) {
+            const available = fs.existsSync(DIAGRAMS_DIR)
+                ? fs.readdirSync(DIAGRAMS_DIR).map((entry) => entry.replace(/\.svg$/, ""))
+                : [];
+            throw new Error(
+                `{% diagram "${name}" %} — no such diagram at src/_includes/diagrams/${name}.svg.\n` +
+                    (available.length ? `Available: ${available.join(", ")}` : `The diagrams directory does not exist yet.`)
+            );
+        }
+        return fs.readFileSync(file, "utf8");
     });
 
     /**
