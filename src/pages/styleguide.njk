@@ -76,6 +76,16 @@ shortcode, never typed, which is what stops it drifting from the evidence.</p>
 
 {% architectureNote "short" %}
 
+<h2>Charts and diagrams</h2>
+
+<p>Hand-authored SVG, drawn from the site's own published data or a fixed
+architecture description — never a stock illustration. <code>{% raw %}{% chart %}{% endraw %}</code>
+throws if its metric is missing or unpublished, so a chart cannot outrun the data layer.</p>
+
+{% chart "golden_dataset_growth" %}
+
+{% diagram "test-pyramid" %}
+
 <h2>Buttons</h2>
 
 <p>
@@ -83,29 +93,99 @@ shortcode, never typed, which is what stops it drifting from the evidence.</p>
     <a class="button button--ghost" href="{{ '/contact/' | url }}">Ghost action</a>
 </p>
 
-<h2>Stat rail</h2>
+<p>A paired primary and ghost button, used at every high-intent moment: the
+hero, the homepage closing CTA and the end of a case study.</p>
 
-<div class="stat-rail">
-    <dl class="stat-rail__list">
-        <div class="stat">
-            <dt class="stat__label">Golden-dataset cases gating every India Maternal Health release</dt>
-            <dd class="stat__value">{% metric "golden_dataset_india_mh" %}</dd>
+<p class="button-row">
+    <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
+    <a class="button button--ghost" href="{{ '/resume/' | url }}">Résumé</a>
+</p>
+
+<h2>Evidence record</h2>
+
+<p>The signature component. A grade — confidence tag plus basis, from
+<code>{% raw %}{% grade %}{% endraw %}</code> — sits in the rail; the bare value and a
+plain-language label sit in the main column.</p>
+
+<ol class="record-list evidence">
+    <li class="record evidence__item" data-confidence="exact">
+        <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
+        <div>
+            <p class="evidence__value">{% metric "golden_dataset_india_mh" %}</p>
+            <p class="evidence__label">Golden-dataset cases gating every India Maternal Health release</p>
         </div>
-        <div class="stat">
-            <dt class="stat__label">Cost of a full nightly evaluation run</dt>
-            <dd class="stat__value">{% metric "nightly_eval_cost" %}</dd>
+    </li>
+    <li class="record evidence__item" data-confidence="estimate">
+        <div class="evidence__grade">{% grade "anomaly_sampling_yield" %}</div>
+        <div>
+            <p class="evidence__value">{% metric "anomaly_sampling_yield" %}</p>
+            <p class="evidence__label">More judge-worthy edge cases surfaced per week, same cost</p>
         </div>
-    </dl>
+    </li>
+</ol>
+
+<h2>Gate</h2>
+
+<p>The secondary motif. A result and the limitation beside it, always paired and
+always named in text — colour is reinforcement, never the only signal.</p>
+
+<div class="gate">
+    <div class="gate__item gate__item--pass">
+        <p><span class="gate__tag">Pass</span> Clinical Safety PASS rate reached
+        {% metric "clinical_safety_pass" %} after the danger-sign fix shipped.</p>
+    </div>
+    <div class="gate__item gate__item--fail">
+        <p><span class="gate__tag">Fail</span> {% metric "annotation_override_rate" %} — the
+        judge is still too conservative on non-urgent symptom mentions.</p>
+    </div>
+</div>
+
+<h2>Numbered list</h2>
+
+<p>For genuinely sequential or ranked content — the homepage's selected work, the
+archive's dated entries. Not used for anything that is not actually a sequence.</p>
+
+<ol class="numbered-list">
+    <li class="numbered-list__item">
+        <p class="numbered-list__eyebrow">2025 – 2026</p>
+        <div>
+            <h3 class="numbered-list__title"><a href="{{ '/work/' | url }}">Numbered item title</a></h3>
+            <p class="numbered-list__body">One line naming the problem and the outcome.</p>
+        </div>
+    </li>
+</ol>
+
+<h2>Definition list</h2>
+
+<p>"What I own" on the homepage — three short statements read faster as a
+hairline-ruled list than as three cards the eye has to scan independently.</p>
+
+<div class="definition-list">
+    <div class="definition-list__item">
+        <h3 class="definition-list__term">A definition term</h3>
+        <p class="definition-list__description">Its one-sentence description.</p>
+    </div>
 </div>
 
 <h2>Cards</h2>
+
+<p>The whole card is clickable: the title's own link is the only link inside
+it, extended to the card's bounds. There is nothing here for a screen reader
+to disambiguate, and nothing here breaks if a card ever gains a second link.</p>
 
 <ul class="card-list">
     <li class="card card--case-study">
         <p class="card__eyebrow">2025 – 2026</p>
         <h3 class="card__title"><a href="{{ '/work/' | url }}">Case study card</a></h3>
+        <p class="card__outcome">The one-line, number-free answer for a reader who is scanning rather than reading.</p>
         <p class="card__body">The card used on the work index, with an eyebrow, a
         linked title and a body.</p>
+    </li>
+    <li class="card card--case-study card--flagship">
+        <p class="card__eyebrow">2025 – 2026 <span class="card__flag">Start here</span></p>
+        <h3 class="card__title"><a href="{{ '/work/' | url }}">Flagship case study card</a></h3>
+        <p class="card__body">The one entry a reader hiring for this specific
+        work should read first. The flag is a real signal, not decoration.</p>
     </li>
     <li class="card card--post">
         <p class="card__eyebrow"><time datetime="2026-01-01">1 January 2026</time></p>
@@ -127,7 +207,7 @@ shortcode, never typed, which is what stops it drifting from the evidence.</p>
 
 <div class="callout callout--limitation">
     <h3 class="callout__title">The limitation callout</h3>
-    <p>Carries the amber highlight token rather than a warning icon, because the
+    <p>Carries the rust signal token rather than a warning icon, because the
     heading already says what it is.</p>
 </div>
 
@@ -155,6 +235,14 @@ what.</p>
     <div class="context-strip__row context-strip__row--attribution">
         <dt>What wasn't mine</dt>
         <dd>The attribution row, which is styled apart from the others on purpose.</dd>
+    </div>
+    <div class="context-strip__row">
+        <dt>Public demos</dt>
+        <dd>
+            <ul class="chips">
+                <li><a class="chip chip--link" href="{{ site.profiles.github }}" rel="noopener">example-public-repo</a></li>
+            </ul>
+        </dd>
     </div>
 </dl>
 

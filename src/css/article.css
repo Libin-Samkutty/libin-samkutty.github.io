@@ -23,6 +23,7 @@
     flex-wrap: wrap;
     gap: var(--space-2xs) var(--space-s);
     align-items: baseline;
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-wide);
@@ -49,19 +50,33 @@
     max-inline-size: 24ch;
 }
 
+/*
+  The hook title stays as written; this is the one-line, plain-language
+  answer underneath it for a reader who is scanning rather than reading, so
+  neither reader has to work for what they came for.
+*/
+.case-study__outcome {
+    font-size: var(--step-1);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+    margin-block-start: var(--space-s);
+}
+
 .page__lede {
     margin-block-start: var(--space-m);
     font-size: var(--step-1);
     line-height: var(--leading-normal);
     color: var(--color-text-muted);
+    max-inline-size: var(--measure);
 }
 
 /* At narrow widths the lede's own font step drops the line below the 45ch
    readability floor before the column has a chance to grow. Sized down to
    the body step here specifically, rather than in the shared token, since
-   every other consumer of --step-1 is fine at this width. */
+   `.case-study__outcome` shares --step-1 and hits the same floor. */
 @media (max-width: 48em) {
-    .page__lede {
+    .page__lede,
+    .case-study__outcome {
         font-size: var(--step-0);
     }
 }
@@ -108,7 +123,7 @@
 .context-strip {
     margin-block-end: var(--space-xl);
     border: var(--hairline);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     background-color: var(--color-surface-sunken);
     padding: var(--space-m);
     font-size: var(--step--1);
@@ -121,6 +136,7 @@
 }
 
 .context-strip dt {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
@@ -144,7 +160,7 @@
 @media (min-width: 48em) {
     .context-strip__row {
         display: grid;
-        grid-template-columns: 11rem minmax(0, 1fr);
+        grid-template-columns: var(--rail-width) minmax(0, 1fr);
         gap: var(--space-m);
         align-items: baseline;
     }
@@ -170,12 +186,31 @@
   makes it reachable: a region that scrolls but cannot be focused is unusable
   with a keyboard. The focus ring comes from the global `:focus-visible` rule.
 */
+/*
+  Four background layers, not two: a shadow fade alone would show at both
+  edges all the time, including when the table does not scroll at all. The
+  two `local`-attached layers scroll with the content and cover the shadow
+  once there is nothing left in that direction; the two `scroll`-attached
+  layers stay pinned to the viewport and paint the shadow itself. The result
+  needs no JS and disappears on its own once a reader has scrolled all the
+  way to an edge.
+*/
 .table-scroll {
     overflow-x: auto;
     overscroll-behavior-x: contain;
     border: var(--hairline);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     padding: var(--space-s);
+    background-color: var(--color-bg);
+    background-image:
+        linear-gradient(to right, var(--color-bg) 30%, transparent),
+        linear-gradient(to left, var(--color-bg) 30%, transparent),
+        linear-gradient(to right, var(--color-border-interactive), transparent),
+        linear-gradient(to left, var(--color-border-interactive), transparent);
+    background-repeat: no-repeat;
+    background-size: 24px 100%, 24px 100%, 8px 100%, 8px 100%;
+    background-position: left center, right center, left center, right center;
+    background-attachment: local, local, scroll, scroll;
 }
 
 .table-scroll table {
@@ -200,6 +235,7 @@
     border: var(--hairline-strong);
     border-radius: var(--radius-pill);
     background-color: var(--color-surface);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     color: var(--color-text-muted);
     white-space: nowrap;
@@ -208,6 +244,18 @@
 .chips--tags .chip {
     background: none;
     border-style: dashed;
+}
+
+/* A chip that is also a link — an underline plus the same hover shift as
+   `.button--ghost`, so it reads as clickable rather than as a tag. */
+.chip--link {
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-interactive);
+}
+
+.chip--link:hover {
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-text);
 }
 
 /* ================================================================ metric */
@@ -229,6 +277,7 @@
 */
 
 .metric {
+    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
 }
 
@@ -258,6 +307,7 @@
 }
 
 .metric__credit {
+    font-family: var(--font-body);
     font-style: italic;
 }
 
@@ -269,7 +319,8 @@
     display: block;
     margin-block-start: var(--space-3xs);
     padding-inline-start: var(--space-2xs);
-    border-inline-start: 2px solid var(--color-highlight);
+    border-inline-start: 2px solid var(--color-signal);
+    font-family: var(--font-body);
     font-size: 0.82em;
     line-height: var(--leading-normal);
     color: var(--color-text-muted);
@@ -286,7 +337,7 @@
 [data-confidence="projection"] .metric__value,
 [data-confidence="estimate"] .metric__value {
     text-decoration: underline dotted from-font;
-    text-decoration-color: var(--color-highlight);
+    text-decoration-color: var(--color-signal);
     text-underline-offset: 0.25em;
 }
 
@@ -312,6 +363,7 @@
 .architecture-note__label {
     display: inline-block;
     margin-inline-end: var(--space-2xs);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
@@ -326,7 +378,7 @@
     padding: var(--space-m);
     border: var(--hairline);
     border-inline-start: 3px solid var(--color-accent);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     background-color: var(--color-surface);
 }
 
@@ -340,24 +392,45 @@
 }
 
 /*
-  The signature component, and amber's entire job on this site.
+  The signature component, and rust's entire job on this site.
 
-  Everything else is navy and lavender precisely so this reads as a different
-  register the moment it appears. If amber shows up more than twice in a viewport
-  the design has stopped saying "this is the part where I was wrong" and started
-  saying "this is a warning box".
+  Everything else is ink and teal precisely so this reads as a different
+  register the moment it appears. If rust shows up more than twice in a
+  viewport the design has stopped saying "this is the part where I was wrong"
+  and started saying "this is a warning box".
 */
 .callout--limitation {
-    border-inline-start-color: var(--color-highlight);
-    background-color: var(--color-surface-highlight);
+    border-inline-start-color: var(--color-signal);
+    background-color: var(--color-surface-signal);
 }
 
 .callout--limitation .callout__title {
-    color: var(--color-highlight-text);
+    color: var(--color-signal-text);
 }
 
 .callout--limitation a {
-    color: var(--color-highlight-text);
+    color: var(--color-signal-text);
+}
+
+/*
+  Four independent items, not a narrative that reads top to bottom, so a
+  2-column grid at desktop reads fine out of order. `gap` replaces `.callout`'s
+  own `margin-block` here — the two would otherwise stack, since margins don't
+  collapse between grid items the way they do between block siblings.
+*/
+.callout-grid {
+    display: grid;
+    gap: var(--space-l);
+}
+
+.callout-grid .callout {
+    margin-block: 0;
+}
+
+@media (min-width: 60em) {
+    .callout-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 /* ================================================================ capability matrix */
@@ -375,7 +448,7 @@
     margin-block-end: var(--space-xl);
     padding: var(--space-m);
     border: var(--hairline);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     background-color: var(--color-surface-sunken);
     font-size: var(--step--1);
 }
@@ -386,6 +459,7 @@
 }
 
 .level-key__item dt {
+    font-family: var(--font-display);
     font-weight: var(--weight-semibold);
     color: var(--color-accent-text);
     margin-block-end: var(--space-3xs);
@@ -424,7 +498,7 @@
   its written definition are the honest version of the same claim.
 */
 .capability__level-title {
-    font-family: var(--font-body);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
@@ -448,6 +522,7 @@
 }
 
 .capability__name {
+    font-family: var(--font-display);
     font-weight: var(--weight-semibold);
     font-size: var(--step-0);
 }
@@ -460,6 +535,7 @@
 
 .capability__evidence {
     justify-self: start;
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-wide);
@@ -470,6 +546,42 @@
     .capability__list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--space-m) var(--space-l);
+    }
+
+    /* Skill counts per level are data-driven and often odd (tested against
+       the current skills.json: 3, 5, 1, 1, 3 and 3 across various levels).
+       Without this, an odd count strands its last item alone in column 1
+       with column 2 sitting empty beside it. */
+    .capability__item:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ================================================================ colophon */
+
+/*
+  Three short, independent sections rather than continuous prose, so a
+  two-column split fits better here than the single measure-capped column
+  every other page uses. Budgets runs roughly twice the length of Stack or
+  the imagery note, so the columns are sized 3:2 rather than split evenly —
+  an even split would leave Stack and the imagery note stranded above empty
+  space while Budgets was still running.
+
+  Below 60em, `.colophon` has no `display` override and falls back to plain
+  block flow: Budgets, then the aside's two sections, each spaced by the
+  existing h2 rule below — the same single-column reading order every other
+  page uses.
+*/
+:is(.colophon__budgets, .colophon__stack, .colophon__imagery) > * + * {
+    margin-block-start: var(--space-m);
+}
+
+@media (min-width: 60em) {
+    .colophon {
+        display: grid;
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        gap: var(--space-xl);
+        align-items: start;
     }
 }
 
@@ -485,6 +597,37 @@
 
 /* ================================================================ résumé */
 
+/*
+  A narrow sidebar (title, scan facts, stack, contact buttons) beside the
+  fuller record, rather than everything stacked in one column — the
+  conventional CV layout, and it roughly halves this page's scroll length at
+  desktop widths. Below 60em there's no room for a sidebar this size, so
+  `.resume` falls back to the single stacked column every other page uses,
+  and `.resume__scan` keeps its own bottom rule instead.
+
+  Scoped to `main .resume`, not bare `.resume`: `bodyClass: resume` puts the
+  same class name on `<body>` (resume.njk's front matter), and an
+  unqualified `.resume { display: grid }` here would turn the whole page —
+  header included — into a grid too.
+*/
+@media (min-width: 60em) {
+    main .resume {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        gap: var(--space-2xl);
+        align-items: start;
+    }
+
+    .resume__scan {
+        position: sticky;
+        top: var(--space-l);
+        padding-block-end: 0;
+        padding-inline-end: var(--space-l);
+        border-block-end: 0;
+        border-inline-end: var(--hairline);
+    }
+}
+
 .resume__section {
     padding-block-start: var(--space-l);
     margin-block-start: var(--space-l);
@@ -497,6 +640,37 @@
     padding-block-start: 0;
 }
 
+.resume__scan {
+    padding-block-end: var(--space-l);
+    border-block-end: var(--hairline-strong);
+}
+
+.resume__scan-title {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: var(--weight-semibold);
+}
+
+.resume__scan-facts {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-s);
+    color: var(--color-text-muted);
+}
+
+.resume__scan-stack {
+    margin-block-start: var(--space-s);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-text-subtle);
+}
+
+.resume__scan .button-row {
+    margin-block-start: var(--space-m);
+}
+
 .resume__role + .resume__role {
     margin-block-start: var(--space-l);
 }
@@ -505,6 +679,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3xs) var(--space-s);
+    font-family: var(--font-mono);
     font-size: var(--step--1);
     color: var(--color-text-subtle);
     margin-block-end: var(--space-2xs);
@@ -530,8 +705,8 @@
 }
 
 .related__title {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
-    font-family: var(--font-body);
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
@@ -544,6 +719,22 @@
     padding: 0;
     display: grid;
     gap: var(--space-2xs);
+}
+
+/*
+  The highest-conviction moment on the page — a reader who finished the case
+  study — otherwise fell straight through "Related work" into the site
+  footer with no prompt. Same button pair as the hero, so the payoff of
+  reading gets the same visual weight as the invitation to start.
+*/
+.case-study__cta {
+    margin-block-start: var(--space-l);
+    padding-block-start: var(--space-l);
+    border-block-start: var(--hairline);
+}
+
+.case-study__cta .button-row {
+    margin-block-start: var(--space-s);
 }
 
 .post__footer .chips {
@@ -562,6 +753,7 @@
 .chips > li + li,
 .card-list > li + li,
 .other-systems > li + li,
-.timeline > li + li {
+.timeline > li + li,
+.numbered-list > li + li {
     margin-block-start: 0;
 }

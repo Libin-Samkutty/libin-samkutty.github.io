@@ -3,6 +3,12 @@ layout: layouts/case-study.njk
 title: Two years optimising a framework, then retiring it
 shortTitle: From Robot Framework to Playwright
 description: Two years optimising a test framework, the diagnosis that four of its limits were structural rather than tunable, and the migration that followed.
+outcome: Diagnosed which limits of a heavily optimised Robot Framework suite were structural rather than tunable, then led the migration and retirement that followed.
+demos:
+  - name: robotframework-dashboard-ui-tests
+    url: https://github.com/Libin-Samkutty/robotframework-dashboard-ui-tests
+  - name: playwright-web-api-automation-ts
+    url: https://github.com/Libin-Samkutty/playwright-web-api-automation-ts
 number: 6
 order: 6
 period: May 2022 – Q1 2026
@@ -11,7 +17,7 @@ scope: "The platform's UI, conversational and API automation: built from zero, o
 stack: ["Robot Framework", "pabot", "Playwright", "Botium", "Pytest", "Python", "TypeScript", "Docker", "Jenkins", "GitHub Actions", "Allure"]
 mine: The original suites, the flakiness and parallelisation work, the migration decision and cutover, and the retirement of the framework I had built.
 notMine: The application and its CI infrastructure are the engineering team's; the company-wide Robot Framework base framework is a separate org-level initiative I co-own with others.
-metrics: ["ci_flake_rate", "env_drift_breakages", "docker_setup_time", "robot_pabot_smoke", "robot_pabot_regression", "robot_suite_growth", "robot_ceiling_erosion", "playwright_poc", "ui_scenarios_to_api", "ci_smoke_runtime", "regression_suite_runtime", "playwright_scenarios", "botium_flows", "visual_regression", "robot_retirement_ported", "regression_effort_days"]
+metrics: ["ci_flake_rate", "env_drift_breakages", "docker_setup_time", "robot_pabot_smoke", "robot_pabot_regression", "robot_suite_growth", "robot_ceiling_erosion", "playwright_poc", "ui_scenarios_to_api", "ci_smoke_runtime", "regression_suite_runtime", "playwright_scenarios", "botium_flows", "visual_regression", "robot_retirement_ported", "regression_effort_days", "live_misconfiguration_users"]
 tags: ["Framework migration", "CI performance", "Test architecture", "Technical debt", "Playwright"]
 datePublished: 2026-08-12
 dateModified: 2026-08-12
@@ -26,7 +32,7 @@ lastReviewed: 2026-08-12
 
 ## The problem
 
-In May 2022 the platform had no automated UI coverage, and manual regression ran at {% metric "regression_effort_days" %}. I built the first UI suite in Robot Framework with a Gherkin-style layer, and the first conversational suite in Botium shortly after: {% metric "botium_flows" %} covering multi-turn journeys, intent routing and adversarial inputs through a webhook-simulation connector signed with the same HMAC the production consumer verifies.
+In May 2022 the platform had no automated UI coverage, and manual regression ran at {% metric "regression_effort_days" %}. What manual coverage could not reliably catch showed up directly: {% metric "live_misconfiguration_users" %}, from a health recommendation configured in the CMS dashboard's UI layer without a matching update to the backend conversation JSON that actually drove responses, caught by spot-checking rather than by any systematic check. It was the largest of three such data-consistency issues I found by hand in about four months, and one of the concrete reasons the next year went into building the suite below rather than staying with manual regression. I built the first UI suite in Robot Framework with a Gherkin-style layer, and the first conversational suite in Botium shortly after: {% metric "botium_flows" %} covering multi-turn journeys, intent routing and adversarial inputs through a webhook-simulation connector signed with the same HMAC the production consumer verifies.
 
 Both suites worked. Then the problems arrived in order. First flakiness: the month after the Jenkins cutover ran at {% metric "ci_flake_rate" %}, because dashboard components became visible in the DOM before their content finished loading, so waiting for visibility was waiting for the wrong event. "Flaky tests" is a symptom description, not a diagnosis. Then environment drift: browser and driver versions on the CI agent and on local machines moved independently, producing {% metric "env_drift_breakages" %}, which containerising with pinned versions removed entirely while cutting new-machine setup {% metric "docker_setup_time" %}.
 
@@ -113,6 +119,6 @@ The conversational suite depends on `botium-core`, whose community adoption coll
 
 ## Related links
 
-- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/) — the fixture layer that absorbed the retired API suite
-- [Making a non-deterministic model produce a stable snapshot](/work/snapshot-testing-nondeterministic-ai/) — testing the conversational layer
-- [Threshold gates vs trend views](/writing/threshold-gates-vs-trend-views/) — the trend argument, learned here
+- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/): the fixture layer that absorbed the retired API suite
+- [Making a non-deterministic model produce a stable snapshot](/work/snapshot-testing-nondeterministic-ai/): testing the conversational layer
+- [Threshold gates vs trend views](/writing/threshold-gates-vs-trend-views/): the trend argument, learned here

@@ -11,14 +11,14 @@ bodyClass: home
         <div class="hero__content">
             <p class="hero__eyebrow">{{ site.title }} · {{ site.location.city }}, {{ site.location.country }}</p>
 
-            <h1 class="hero__title">{{ site.tagline }}</h1>
+            <h1 class="hero__title">{{ site.plainClaim }}</h1>
 
             <p class="hero__lede">
-                I am the only QA engineer on a digital health platform that answers questions about
-                pregnancy, contraception and vaccination in seven languages across six countries.
-                The interesting part of that job is not finding bugs. It is deciding, on evidence,
-                whether a generated answer is good enough to send to someone who is worried about
-                a symptom.
+                The platform is a digital health chatbot that answers questions about pregnancy,
+                contraception and vaccination over WhatsApp, in {% metric "languages" %} languages
+                across {% metric "countries" %} countries. I am its only QA engineer. If you hire for
+                quality, safety review or AI evaluation, the case studies below show exactly how I
+                work, including the parts that did not work the first time.
             </p>
 
             <p class="hero__actions">
@@ -36,32 +36,33 @@ bodyClass: home
     </div>
 </section>
 
-<section class="stat-rail" aria-labelledby="stat-rail-title">
-    <div class="wrap">
-        <h2 class="visually-hidden" id="stat-rail-title">Evidence</h2>
+<section class="section" aria-labelledby="evidence-title">
+    <div class="wrap wrap--measure">
+        <h2 class="visually-hidden" id="evidence-title">Evidence</h2>
 
-        <dl class="stat-rail__list">
-            <div class="stat">
-                <dt class="stat__label">Golden-dataset cases gating every India Maternal Health release</dt>
-                <dd class="stat__value">{% metric "golden_dataset_india_mh" %}</dd>
-            </div>
-            <div class="stat">
-                <dt class="stat__label">Cost of a full nightly evaluation run</dt>
-                <dd class="stat__value">{% metric "nightly_eval_cost" %}</dd>
-            </div>
-            <div class="stat">
-                <dt class="stat__label">Prompt-regression review, per version</dt>
-                <dd class="stat__value">{% metric "prompt_review_time" %}</dd>
-            </div>
-            <div class="stat">
-                <dt class="stat__label">Full CI regression suite</dt>
-                <dd class="stat__value">{% metric "regression_suite_runtime" %}</dd>
-            </div>
-            <div class="stat stat--wide">
-                <dt class="stat__label">What that covers</dt>
-                <dd class="stat__value">{% metric "platform_scale" %}</dd>
-            </div>
-        </dl>
+        <ol class="record-list evidence">
+            <li class="record evidence__item" data-confidence="exact">
+                <div class="evidence__grade">{% grade "platform_scale" %}</div>
+                <div>
+                    <p class="evidence__value">{% metric "platform_scale" %}</p>
+                    <p class="evidence__label">What the evaluation systems on this site cover</p>
+                </div>
+            </li>
+            <li class="record evidence__item" data-confidence="exact">
+                <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
+                <div>
+                    <p class="evidence__value">{% metric "golden_dataset_india_mh" %}</p>
+                    <p class="evidence__label">Golden-dataset cases gating every India Maternal Health release</p>
+                </div>
+            </li>
+            <li class="record evidence__item" data-confidence="approximate">
+                <div class="evidence__grade">{% grade "nightly_eval_cost" %}</div>
+                <div>
+                    <p class="evidence__value">{% metric "nightly_eval_cost" %}</p>
+                    <p class="evidence__label">Cost of the full nightly evaluation run</p>
+                </div>
+            </li>
+        </ol>
     </div>
 </section>
 
@@ -69,11 +70,11 @@ bodyClass: home
     <div class="wrap">
         <h2 class="section__title" id="own-title">What I own</h2>
 
-        <div class="grid grid--three">
+        <div class="definition-list">
             {% for item in projects.whatIOwn %}
-            <div class="card card--plain" data-reveal>
-                <h3 class="card__title">{{ item.title }}</h3>
-                <p class="card__body">{{ item.body }}</p>
+            <div class="definition-list__item" data-reveal>
+                <h3 class="definition-list__term">{{ item.title }}</h3>
+                <p class="definition-list__description">{{ item.body }}</p>
             </div>
             {% endfor %}
         </div>
@@ -86,15 +87,20 @@ bodyClass: home
     <div class="wrap">
         <h2 class="section__title" id="work-title">Selected work</h2>
 
-        <ul class="card-list">
+        <ul class="card-list card-list--three">
             {% for item in collections.caseStudies %}
                 {% if item.fileSlug in projects.featuredCaseStudies %}
-                <li class="card card--case-study" data-reveal>
-                    <p class="card__eyebrow">{{ item.data.period }}</p>
-                    <h3 class="card__title">
-                        <a href="{{ item.url }}">{{ item.data.title }}</a>
-                    </h3>
+                <li class="card card--case-study{% if item.data.flagship %} card--flagship{% endif %}" data-reveal>
+                    <p class="card__eyebrow">
+                        <span>{{ item.data.period }}</span>
+                        {% if item.data.flagship %}<span class="card__flag">Start here</span>{% endif %}
+                    </p>
+                    <h3 class="card__title"><a href="{{ item.url }}">{{ item.data.title }}</a></h3>
+                    {% if item.data.outcome %}<p class="card__outcome">{{ item.data.outcome }}</p>{% endif %}
                     <p class="card__body">{{ item.data.description }}</p>
+                    <ul class="chips">
+                        {% for tech in item.data.stack | limit(4) %}<li class="chip">{{ tech }}</li>{% endfor %}
+                    </ul>
                 </li>
                 {% endif %}
             {% endfor %}
@@ -105,45 +111,57 @@ bodyClass: home
 </section>
 
 <section class="section section--emphasis" aria-labelledby="wrong-title">
-    <div class="wrap wrap--measure">
+    <div class="wrap">
         <h2 class="section__title" id="wrong-title">Things that didn't work</h2>
 
-        <p>
-            This section is the fastest way to show you what I am actually like to work with, not
-            an exercise in modesty, and every case study on this site carries one like it.
+        <p class="section__intro">
+            Every case study on this site carries a section like this one.
         </p>
 
-        <div class="callout callout--limitation">
-            <h3 class="callout__title">I built an evaluation system that could not fail</h3>
-            <p>
-                The platform's first LLM-as-a-judge used the same model family that had generated
-                the answers it was grading. It scored well. It scored well because a model asked to
-                grade its own reasoning agrees with itself. That is not an independent check. It is
-                closer to a mirror.
-            </p>
-            <p><a href="{{ '/work/llm-judge-independence/' | url }}">How I found it and what replaced it</a></p>
-        </div>
+        <div class="callout-grid">
+            <div class="callout callout--limitation">
+                <h3 class="callout__title">I built an evaluation system that could not fail</h3>
+                <p>
+                    The platform's first LLM-as-a-judge used the same model family that had generated
+                    the answers it was grading. It scored well. It scored well because a model asked to
+                    grade its own reasoning agrees with itself. That is not an independent check. It is
+                    closer to a mirror.
+                </p>
+                <p><a href="{{ '/work/llm-judge-independence/' | url }}">How I found it and what replaced it</a></p>
+            </div>
 
-        <div class="callout callout--limitation">
-            <h3 class="callout__title">Four testing layers all missed the same gap</h3>
-            <p>
-                Golden-dataset regression, the conversational suite, retrieval faithfulness scoring
-                and manual spot-checks were all green while a class of clinically important query
-                was getting a sympathetic non-answer. Every layer was testing what we had thought to
-                write down. None of them was reading what users were actually sending.
-            </p>
-            <p><a href="{{ '/work/production-evaluation-pipeline/' | url }}">What the production pipeline caught</a></p>
-        </div>
+            <div class="callout">
+                <h3 class="callout__title">Four testing layers all missed the same gap</h3>
+                <p>
+                    Golden-dataset regression, the conversational suite, retrieval faithfulness scoring
+                    and manual spot-checks were all green while a class of clinically important query
+                    was getting a sympathetic non-answer. Every layer was testing what we had thought to
+                    write down. None of them was reading what users were actually sending.
+                </p>
+                <p><a href="{{ '/work/production-evaluation-pipeline/' | url }}">What the production pipeline caught</a></p>
+            </div>
 
-        <div class="callout callout--limitation">
-            <h3 class="callout__title">I spent two years optimising a framework I then retired</h3>
-            <p>
-                Parallelisation, containerisation, flake reduction: real gains, all of them. Then
-                the suite grew and the gains eroded, because the cost I kept optimising around was
-                structural to the framework rather than to my configuration of it. Recognising that
-                took longer than the migration did.
-            </p>
-            <p><a href="{{ '/work/from-robot-to-playwright/' | url }}">The diagnosis and the migration</a></p>
+            <div class="callout">
+                <h3 class="callout__title">I spent two years optimising a framework I then retired</h3>
+                <p>
+                    Parallelisation, containerisation, flake reduction: real gains, all of them. Then
+                    the suite grew and the gains eroded, because the cost I kept optimising around was
+                    structural to the framework rather than to my configuration of it. Recognising that
+                    took longer than the migration did.
+                </p>
+                <p><a href="{{ '/work/from-robot-to-playwright/' | url }}">The diagnosis and the migration</a></p>
+            </div>
+
+            <div class="callout">
+                <h3 class="callout__title">Before automation existed, a human had to catch this by hand</h3>
+                <p>
+                    {% metric "live_misconfiguration_users" %}, from a health recommendation set in a
+                    dashboard's UI layer without a matching update to the backend conversation JSON.
+                    No automated check would have caught it, because none existed yet. It is one of the
+                    reasons the suite below got built.
+                </p>
+                <p><a href="{{ '/work/from-robot-to-playwright/' | url }}">Why the suite got built</a></p>
+            </div>
         </div>
     </div>
 </section>
@@ -152,7 +170,7 @@ bodyClass: home
     <div class="wrap">
         <h2 class="section__title" id="writing-title">Latest writing</h2>
 
-        <ul class="card-list card-list--posts">
+        <ul class="card-list card-list--three">
             {% for item in collections.posts | limit(3) %}
             <li class="card card--post" data-reveal>
                 <p class="card__eyebrow"><time datetime="{{ item.date | isoDate }}">{{ item.date | readableDate }}</time></p>
@@ -166,34 +184,18 @@ bodyClass: home
     </div>
 </section>
 
-<section class="section" aria-labelledby="oss-title">
-    <div class="wrap wrap--measure">
-        <h2 class="section__title" id="oss-title">Open source</h2>
-
-        {% for project in skills.openSource %}
-        <div class="card card--plain">
-            <h3 class="card__title"><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a></h3>
-            <p class="card__body">{{ project.description }}</p>
-            <p class="card__meta">{{ project.language }} · {{ project.license }} · {% metric project.metric %}</p>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
 <section class="section" aria-labelledby="timeline-title">
     <div class="wrap wrap--measure">
         <h2 class="section__title" id="timeline-title">Where I've been</h2>
 
         <ol class="timeline">
-            {% for role in timeline.roles %}
-            <li class="timeline__item{% if role.current %} timeline__item--current{% endif %}">
+            {% for marker in timeline.markers %}
+            <li class="timeline__item{% if loop.last %} timeline__item--current{% endif %}">
                 <p class="timeline__period">
-                    <time datetime="{{ role.start | isoDate }}">{{ role.start | monthYear }}</time>
-                    –
-                    {% if role.end %}<time datetime="{{ role.end | isoDate }}">{{ role.end | monthYear }}</time>{% else %}present{% endif %}
+                    <time datetime="{{ marker.date | isoDate }}">{{ marker.date | monthYear }}</time>
                 </p>
-                <h3 class="timeline__title">{{ role.title }}</h3>
-                <p class="timeline__org">{{ role.employer }} · client {{ site.client.name }}</p>
+                <h3 class="timeline__title">{{ marker.label }}</h3>
+                {% if marker.detail %}<p class="timeline__org">{{ marker.detail }}</p>{% endif %}
             </li>
             {% endfor %}
         </ol>
@@ -209,6 +211,9 @@ bodyClass: home
             {{ site.targetRoles | join(", ") }}. If you are building something where a wrong answer
             has a cost, that is the problem I want.
         </p>
-        <p><a class="button button--primary" href="{{ '/contact/' | url }}">Get in touch</a></p>
+        <p class="button-row">
+            <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
+            <a class="button button--ghost" href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a>
+        </p>
     </div>
 </section>

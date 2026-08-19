@@ -1,0 +1,31 @@
+---
+layout: layouts/page.njk
+permalink: /archive/
+title: Archive
+shortTitle: Archive
+description: Every system I've built or owned beyond the six case studies, dated and by stack, in one table. QA automation, AI evaluation and data engineering.
+lede: The case studies are the deep version of six systems. This is the breadth version of all of them, everything else I've built or owned, in one place.
+---
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Year</th>
+            <th scope="col">System</th>
+            <th scope="col">Context</th>
+            <th scope="col">Stack</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in archive %}
+        <tr>
+            <td>{{ item.year }}</td>
+            <td>
+                {% if item.href %}<a href="{{ item.href | url }}">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}
+                {% if item.repo %}<br><a href="{{ item.repo }}" rel="noopener">Public demo</a>{% endif %}
+            </td>
+            <td>{{ item.context }}</td>
+            <td>{{ item.stack | join(", ") }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

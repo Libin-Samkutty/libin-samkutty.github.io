@@ -3,6 +3,10 @@ layout: layouts/case-study.njk
 title: Making a non-deterministic model produce a stable snapshot
 shortTitle: Snapshot testing a non-deterministic AI
 description: How Libin made a non-deterministic classifier produce stable snapshots, with bit-field-aware diffing and a four-level regression severity taxonomy.
+outcome: A bit-field-aware diff and a four-level severity taxonomy turned a non-deterministic classifier's output into something a snapshot suite could actually gate on.
+demos:
+  - name: prompt-regression-tester
+    url: https://github.com/Libin-Samkutty/prompt-regression-tester
 number: 5
 order: 5
 period: October 2024 – May 2025
@@ -102,7 +106,7 @@ That last line repeats across all three extensions: writing down what the curren
 
 ## Related links
 
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/) — the evaluation layer above these structural checks
-- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/) — the same class of failure, one service boundary away
-- [Decompose by tool call](/writing/decompose-by-tool-call/) — evaluating a classifier by structure rather than by prose
-- [Audit your own traffic](/writing/audit-your-own-traffic/) — how a canonical set should be derived
+- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): the evaluation layer above these structural checks
+- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/): the same class of failure, one service boundary away
+- [Decompose by tool call](/writing/decompose-by-tool-call/): evaluating a classifier by structure rather than by prose
+- [Audit your own traffic](/writing/audit-your-own-traffic/): how a canonical set should be derived

@@ -10,7 +10,15 @@ layout: layouts/base.njk
         </div>
     </header>
 
-    <div class="page__body wrap wrap--measure">
+    {#
+      Plain `.wrap`, not `.wrap--measure` — `.wrap--measure` centers its own
+      narrower box independently of the header above it, which visibly indents
+      the body away from the header's left edge. `.page__body`'s prose elements
+      (base.css) already cap their own inline-size to the reading measure, the
+      same pattern case-study and post bodies use, so the column reads at the
+      right width while staying flush with everything above it.
+    #}
+    <div class="page__body wrap">
         {{ content | safe }}
     </div>
 </article>

@@ -31,7 +31,7 @@
 
     html,
     body {
-        background: var(--white);
+        background: var(--paper-000);
         font-size: 10.5pt;
         line-height: 1.38;
     }
@@ -42,6 +42,12 @@
       piece of copy on the site that is meaningless once printed.
     */
     body.resume .page__lede {
+        display: none;
+    }
+
+    /* Buttons are a screen affordance; the address they point to is already
+       printed as literal text in the Contact section below. */
+    .resume__scan .button-row {
         display: none;
     }
 
@@ -153,7 +159,7 @@
         background: none;
         box-shadow: none;
         border: 0;
-        border-inline-start: 1.5pt solid var(--navy-450);
+        border-inline-start: 1.5pt solid var(--ink-450);
         padding: 0 0 0 8pt;
     }
 
@@ -165,6 +171,12 @@
        heading scale so a full career fits the sheet. */
     .resume {
         font-size: 9.75pt;
+        display: block;
+    }
+
+    .resume__scan {
+        border-inline-end: 0;
+        padding-inline-end: 0;
     }
 
     .resume h1 {

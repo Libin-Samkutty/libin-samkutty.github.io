@@ -9,10 +9,10 @@ lede: I started as the person who wrote test cases. I am now the person who deci
 <h2>What I actually do</h2>
 
 <p>
-    I am the only QA engineer on a digital health platform that answers health questions over
-    WhatsApp in nine languages across {% metric "countries" %} countries. It reaches
-    {% metric "monthly_users" %}. My job is the evidence layer underneath a claim nobody can make
-    by inspection: that a generated answer is safe to send.
+    I am the only QA engineer on this digital health platform, which reaches
+    {% metric "monthly_users" %} in {% metric "languages" %} languages across
+    {% metric "countries" %} countries. My job is the evidence layer underneath a claim nobody can
+    make by inspection: that a generated answer is safe to send.
 </p>
 
 <p>
@@ -97,6 +97,13 @@ lede: I started as the person who wrote test cases. I am now the person who deci
         <ul>
             {% for highlight in role.highlights %}<li>{{ highlight }}</li>{% endfor %}
         </ul>
+        {% endif %}
+        {% if role.id == "associate-qa-engineer" %}
+        <p>
+            Concretely, over that year: {% metric "defect_escape_rate_reduction" %} after the new
+            process took hold, {% metric "associate_defects_caught" %}, and
+            {% metric "etl_anomalies_surfaced" %}.
+        </p>
         {% endif %}
     </li>
     {% endfor %}

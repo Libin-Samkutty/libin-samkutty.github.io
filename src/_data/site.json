@@ -4,6 +4,7 @@
   "titleEffective": "2026-06-01",
   "titleSuffix": " | Libin Samkutty",
   "tagline": "I build the evaluation systems that decide whether an AI answer is safe to ship.",
+  "plainClaim": "I catch unsafe AI answers to health questions before a real person ever sees them.",
   "targetRoles": [
     "Senior AI QA Engineer",
     "Lead AI Quality Engineer",
@@ -40,8 +41,8 @@
     "pypi": "https://pypi.org/project/api-test-data-generator/"
   },
   "themeColor": {
-    "light": "#FBFBFD",
-    "dark": "#0B0F1A"
+    "light": "#FAF6EE",
+    "dark": "#171310"
   },
   "lastUpdated": "2026-08-12",
   "portrait": "/assets/portrait.jpg"

@@ -6,9 +6,13 @@ shortTitle: Contact
 description: How to reach Libin Samkutty about senior AI quality engineering roles, evaluation system design, or anything on this site that looks wrong.
 lede: Email is best. There is no form on this page on purpose.
 ---
+<p class="button-row">
+    <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
+    <a class="button button--ghost" href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a>
+</p>
+
 <ul class="contact-list">
     <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-    <li><a href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a></li>
     <li><a href="{{ site.profiles.github }}" rel="me noopener">GitHub</a></li>
     <li><a href="{{ site.profiles.pypi }}" rel="noopener">PyPI</a></li>
 </ul>
@@ -21,24 +25,16 @@ lede: Email is best. There is no form on this page on purpose.
     ground truth is a domain expert's time.
 </p>
 
-<h2>Why there is no form</h2>
-
-<p>
-    A contact form on a static site has to post somewhere, which means either a third-party
-    endpoint or an API key sitting in client-side JavaScript. The previous version of this site had
-    the latter. A form would also be the only third-party request on the entire site, and the
-    performance budget in CI sets third-party requests to zero. That is a constraint, not
-    a target, so that a convenience cannot quietly reintroduce one.
+<p class="button-row">
+    <a class="button button--primary" href="mailto:{{ site.email }}">Email me about a role</a>
 </p>
 
+{#
+  No form: a static site's form has to post somewhere, and this site's CI budget sets
+  third-party requests to zero. A mailto: link does the same job with nothing to leak
+  or maintain.
+#}
 <p>
-    A <code>mailto:</code> link does the same job with no key to leak and nothing to maintain.
-</p>
-
-<h2>If something here is wrong</h2>
-
-<p>
-    Tell me. Every number on this site carries a recorded basis and a date, and several are marked
-    approximate or projected because that is what the evidence supports. If one of them does not
-    survive contact with your reading of it, I would rather hear that than not.
+    If something on this site looks wrong, including a number, tell me. I would rather hear
+    that than not.
 </p>

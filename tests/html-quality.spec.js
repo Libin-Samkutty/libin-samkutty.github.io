@@ -37,11 +37,17 @@ for (const { url, html } of contentPages) {
 
         test("every table is wrapped in a scroll region numbered from one", () => {
             // The `scrollableRegions` transform opens a <section> per table and
-            // closes one per </table>. Asymmetric counts mean an orphan tag that
-            // no browser reports and html-validate cannot see across the boundary.
+            // closes one per </table>, except for a `.visually-hidden` table (the
+            // data table `{% chart %}` emits): that one is deliberately left
+            // unwrapped, since a table nobody can see does not need a keyboard-
+            // scrollable region, and `.table-scroll table`'s `min-inline-size:
+            // 100%` would override its 1px width and overflow the page for real.
             const opens = (html.match(/<section class="table-scroll"/g) ?? []).length;
             const closes = (html.match(/<\/table>/g) ?? []).length;
-            expect(opens, "table-scroll wrappers vs closing tables").toBe(closes);
+            const hidden = (
+                html.match(/<table\b[^>]*\bclass="[^"]*\bvisually-hidden\b[^"]*"[^>]*>/g) ?? []
+            ).length;
+            expect(opens, "table-scroll wrappers vs closing tables minus hidden ones").toBe(closes - hidden);
 
             // Numbered per page, in document order. A build-global counter made a
             // one-table page announce itself as "Table 8".

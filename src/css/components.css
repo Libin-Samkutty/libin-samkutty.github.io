@@ -1,6 +1,12 @@
 /*
   Site chrome and the homepage components.
 
+  Body text defaults to the serif reading face (base.css), so every interface
+  element below — nav, buttons, the toggle, footer links — sets IBM Plex Sans
+  explicitly rather than inheriting it. Anything that is a short uppercase
+  label, a date or a count sets IBM Plex Mono explicitly for the same reason,
+  in the other direction.
+
   Flat single-class BEM throughout. `is-` classes are state written by site.js;
   `data-` attributes are behaviour hooks. Neither is renamed here, because
   site.js queries the `data-` hooks and toggles the `is-` classes and nothing
@@ -28,6 +34,7 @@
     border-start-end-radius: 0;
     border-end-start-radius: var(--radius-s);
     border-end-end-radius: var(--radius-s);
+    font-family: var(--font-display);
     text-decoration: none;
     font-size: var(--step--1);
     font-weight: var(--weight-medium);
@@ -49,9 +56,19 @@
     border-block-end: var(--hairline);
 }
 
+/*
+  Three explicit columns rather than a wrapping flex row. Grid auto-placement
+  skips out-of-flow items, so the same template resolves correctly in both
+  states without a breakpoint rule here: on mobile `.site-nav` is
+  `position: absolute` (excluded), leaving brand / nav-toggle / theme-toggle
+  in one row; at 48em `.nav-toggle` becomes `display: none` (excluded) and
+  `.site-nav` becomes in-flow, leaving brand / nav / theme-toggle. A wrapping
+  flex row put nav-toggle and theme-toggle in the same line only when both
+  fit, so the theme toggle dropped to its own row at narrow widths.
+*/
 .site-header__inner {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
     align-items: center;
     gap: var(--space-s);
     padding-block: var(--space-xs);
@@ -74,6 +91,7 @@
 }
 
 .site-header__role {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     color: var(--color-text-subtle);
     letter-spacing: var(--tracking-wide);
@@ -90,6 +108,7 @@
     border: 1px solid var(--color-border-interactive);
     border-radius: var(--radius-s);
     color: var(--color-text);
+    font-family: var(--font-display);
     font-size: var(--step--1);
     font-weight: var(--weight-medium);
 }
@@ -191,6 +210,7 @@
     display: block;
     padding: var(--space-2xs) 0;
     color: var(--color-text);
+    font-family: var(--font-display);
     text-decoration: none;
     font-size: var(--step-0);
     font-weight: var(--weight-medium);
@@ -201,8 +221,8 @@
 }
 
 /*
-  Current page. The rule is the signal, not the colour — a lavender link that is
-  merely a slightly different lavender would be colour carrying meaning alone.
+  Current page. The rule is the signal, not the colour — an accent link that is
+  merely a slightly different accent would be colour carrying meaning alone.
   Weight changes too.
 */
 .site-nav__link[aria-current] {
@@ -213,6 +233,31 @@
 /* Body scroll lock while the drawer is open. */
 .is-nav-open {
     overflow: hidden;
+}
+
+/* ---------------------------------------------------------------- email copy */
+
+/*
+  Injected by site.js next to a plain-text mailto link — never present
+  without JS, so there is nothing here to hide for a no-JS reader.
+*/
+.email-copy {
+    display: inline-flex;
+    align-items: center;
+    margin-inline-start: var(--space-2xs);
+    padding: 0.1em 0.6em;
+    border: var(--hairline-strong);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--color-text-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    cursor: pointer;
+}
+
+.email-copy:hover {
+    border-color: var(--color-accent-text);
+    color: var(--color-accent-text);
 }
 
 /* ---------------------------------------------------------------- theme toggle */
@@ -328,6 +373,7 @@ html:not(.js) .theme-toggle {
     border-block-start: var(--hairline);
     background-color: var(--color-surface-sunken);
     padding-block: var(--space-xl);
+    font-family: var(--font-display);
     font-size: var(--step--1);
 }
 
@@ -345,18 +391,12 @@ html:not(.js) .theme-toggle {
     gap: var(--space-2xs) var(--space-m);
 }
 
-.site-footer__colophon {
-    max-inline-size: var(--measure);
-    color: var(--color-text-muted);
-    border-inline-start: 2px solid var(--color-border-strong);
-    padding-inline-start: var(--space-s);
-}
-
 .site-footer__meta {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2xs) var(--space-m);
     color: var(--color-text-subtle);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     padding-block-start: var(--space-s);
     border-block-start: var(--hairline);
@@ -364,28 +404,14 @@ html:not(.js) .theme-toggle {
 
 @media (min-width: 64em) {
     .site-footer__inner {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--space-l) var(--space-xl);
     }
 
-    .site-footer__nav {
-        grid-column: 1;
-    }
-
-    .site-footer__list {
-        flex-direction: column;
-        gap: var(--space-3xs);
-    }
-
+    .site-footer__list,
     .site-footer__profiles {
-        grid-column: 1;
         flex-direction: column;
         gap: var(--space-3xs);
-    }
-
-    .site-footer__colophon {
-        grid-column: 2;
-        grid-row: 1 / span 2;
     }
 
     .site-footer__meta {
@@ -400,15 +426,15 @@ html:not(.js) .theme-toggle {
 
   1. A dot grid at 4% opacity. It reads as graph paper rather than as texture,
      which is the only decorative element on the site that is allowed to exist
-     purely because it looks like the subject matter.
-  2. A lavender radial glow positioned behind the head. This is the one place the
-     accent earns its keep at scale: it echoes the shirt in the portrait and
-     separates a navy jacket from a near-black ground, which otherwise merge into
-     an unreadable silhouette in dark mode.
+     purely because it looks like the subject matter — an instrument reads its
+     measurements against a grid.
+  2. A teal radial glow positioned behind the head. This is the one place the
+     accent earns its keep at scale: it separates a dark jacket from a
+     near-black ground, which would otherwise merge into an unreadable
+     silhouette in dark mode.
   3. A feathered bottom mask on the portrait itself. Without it the photo ends in
      a straight horizontal cut through the jacket and reads as something pasted
-     onto the page. This one detail is the difference between "transparent PNG"
-     and "art direction".
+     onto the page.
 
   All three are painted with `background-image` and `mask-image`, so none of them
   can shift layout, and the LCP element is untouched.
@@ -433,8 +459,8 @@ html:not(.js) .theme-toggle {
     opacity: 0.04;
 
     /* Fades out toward the bottom so the grid does not collide with the hairline
-       above the stat rail, which is doing structural work and should not have to
-       compete with decoration. */
+       above the evidence list, which is doing structural work and should not
+       have to compete with decoration. */
     mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
 }
 
@@ -463,8 +489,8 @@ html:not(.js) .theme-toggle {
     background-image: radial-gradient(
         circle closest-side,
         light-dark(
-            color-mix(in oklab, var(--lavender-500) 13%, transparent),
-            color-mix(in oklab, var(--lavender-500) 34%, transparent)
+            color-mix(in oklab, var(--teal-500) 11%, transparent),
+            color-mix(in oklab, var(--teal-500) 30%, transparent)
         ),
         transparent 88%
     );
@@ -482,6 +508,7 @@ html:not(.js) .theme-toggle {
 }
 
 .hero__eyebrow {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-wide);
@@ -506,6 +533,15 @@ html:not(.js) .theme-toggle {
     line-height: var(--leading-normal);
     color: var(--color-text-muted);
     max-inline-size: 52ch;
+}
+
+/* Same fix as .page__lede (article.css) and for the same reason: --step-1
+   drops below a 45-character line at narrow widths before the column has
+   room to grow. */
+@media (max-width: 48em) {
+    .hero__lede {
+        font-size: var(--step-0);
+    }
 }
 
 .hero__actions {
@@ -533,14 +569,18 @@ html:not(.js) .theme-toggle {
     mask-image: linear-gradient(to bottom, #000 78%, transparent 98%);
 }
 
-@media (min-width: 64em) {
-    .hero {
-        padding-block: var(--space-2xl) var(--space-3xl);
-    }
-
+/*
+  48em, not 64em: the site's own tablet boundary everywhere else (site.js's
+  nav matchMedia, tokens.css). Below this the hero used to stay single-column
+  with the portrait ordered first, which meant the eyebrow, H1, lede and both
+  CTAs all landed below a full-height portrait — at 768px the fold closed
+  before the lede; at 390px the H1 itself was cut mid-sentence. Switching to
+  two columns here, same as desktop, lets the copy lead at tablet width too.
+*/
+@media (min-width: 48em) {
     .hero__inner {
         grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-        gap: var(--space-xl);
+        gap: var(--space-l);
 
         /* Centering a shorter portrait against a taller text column drops its
            top edge below the headline's. Top-aligning puts the two where a
@@ -550,12 +590,34 @@ html:not(.js) .theme-toggle {
 
     .hero__portrait {
         order: 0;
-        max-inline-size: none;
+        max-inline-size: 16rem;
         justify-self: end;
     }
 }
 
+@media (min-width: 64em) {
+    .hero {
+        padding-block: var(--space-2xl) var(--space-3xl);
+    }
+
+    .hero__inner {
+        gap: var(--space-xl);
+    }
+
+    .hero__portrait {
+        max-inline-size: none;
+    }
+}
+
 /* ================================================================ buttons */
+
+/* Shared by every high-intent moment that pairs a primary and a ghost
+   button: the hero, the homepage closing CTA, a case study's closing CTA. */
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+}
 
 .button {
     display: inline-flex;
@@ -565,6 +627,7 @@ html:not(.js) .theme-toggle {
     padding: var(--space-2xs) var(--space-m);
     border-radius: var(--radius-s);
     border: 1px solid transparent;
+    font-family: var(--font-display);
     font-size: var(--step--1);
     font-weight: var(--weight-medium);
     line-height: 1.5;
@@ -601,69 +664,128 @@ html:not(.js) .theme-toggle {
     color: var(--color-accent-text);
 }
 
-/* ================================================================ stat rail */
+/* ================================================================ evidence record */
 
-.stat-rail {
-    border-block: var(--hairline);
-    background-color: var(--color-surface-sunken);
-    padding-block: var(--space-l);
+/*
+  The signature component. Every published figure on the homepage renders as a
+  full-width row: a grade in the rail (confidence tag plus its basis, from
+  `{% grade %}`), a bare value and a plain-language label in the main column
+  (from `{% metric %}`). No other portfolio grades its own claims, and grading
+  them in the layout rather than in a footnote is the point.
+*/
+
+.evidence__item {
+    padding-block: var(--space-m);
+    border-block-start: var(--hairline);
 }
 
-.stat-rail__list {
-    display: grid;
-    gap: var(--space-m);
+.evidence__item:first-child {
+    border-block-start: none;
+    padding-block-start: 0;
 }
 
-.stat {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    gap: var(--space-3xs);
-}
-
-.stat__label {
+.evidence__grade {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
-    line-height: var(--leading-snug);
+    line-height: var(--leading-normal);
+    color: var(--color-text-subtle);
+}
+
+.evidence__grade .grade__label {
+    display: inline-block;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
     color: var(--color-text-muted);
-    max-inline-size: 34ch;
 }
 
 /*
-  The number leads visually but follows in the DOM: `column-reverse` puts the
-  <dd> on top while the <dt>/<dd> pairing a screen reader relies on stays intact.
-  Everything inside `.metric` sizes in `em`, so the whole assembly — hedge, value,
-  basis, credit — scales from this one declaration.
+  A projected or estimated figure earns the signal colour on its grade tag —
+  reinforcement, not the only cue: the word "approximate" or "projected" is
+  already there in the tag text either way.
 */
-.stat__value {
-    font-family: var(--font-display);
+[data-confidence="projection"] .evidence__grade .grade__label,
+[data-confidence="estimate"] .evidence__grade .grade__label {
+    color: var(--color-signal-text);
+}
+
+.evidence__grade .grade__basis {
+    display: block;
+    margin-block-start: var(--space-3xs);
+    max-inline-size: 30ch;
+}
+
+.evidence__value {
+    font-family: var(--font-mono);
     font-size: var(--step-3);
     font-weight: var(--weight-semibold);
-    line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
 }
 
-@media (min-width: 30em) {
-    .stat-rail__list {
+.evidence__label {
+    margin-block-start: var(--space-3xs);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure-tight);
+}
+
+@media (min-width: 48em) {
+    .evidence__value {
+        font-size: var(--step-4);
+    }
+}
+
+/* ================================================================ gate */
+
+/*
+  The secondary motif. A result and the limitation that sits beside it, always
+  paired and always named — "pass" and "fail" are in the text, so the colour is
+  reinforcement rather than the only signal a colour-blind reader gets.
+*/
+
+.gate {
+    display: grid;
+    gap: var(--space-m);
+    margin-block: var(--space-l);
+}
+
+@media (min-width: 48em) {
+    .gate {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: var(--space-l);
+        align-items: start;
     }
 }
 
-@media (min-width: 64em) {
-    .stat-rail__list {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+.gate__item {
+    padding: var(--space-m);
+    border: var(--hairline);
+    border-inline-start-width: 3px;
+}
 
-    .stat--wide {
-        grid-column: 1 / -1;
-        border-block-start: var(--hairline);
-        padding-block-start: var(--space-m);
-    }
+.gate__tag {
+    display: inline-block;
+    margin-inline-end: var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+}
 
-    .stat--wide .stat__value {
-        font-size: var(--step-1);
-        font-family: var(--font-body);
-    }
+.gate__item--pass {
+    border-inline-start-color: var(--color-accent);
+}
+
+.gate__item--pass .gate__tag {
+    color: var(--color-accent-text);
+}
+
+.gate__item--fail {
+    border-inline-start-color: var(--color-signal);
+}
+
+.gate__item--fail .gate__tag {
+    color: var(--color-signal-text);
 }
 
 /* ================================================================ cards */
@@ -679,6 +801,19 @@ html:not(.js) .theme-toggle {
     .card-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--space-l);
+    }
+
+    /* Exactly 3 items, always (the homepage's featured case studies and its
+       latest-posts list): the 2-column stage above can never balance an odd
+       count, so this skips it, same reasoning as .grid--three. */
+    .card-list--three {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 60em) {
+    .card-list--three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
@@ -698,6 +833,7 @@ html:not(.js) .theme-toggle {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2xs) var(--space-s);
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-wide);
@@ -720,6 +856,17 @@ html:not(.js) .theme-toggle {
     color: var(--color-accent-text);
 }
 
+/*
+  The scan-first reader's answer, sitting between the hook title and the
+  fuller body copy so both a skim and a read are served without flattening
+  the title itself into generic problem/solution phrasing.
+*/
+.card__outcome {
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
+    max-inline-size: var(--measure);
+}
+
 .card__body {
     color: var(--color-text-muted);
     max-inline-size: var(--measure);
@@ -728,6 +875,7 @@ html:not(.js) .theme-toggle {
 .card__meta {
     margin-block-start: auto;
     padding-block-start: var(--space-2xs);
+    font-family: var(--font-mono);
     font-size: var(--step--1);
     color: var(--color-text-subtle);
 }
@@ -736,8 +884,9 @@ html:not(.js) .theme-toggle {
    the depth is the space, not a shadow. */
 .card--case-study,
 .card--post {
+    position: relative;
     border: var(--hairline);
-    border-radius: var(--radius-m);
+    border-radius: var(--radius-s);
     background-color: var(--color-surface);
     padding: var(--space-m);
     transition: border-color var(--duration-base) var(--ease-standard);
@@ -748,6 +897,39 @@ html:not(.js) .theme-toggle {
     border-color: var(--color-border-interactive);
 }
 
+/*
+  There is exactly one link in each of these cards (the title), so extending
+  its hit area to the card's own bounds is unambiguous: a screen reader still
+  sees one link named for the title, and a pointer user can click anywhere in
+  the card. `position: relative` above on `.card--case-study`/`.card--post` is
+  what this positions against, not the `<h3>` in between, which sets no
+  position of its own.
+*/
+.card--case-study .card__title a::after,
+.card--post .card__title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+/*
+  The one entry a hiring manager evaluating AI-evaluation work should read
+  first. A colour change on a border most readers never consciously notice,
+  paired with a labelled eyebrow flag that says the actual reason: content,
+  not decoration.
+*/
+.card--flagship {
+    border-color: var(--color-accent);
+}
+
+.card--flagship:hover {
+    border-color: var(--color-accent-text);
+}
+
+.card__flag {
+    color: var(--color-accent-text);
+}
+
 /* An unbordered card for things that are a statement. A single accent rule at
    the top instead of a box. */
 .card--plain {
@@ -756,8 +938,106 @@ html:not(.js) .theme-toggle {
     background: none;
 }
 
-.card--plain + .card--plain {
-    margin-block-start: var(--space-l);
+/* ================================================================ numbered list */
+
+/*
+  Selected work and the archive both read as a numbered list rather than a card
+  grid — content that is genuinely a ranked or dated sequence, which is the one
+  case the frontend-design brief calls out numbered markers as earning their
+  keep rather than decorating.
+*/
+
+.numbered-list {
+    list-style: none;
+    padding: 0;
+    counter-reset: numbered-list;
+}
+
+.numbered-list__item {
+    counter-increment: numbered-list;
+    display: grid;
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    gap: var(--space-3xs) var(--space-m);
+    padding-block: var(--space-l);
+    border-block-start: var(--hairline);
+}
+
+.numbered-list__item:first-child {
+    border-block-start: none;
+    padding-block-start: 0;
+}
+
+.numbered-list__item::before {
+    content: counter(numbered-list, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--color-text-subtle);
+}
+
+.numbered-list__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+}
+
+.numbered-list__title {
+    font-size: var(--step-1);
+    margin-block-start: var(--space-3xs);
+}
+
+.numbered-list__title a {
+    color: inherit;
+}
+
+.numbered-list__body {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+}
+
+@media (max-width: 47.99em) {
+    .numbered-list__item {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .numbered-list__item::before {
+        grid-row: 1;
+    }
+}
+
+/* ================================================================ definition list */
+
+/*
+  "What I own" as a hairline-ruled definition list rather than a three-card
+  grid — three short statements read faster as a list than as three boxes the
+  eye has to scan independently.
+*/
+
+.definition-list {
+    display: grid;
+    gap: 0;
+}
+
+.definition-list__item {
+    padding-block: var(--space-m);
+    border-block-start: var(--hairline);
+}
+
+.definition-list__item:first-child {
+    border-block-start: none;
+    padding-block-start: 0;
+}
+
+.definition-list__term {
+    font-size: var(--step-1);
+}
+
+.definition-list__description {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
 }
 
 /* ================================================================ timeline */
@@ -807,6 +1087,7 @@ html:not(.js) .theme-toggle {
 }
 
 .timeline__period {
+    font-family: var(--font-mono);
     font-size: var(--step--2);
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
@@ -830,6 +1111,17 @@ html:not(.js) .theme-toggle {
     padding: 0;
     display: grid;
     gap: var(--space-l);
+}
+
+/*
+  2 columns, not 3: these items carry more per-item content (eyebrow, chips,
+  body, up to three meta lines) than a case-study or post card, so 6 items
+  read better as 3 rows of 2 than 2 rows of 3.
+*/
+@media (min-width: 60em) {
+    .other-systems {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 .other-systems__item {
@@ -890,7 +1182,8 @@ html:not(.js) .theme-toggle {
     .site-footer__list a,
     .site-footer__profiles a,
     .contact-list a,
-    .capability__evidence {
+    .capability__evidence,
+    .email-copy {
         min-block-size: 44px;
         display: inline-flex;
         align-items: center;

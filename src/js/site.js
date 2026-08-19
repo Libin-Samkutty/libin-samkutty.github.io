@@ -1,6 +1,6 @@
 /**
- * Site behaviour. Roughly 3 KB, no dependencies, loaded as a module so it is
- * deferred by default.
+ * Site behaviour. No dependencies, loaded as a module so it is deferred by
+ * default. Comfortably inside the 15 KB script budget in lighthouserc.cjs.
  *
  * Three rules hold throughout:
  *   1. Every block guards its own elements. The old script.js bound a listener to
@@ -127,39 +127,41 @@ const root = document.documentElement;
     });
 })();
 
-/* -------------------------------------------------------------- scroll reveal */
+/* -------------------------------------------------------------- copy email */
 
-(function reveal() {
-    const targets = document.querySelectorAll("[data-reveal]");
-    if (!targets.length) return;
+(function copyEmail() {
+    // Only the plain-text mailto links (contact list, footer, résumé contact
+    // block) — a `.button`-styled "Email me" CTA already states its action
+    // clearly and does not need a second control glued to it.
+    const links = document.querySelectorAll('a[href^="mailto:"]:not(.button)');
+    if (!links.length || !navigator.clipboard) return;
 
-    // Honour the OS setting by not observing at all. Reduced motion is also
-    // handled in CSS, but not creating the observer avoids doing work whose only
-    // possible outcome is a no-op.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        targets.forEach((target) => target.classList.add("is-revealed"));
-        return;
-    }
+    links.forEach((link) => {
+        const address = link.getAttribute("href").replace(/^mailto:/, "").split("?")[0];
+        if (!address) return;
 
-    if (!("IntersectionObserver" in window)) {
-        targets.forEach((target) => target.classList.add("is-revealed"));
-        return;
-    }
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "email-copy";
+        button.textContent = "Copy";
+        button.setAttribute("aria-label", `Copy ${address} to clipboard`);
 
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add("is-revealed");
-                // Fire once. Re-hiding on scroll-up is the single most irritating
-                // pattern in this category — the reader has already read it.
-                observer.unobserve(entry.target);
-            });
-        },
-        { rootMargin: "0px 0px -10% 0px", threshold: 0.01 }
-    );
+        button.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(address);
+                button.textContent = "Copied";
+                button.setAttribute("aria-label", `${address} copied to clipboard`);
+                setTimeout(() => {
+                    button.textContent = "Copy";
+                    button.setAttribute("aria-label", `Copy ${address} to clipboard`);
+                }, 2000);
+            } catch (e) {
+                /* Clipboard permission denied. The mailto link still works. */
+            }
+        });
 
-    targets.forEach((target) => observer.observe(target));
+        link.insertAdjacentElement("afterend", button);
+    });
 })();
 
 /* -------------------------------------------------------------- skip link focus */

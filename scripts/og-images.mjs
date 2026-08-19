@@ -112,8 +112,10 @@ function card({ title, description, kind }) {
 
     return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><style>
-@font-face { font-family: Inter; src: url("${fontDir}/inter-var.woff2") format("woff2"); font-weight: 100 900; }
-@font-face { font-family: "Source Serif"; src: url("${fontDir}/source-serif-var.woff2") format("woff2"); font-weight: 200 900; }
+@font-face { font-family: "IBM Plex Sans"; src: url("${fontDir}/ibm-plex-sans-var.woff2") format("woff2"); font-weight: 100 700; }
+@font-face { font-family: "IBM Plex Serif"; src: url("${fontDir}/ibm-plex-serif-600.woff2") format("woff2"); font-weight: 600; }
+@font-face { font-family: "IBM Plex Mono"; src: url("${fontDir}/ibm-plex-mono-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "IBM Plex Mono"; src: url("${fontDir}/ibm-plex-mono-600.woff2") format("woff2"); font-weight: 600; }
 
 * { margin: 0; box-sizing: border-box; }
 
@@ -121,31 +123,32 @@ body {
     width: ${WIDTH}px; height: ${HEIGHT}px;
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 72px 80px;
-    background: #0B0F1A;
-    color: #E9EDF6;
-    font-family: Inter, sans-serif;
-    /* Echoes the hero: a lavender glow off the upper right, and the same 4%
-       dot grid that reads as graph paper behind the portrait. */
+    background: #171310;
+    color: #EDE6D6;
+    font-family: "IBM Plex Sans", sans-serif;
+    /* Echoes the hero: a teal glow off the upper right, and the same 4% dot
+       grid that reads as graph paper behind the portrait. */
     background-image:
-        radial-gradient(760px 420px at 88% -12%, rgba(167, 139, 250, 0.20), transparent 70%),
-        radial-gradient(circle at 1px 1px, rgba(233, 237, 246, 0.05) 1px, transparent 0);
+        radial-gradient(760px 420px at 88% -12%, rgba(28, 140, 134, 0.28), transparent 70%),
+        radial-gradient(circle at 1px 1px, rgba(237, 230, 214, 0.05) 1px, transparent 0);
     background-size: auto, 32px 32px;
 }
 
 .eyebrow {
-    font-size: 24px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-    color: #C4B5FD;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 24px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #5FC2B8;
 }
 
 h1 {
-    font-family: "Source Serif", serif;
-    font-size: ${size}px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+    font-family: "IBM Plex Serif", serif;
+    font-size: ${size}px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em;
     max-width: 18ch;
     text-wrap: balance;
 }
 
 p {
-    font-size: 27px; line-height: 1.45; color: #A9B3CA;
+    font-size: 27px; line-height: 1.45; color: #B8AC90;
     max-width: 62ch;
     margin-top: 24px;
     /* Four lines is the point where the description stops supporting the
@@ -154,13 +157,14 @@ p {
 }
 
 footer {
+    font-family: "IBM Plex Mono", monospace;
     display: flex; align-items: center; gap: 16px;
-    font-size: 24px; color: #9AA5BE;
-    border-top: 1px solid #252F47; padding-top: 28px;
+    font-size: 22px; color: #A89C80;
+    border-top: 1px solid #362F26; padding-top: 28px;
 }
 
-footer strong { color: #E9EDF6; font-weight: 600; }
-footer span { color: #5F6C88; }
+footer strong { font-family: "IBM Plex Sans", sans-serif; color: #EDE6D6; font-weight: 600; }
+footer span { color: #6E6450; }
 </style></head>
 <body>
     <p class="eyebrow">${escapeHtml(eyebrow)}</p>
@@ -169,7 +173,7 @@ footer span { color: #5F6C88; }
         <p>${escapeHtml(description)}</p>
     </div>
     <footer>
-        <strong>Libin Samkutty</strong><span>—</span>Senior QA Automation Engineer<span>·</span>libin-samkutty.github.io
+        <strong>Libin Samkutty</strong><span>·</span>Senior QA Automation Engineer<span>·</span>libin-samkutty.github.io
     </footer>
 </body></html>`;
 }

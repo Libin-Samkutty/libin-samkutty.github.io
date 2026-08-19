@@ -40,7 +40,8 @@
       "period": "2023–2024",
       "tech": ["JMeter", "InfluxDB", "Grafana"],
       "body": "I built the platform's first load test plans, starting with a conversation-loading endpoint whose payload grew linearly with the number of active conversations in a journey. Measuring it before and after the fix closed the engineering story with a number rather than a developer's impression from a local request. The more interesting lesson came later: a nudge-trigger endpoint's p95 crept from 450ms toward an 800ms gate across six consecutive nightly runs and never once failed, because each run was judged alone. It was only visible as a slope after trend charts existed. A threshold answers whether tonight is acceptable; only a trend answers whether you are heading somewhere unacceptable.",
-      "relatedPost": "/writing/threshold-gates-vs-trend-views/"
+      "relatedPost": "/writing/threshold-gates-vs-trend-views/",
+      "repo": "https://github.com/Libin-Samkutty/performance-test-suite"
     },
     {
       "id": "api-test-data-generator",

@@ -3,6 +3,7 @@ layout: layouts/case-study.njk
 title: Rebuilding an LLM judge that was grading its own homework
 shortTitle: The judge that graded its own homework
 description: How Libin diagnosed circularity bias in the platform's first LLM-as-a-judge and rebuilt it around an independent model, binary verdicts and calibration.
+outcome: Diagnosed why the platform's first LLM judge was grading its own homework, then rebuilt it around an independent model, binary verdicts and a calibration protocol every judge since has used.
 number: 1
 order: 1
 period: Q1 2025 – Q4 2025
@@ -109,7 +110,7 @@ The calibration sets were annotated by the health content team: a doctor, a nurs
 
 ## Related links
 
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/) — these four constraints applied at scale
-- [Judging live production traffic](/work/production-evaluation-pipeline/) — the same judge running on real conversations
-- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/) — the general form of the circularity problem
-- [Don't call it RAG](/writing/dont-call-it-rag/) — why only one of six programs is evaluated for retrieval quality
+- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): these four constraints applied at scale
+- [Judging live production traffic](/work/production-evaluation-pipeline/): the same judge running on real conversations
+- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/): the general form of the circularity problem
+- [Don't call it RAG](/writing/dont-call-it-rag/): why only one of six programs is evaluated for retrieval quality

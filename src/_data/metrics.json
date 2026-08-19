@@ -131,6 +131,18 @@
       "scopeNote": "This is scope of responsibility, not personal achievement. It is the honest way to carry the platform's user numbers: I am accountable for quality across them, I did not build them."
     },
 
+    "languages": {
+      "value": 9,
+      "display": "9",
+      "unit": "languages the platform's chatbots operate in",
+      "confidence": "exact",
+      "basis": "Counted from the seven country programs' language lists: English, Hindi, Assamese, Marathi, Kannada, Bahasa Indonesia, Thai, Swahili and Hausa.",
+      "asOf": "2026-08-01",
+      "attribution": "context",
+      "source": "src/_data/programs.json",
+      "publish": true
+    },
+
     "countries": {
       "value": 6,
       "display": "6",
@@ -245,6 +257,55 @@
       "publish": true
     },
 
+    "defect_escape_rate_reduction": {
+      "value": 15,
+      "display": "15% reduction in defect escape rate",
+      "confidence": "approximate",
+      "basis": "Observed from pre- versus post-process defect leakage across the Associate QA period; not tracked in a dedicated metrics dashboard at the time.",
+      "asOf": "2023-05-31",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-010",
+      "publish": true,
+      "scopeNote": "Attributed to co-building the project's first structured QA process: test case templates, coverage matrices, severity standards and defect governance, adopted across three-plus teams."
+    },
+
+    "associate_defects_caught": {
+      "value": 20,
+      "display": "20+ critical and high-severity defects caught pre-release",
+      "confidence": "approximate",
+      "basis": "JIRA defect records, May 2022 to May 2023.",
+      "asOf": "2023-05-31",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-012",
+      "publish": true,
+      "scopeNote": "Surfaced through systematic negative testing, boundary value analysis and exploratory testing across multi-channel user flows, before any automated coverage existed."
+    },
+
+    "etl_anomalies_surfaced": {
+      "value": 15,
+      "display": "15+ data anomalies surfaced pre-production",
+      "confidence": "approximate",
+      "basis": "SQL validation test reports and defect records, May 2022 to May 2023, across six-plus data pipelines.",
+      "asOf": "2023-05-31",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-013",
+      "publish": true
+    },
+
+    "live_misconfiguration_users": {
+      "value": 130,
+      "display": "130+ users",
+      "unit": "users in a health journey who received incorrect health recommendations",
+      "confidence": "approximate",
+      "basis": "Author's own recollection of the incident and its resolution; no formal defect-tracking record was cited in the source material.",
+      "asOf": "2022-06-01",
+      "attribution": "self",
+      "provenSlug": "from-robot-to-playwright",
+      "source": "vault://metrics.md#MET-044",
+      "publish": true,
+      "scopeNote": "Caught through manual spot-checking, before any automated regression coverage existed: a health recommendation had been configured in the CMS dashboard's UI layer without a matching update to the backend conversation JSON that actually drove responses. The largest of three data-consistency issues caught this way in about four months, and one of the concrete incidents behind building the platform's first automated suite."
+    },
+
     "e2e_latency_2026": {
       "value": { "from": 28.3, "to": 3.2 },
       "display": "28.3s → 3.2s median end-to-end latency",
@@ -288,6 +349,51 @@
       "source": "vault://metrics.md#MET-047",
       "publish": true,
       "scopeNote": "Mandatory context wherever RAG latency improvement is mentioned. Collapsing 20 sequential cross-encoder inference calls into one batched tensor pass accounts for the overwhelming majority of it. Omitting this credit would make the latency work read as mine."
+    },
+
+    "pipeline_latency_progression": {
+      "value": { "from": 27, "to": 5.5 },
+      "display": "26–28s → 12–18s → 4–7s median end-to-end latency",
+      "unit": "AI pipeline response latency, January to June 2026 tracking period",
+      "confidence": "exact",
+      "basis": "Production monitoring instrumentation from a six-month benchmarking and observability suite, tracked continuously rather than sampled once.",
+      "asOf": "2026-06-01",
+      "attribution": "team",
+      "credit": "the pipeline engineering team",
+      "role": "building and running the benchmarking suite that measured this and directed where the team optimised, not the pipeline changes themselves",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-005",
+      "publish": true,
+      "scopeNote": "Distinct from e2e_latency_2026, a separate later-stage staging regression (an expanded retrieval candidate pool pushing the reranker back into a bottleneck) and its June 2026 fix. This figure is the broader six-month tracking-period result that preceded and enabled that finding."
+    },
+
+    "nlp_intent_latency": {
+      "value": { "from": 2.5, "to": 0.9 },
+      "display": "2–3s → ~900ms",
+      "unit": "NLP intent classification step latency",
+      "confidence": "exact",
+      "basis": "Component-level instrumentation from the same benchmarking suite as pipeline_latency_progression.",
+      "asOf": "2026-06-01",
+      "attribution": "team",
+      "credit": "the pipeline engineering team",
+      "role": "benchmarking and validation, not the classifier optimisation itself",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-006",
+      "publish": true
+    },
+
+    "cache_hit_latency": {
+      "value": 350,
+      "display": "~350ms",
+      "unit": "latency for a request that hits the semantic cache layer",
+      "confidence": "exact",
+      "basis": "Production monitoring instrumentation, latest measurement June 2026.",
+      "asOf": "2026-06-01",
+      "attribution": "context",
+      "provenSlug": "production-evaluation-pipeline",
+      "source": "vault://metrics.md#MET-007",
+      "publish": true,
+      "scopeNote": "A system characteristic rather than an improvement claim: what a cache hit costs, not a before/after reduction."
     },
 
     "pact_blast_radius": {
@@ -1015,6 +1121,144 @@
       "source": "vault://projects.md#PROJ-013",
       "publish": true,
       "scopeNote": "Part of the runtime improvement is not speed at all. Work removed from a suite is faster than work optimised inside it."
+    },
+
+    "scrum_master_sprints": {
+      "value": 34,
+      "display": "34+ sprints",
+      "unit": "sprints as Scrum Master",
+      "confidence": "exact",
+      "basis": "Serving as Scrum Master since April 2025, concurrent with QA and analytics ownership: sprint planning, stand-ups and sprint showcases.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "source": "vault://career.md",
+      "publish": true
+    },
+
+    "data_platform_scope": {
+      "value": { "pipelines": 8, "dashboards": 7 },
+      "display": "8 pipelines · 7 dashboards",
+      "unit": "BigQuery analytics pipelines and the program dashboards they feed",
+      "confidence": "approximate",
+      "basis": "Architected end-to-end (extract from regional datasets → SQL transforms → views → dashboard feeds) with no dedicated data engineer on the team, plus a daily validation script running 5 SQL integrity checks with email alerting.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "source": "vault://projects.md#PROJ-012",
+      "publish": true,
+      "scopeNote": "Ongoing since June 2023, alongside QA responsibilities rather than instead of them."
+    },
+
+    "attribution_undercount": {
+      "value": { "users": 14, "records": 800, "days": 2, "markets": 3 },
+      "display": "14% of users · 800+ records · 3 markets · fixed in 2 days",
+      "unit": "a journey-attribution gap in one of my own analytics pipelines",
+      "confidence": "approximate",
+      "basis": "Direct cross-verification of a fresh data pull against live dashboard numbers, aggregated across the three affected country markets. The undercount and record-count figures are Medium confidence; the two-day fix-and-regression-validation window is directly observed and High confidence.",
+      "asOf": "2026-05-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-021",
+      "publish": true,
+      "scopeNote": "Found in a pipeline I had built and owned. My own daily validation checks reused the same flawed logic and had not caught it. Nobody reported it; it surfaced during unrelated work."
+    },
+
+    "pypi_downloads_30d": {
+      "value": 391,
+      "display": "391",
+      "unit": "PyPI downloads in the trailing 30 days",
+      "confidence": "approximate",
+      "basis": "PyPI stats including mirror traffic, measured at the same time as the 1,824 cumulative total.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-011",
+      "publish": true
+    },
+
+    "botium_session_reach": {
+      "value": 80,
+      "display": "80+ engineers",
+      "unit": "attendees at a company-wide chatbot-testing knowledge-sharing session",
+      "confidence": "approximate",
+      "basis": "First time the broader organisation had a structured overview of the chatbot testing tooling and methodology; produced adoption interest from another client team.",
+      "asOf": "2023-01-01",
+      "attribution": "self",
+      "source": "vault://metrics.md#MET-045",
+      "publish": true
+    },
+
+    "loadconversation_p95": {
+      "value": { "from": 4200, "to": 600 },
+      "display": "4.2s → 600ms",
+      "unit": "p95 response time on a conversation-loading endpoint",
+      "confidence": "exact",
+      "basis": "First JMeter test plan against the endpoint (10 concurrent users, 5-minute steady-state run), before and after a fix to a payload that grew linearly with active conversations in a journey.",
+      "asOf": "2023-02-01",
+      "attribution": "self",
+      "provenSlug": "threshold-gates-vs-trend-views",
+      "source": "vault://metrics.md#MET-039",
+      "publish": true,
+      "scopeNote": "Closed the engineering story with a measured p95 instead of a developer's local impression of feeling faster."
+    },
+
+    "golden_dataset_growth": {
+      "value": { "from": 165, "to": 351 },
+      "display": "165 → 351 cases",
+      "unit": "India Maternal Health golden-dataset cases",
+      "confidence": "exact",
+      "basis": "165 clinical cases (120 English + 45 Hindi) in mid-2026, grown to the current 303 clinical + 48 adversarial/safety cases by August 2026 as coverage expanded to Assamese and adversarial/safety scenarios.",
+      "asOf": "2026-08-01",
+      "attribution": "self",
+      "provenSlug": "ai-evaluation-framework",
+      "source": "vault://metrics.md#MET-037",
+      "publish": true
+    },
+
+    "scheduler_config_coverage": {
+      "value": { "from": 0, "to": 12 },
+      "display": "0 → 12 scenarios",
+      "unit": "automated re-engagement scenarios covering every nudge-timing and opt-out combination",
+      "confidence": "exact",
+      "basis": "Counted from the test suite for the two-nudge re-engagement cycle (T+0 → T+24h → T+72h): every timing and opt-out combination, previously untested.",
+      "asOf": "2025-01-01",
+      "attribution": "self",
+      "provenSlug": "zero-net-writes",
+      "source": "vault://projects.md#PROJ-024",
+      "publish": true
+    },
+
+    "perf_budgets": {
+      "value": { "lcp": 2000, "fcp": 1400, "cls": 0.05, "tbt": 150, "requests": 25, "thirdParty": 0 },
+      "display": "LCP ≤ 2000ms · FCP ≤ 1400ms · CLS ≤ 0.05 · TBT ≤ 150ms · ≤ 25 requests · 0 third-party",
+      "unit": "Lighthouse CI performance budgets",
+      "confidence": "exact",
+      "basis": "Enforced in lighthouserc.cjs. The build fails, not warns, if any budget is exceeded.",
+      "asOf": "2026-08-19",
+      "attribution": "self",
+      "source": "lighthouserc.cjs",
+      "publish": true
+    },
+
+    "a11y_budgets": {
+      "value": { "accessibility": 1, "bestPractices": 1, "seo": 1, "performance": 0.95 },
+      "display": "Accessibility 1.00 · Best Practices 1.00 · SEO 1.00 · Performance ≥ 0.95",
+      "unit": "Lighthouse CI category-score budgets",
+      "confidence": "exact",
+      "basis": "Enforced in lighthouserc.cjs against every route in the sample set on every build.",
+      "asOf": "2026-08-19",
+      "attribution": "self",
+      "source": "lighthouserc.cjs",
+      "publish": true
+    },
+
+    "weight_budgets": {
+      "value": { "css": 92160, "font": 163840, "script": 15360, "total": 614400 },
+      "display": "CSS ≤ 90KB · fonts ≤ 160KB · script ≤ 15KB · total ≤ 600KB",
+      "unit": "Lighthouse CI resource-weight budgets",
+      "confidence": "exact",
+      "basis": "Enforced in lighthouserc.cjs via resource-summary assertions.",
+      "asOf": "2026-08-19",
+      "attribution": "self",
+      "source": "lighthouserc.cjs",
+      "publish": true
     }
   },
 

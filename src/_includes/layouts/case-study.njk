@@ -11,6 +11,7 @@ ogType: article
                 <span class="case-study__period">{{ period }}</span>
             </p>
             <h1 class="case-study__title">{{ title }}</h1>
+            {% if outcome %}<p class="case-study__outcome">{{ outcome }}</p>{% endif %}
         </div>
     </header>
 
@@ -47,6 +48,16 @@ ogType: article
                 <dd>{{ notMine }}</dd>
             </div>
             {% endif %}
+            {% if demos %}
+            <div class="context-strip__row">
+                <dt>Public demos</dt>
+                <dd>
+                    <ul class="chips">
+                        {% for demo in demos %}<li><a class="chip chip--link" href="{{ demo.url }}" rel="noopener">{{ demo.name }}</a></li>{% endfor %}
+                    </ul>
+                </dd>
+            </div>
+            {% endif %}
         </dl>
     </div>
 
@@ -73,5 +84,13 @@ ogType: article
             </ul>
         </nav>
         {% endif %}
+
+        <div class="case-study__cta">
+            <p>If this is the kind of problem you need solved, let's talk.</p>
+            <p class="button-row">
+                <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
+                <a class="button button--ghost" href="{{ '/resume/' | url }}">Résumé</a>
+            </p>
+        </div>
     </footer>
 </article>

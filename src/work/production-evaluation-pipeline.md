@@ -3,6 +3,7 @@ layout: layouts/case-study.njk
 title: Judging live traffic, and finding the gap four test layers had missed
 shortTitle: Judging live production traffic
 description: Anomaly-triggered sampling on live traffic surfaced a clinical-safety gap that four independent offline testing layers had each missed for the same reason.
+outcome: Live-traffic sampling caught a clinical-safety gap that four independent offline testing layers had all missed for the same reason, and routed the fix back into the datasets that missed it.
 number: 3
 order: 3
 period: Q4 2025 – present
@@ -11,7 +12,7 @@ scope: Real-time evaluation of production conversations, with a human annotation
 stack: ["AWS MSK (Kafka)", "AWS Lambda", "AWS Glue Schema Registry", "LangSmith", "Prometheus", "Grafana", "Python", "Parameter Store"]
 mine: "The evaluation side: event schema requirements, sampling design, the evaluator Lambda logic, the trace assertion layer and the LangSmith annotation loop."
 notMine: The lead developer owned MSK provisioning, the pipeline's log emission and the infrastructure budget; the RAG pipeline itself is the engineering team's.
-metrics: ["production_sampling", "anomaly_sampling_yield", "danger_sign_fix_time", "clinical_safety_pass", "annotation_queue_routing", "annotation_override_rate", "rag_retrieval_latency", "reranker_batching_share", "e2e_latency_2026"]
+metrics: ["production_sampling", "anomaly_sampling_yield", "danger_sign_fix_time", "clinical_safety_pass", "annotation_queue_routing", "annotation_override_rate", "rag_retrieval_latency", "reranker_batching_share", "e2e_latency_2026", "pipeline_latency_progression", "nlp_intent_latency", "cache_hit_latency"]
 tags: ["Production monitoring", "Kafka", "LLM-as-a-judge", "Sampling", "Human-in-the-loop"]
 datePublished: 2026-08-12
 dateModified: 2026-08-12
@@ -62,6 +63,8 @@ The annotation principle: **an evaluation system that only ever surfaces its own
 
 ## Implementation
 
+{% diagram "production-monitoring-flow" %}
+
 **Event flow.** The RAG pipeline emits a conversation event per exchange onto an MSK topic, schema-registered through Glue so a producer-side field change fails at publish rather than at parse. An evaluator Lambda consumes via Event Source Mapping in batches, with a dead-letter queue behind it. Configuration (thresholds, judge model version, feature flags) lives in Parameter Store rather than the deployment package, so a sampling threshold changes without a release.
 
 The event schema is what I cared most about at design time, because it decides what is knowable later: retrieval invocation, retrieved context, retrieval confidence, response text, detected and query language, per-stage latency, session identity.
@@ -89,6 +92,7 @@ The two weeks are not the interesting number. The interesting fact is that four 
 - A clinical-safety failure class found, diagnosed and closed: {% metric "danger_sign_fix_time" %}, with Clinical Safety PASS on the production sample at {% metric "clinical_safety_pass" %} afterwards.
 - {% metric "anomaly_sampling_yield" %}.
 - The measurement infrastructure made the June 2026 retrieval work legible: {% metric "rag_retrieval_latency" %} on the retrieval step, and {% metric "e2e_latency_2026" %} end to end. See the credit note below.
+- The same six-month benchmarking suite gave a component-level breakdown of where the rest of the pipeline's time went: {% metric "nlp_intent_latency" %} on intent classification, {% metric "cache_hit_latency" %} on a semantic cache hit. Tracked end to end over January–June 2026, before the retrieval-side regression above: {% metric "pipeline_latency_progression" %}.
 
 ## What I'd do differently
 
@@ -103,9 +107,11 @@ The pipeline was co-designed with the lead developer. He owned MSK cluster provi
 
 The RAG retrieval latency improvement was the engineering team's work, not mine. {% metric "reranker_batching_share" %}: collapsing sequential cross-encoder inference calls into one batched pass accounts for the overwhelming majority of it. The June 2026 reranker removal was likewise their decision and implementation. My part was the measurement infrastructure that attributed both. Two changes shipped together in that release, so the end-to-end improvement cannot be attributed to either alone.
 
+The same is true of {% metric "pipeline_latency_progression" %} and the component breakdown above: I built and ran the benchmarking suite that measured them and told the team where to spend optimisation effort, but the classification, caching and retrieval changes that produced the numbers were the pipeline engineering team's to design and ship.
+
 ## Related links
 
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/) — the offline layer this complements
-- [Rebuilding an LLM judge that was grading its own homework](/work/llm-judge-independence/) — the judge design inside this pipeline
-- [Audit your own traffic](/writing/audit-your-own-traffic/) — reading what users actually send
-- [Aggregate metrics hide the failure](/writing/aggregate-metrics-hide-the-failure/) — why an average would not have found this
+- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): the offline layer this complements
+- [Rebuilding an LLM judge that was grading its own homework](/work/llm-judge-independence/): the judge design inside this pipeline
+- [Audit your own traffic](/writing/audit-your-own-traffic/): reading what users actually send
+- [Aggregate metrics hide the failure](/writing/aggregate-metrics-hide-the-failure/): why an average would not have found this

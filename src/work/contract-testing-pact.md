@@ -3,6 +3,7 @@ layout: layouts/case-study.njk
 title: The refactor that broke every journey with perfectly valid JSON
 shortTitle: Contract testing with Pact
 description: A classifier refactor broke every user's journey with valid, schema-conformant JSON. Consumer-driven contract tests failed it; the schema diff passed it.
+outcome: Consumer-driven contracts catch what a schema diff cannot, a refactor that changes what a field means while leaving its shape perfectly valid.
 number: 4
 order: 4
 period: Q4 2024 – Q4 2025
@@ -101,7 +102,7 @@ That is the whole argument for running both layers, and why I do not call the sc
 
 ## Related links
 
-- [From Robot Framework to Playwright](/work/from-robot-to-playwright/) — the fixture layer built here later absorbed the last Robot suite
-- [Decompose by tool call](/writing/decompose-by-tool-call/) — testing a classifier by what downstream reads
-- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/) — why the provider's own view of correctness is not enough
-- [Zero net writes](/writing/zero-net-writes/) — the test-data isolation underneath the API layer
+- [From Robot Framework to Playwright](/work/from-robot-to-playwright/): the fixture layer built here later absorbed the last Robot suite
+- [Decompose by tool call](/writing/decompose-by-tool-call/): testing a classifier by what downstream reads
+- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/): why the provider's own view of correctness is not enough
+- [Zero net writes](/writing/zero-net-writes/): the test-data isolation underneath the API layer

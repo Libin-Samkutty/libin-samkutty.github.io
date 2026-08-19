@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "purpose": "Series data for the {% chart %} shortcode. Every entry's `metric` must be a published id in metrics.json — the shortcode throws at build if it is missing or unpublished, so a chart cannot outrun the data layer.",
+    "types": ["before-after", "decay", "comparison"]
+  },
+
+  "items": {
+    "e2e_latency_decay": {
+      "type": "decay",
+      "metric": "e2e_latency_2026",
+      "title": "End-to-end pipeline latency, January–June 2026",
+      "unit": "seconds (median)",
+      "series": [
+        { "label": "Jan 2026", "value": 27 },
+        { "label": "Feb 2026", "value": 15 },
+        { "label": "Apr 2026", "value": 5.5 },
+        { "label": "May 2026", "value": 28.3, "note": "staging regression, never reached production" },
+        { "label": "15 Jun 2026", "value": 3.2 }
+      ],
+      "basis": "vault://metrics.md#MET-005, MET-055, MET-056"
+    },
+
+    "golden_dataset_growth": {
+      "type": "before-after",
+      "metric": "golden_dataset_growth",
+      "title": "India Maternal Health golden-dataset size",
+      "unit": "curated cases",
+      "series": [
+        { "label": "Mid-2026", "value": 165 },
+        { "label": "Aug 2026", "value": 351 }
+      ],
+      "basis": "vault://metrics.md#MET-037"
+    },
+
+    "regression_suite_stages": {
+      "type": "decay",
+      "metric": "regression_suite_runtime",
+      "title": "Full regression-suite runtime across four stages",
+      "unit": "minutes",
+      "series": [
+        { "label": "Serial Robot Framework", "value": 195 },
+        { "label": "pabot, one login per worker", "value": 39 },
+        { "label": "Suite grown to ~250 cases", "value": 65 },
+        { "label": "Playwright, 6-way sharding", "value": 23 }
+      ],
+      "basis": "vault://metrics.md#MET-018"
+    },
+
+    "cache_validation_comparison": {
+      "type": "comparison",
+      "metric": "cache_precision_recall",
+      "title": "Semantic-cache validation gates",
+      "unit": "score (0–1)",
+      "series": [
+        { "label": "Precision threshold", "value": 0.9, "measured": 0.93 },
+        { "label": "Recall threshold", "value": 0.75, "measured": 0.71 }
+      ],
+      "basis": "vault://metrics.md#MET-024"
+    },
+
+    "voice_vs_text_comparison": {
+      "type": "comparison",
+      "metric": "voice_vs_text_medical_match",
+      "title": "Voice versus text queries",
+      "unit": "% of queries matching a medical category",
+      "series": [
+        { "label": "Voice (transcribed)", "value": 54 },
+        { "label": "Text (typed)", "value": 27 }
+      ],
+      "basis": "vault://metrics.md#MET-053"
+    }
+  }
+}
