@@ -32,7 +32,7 @@
       "title": "First structured security testing pass",
       "period": "2025",
       "tech": ["OWASP ZAP", "DAST"],
-      "body": "The platform handles protected health information and had never had a structured security scan. I ran the first authenticated active scan against the internal dashboard and the API surface. It had to be authenticated, because an unauthenticated scan of a product where everything meaningful sits behind a login mostly proves the login works. Two high-severity findings came out of it, both fixed within the sprint of discovery. The more useful outcome was procedural: authenticated scanning became a recurring pre-release activity with a defined scope, instead of a thing that had never happened."
+      "body": "The platform handles protected health information and had never had a structured security scan. I tried to make it CI-native first: zaproxy/action-full-scan in GitHub Actions, since Playwright already ran there, then a headless Docker container for repeatability. Neither fit. Actions added credential and workflow overhead for a scan nobody wanted gating a pipeline; Docker couldn't load the JWT authentication context I'd built in ZAP's Desktop UI, a script-path resolution failure between the two environments with no clean fix. I ran the scan from ZAP Desktop instead, authenticated against the internal dashboard and the API surface, because an unauthenticated scan of a product where everything meaningful sits behind a login mostly proves the login works. Two high-severity findings came out of the first pass, both fixed within the sprint of discovery. In hindsight, for a manually-triggered scan that was never going to gate a pipeline, starting with the simplest interactive tool would have been faster than spending two attempts ruling out CI-shaped approaches that were never going to fit."
     },
     {
       "id": "performance-testing",
@@ -42,6 +42,30 @@
       "body": "I built the platform's first load test plans, starting with a conversation-loading endpoint whose payload grew linearly with the number of active conversations in a journey. Measuring it before and after the fix closed the engineering story with a number rather than a developer's impression from a local request. The more interesting lesson came later: a nudge-trigger endpoint's p95 crept from 450ms toward an 800ms gate across six consecutive nightly runs and never once failed, because each run was judged alone. It was only visible as a slope after trend charts existed. A threshold answers whether tonight is acceptable; only a trend answers whether you are heading somewhere unacceptable.",
       "relatedPost": "/writing/threshold-gates-vs-trend-views/",
       "repo": "https://github.com/Libin-Samkutty/performance-test-suite"
+    },
+    {
+      "id": "semantic-cache-regression",
+      "title": "Semantic cache and intent-classification regression suite",
+      "period": "2023–2024",
+      "tech": ["Python", "Pytest", "fastembed", "Valkey"],
+      "body": "The response cache matches on vector similarity, not string equality, so coverage needed three behavioural tiers: exact match, near-duplicate (must still hit), and sufficiently-different (must miss and go to the LLM). Almost every real bug in this system's history has landed at the near-duplicate/sufficiently-different boundary rather than at either extreme. One was a routing bug: a near-duplicate hit against the wrong cached entry sent users expressing direct vaccination intent to informational content instead of the action-plan flow. The other was structural: a routine fastembed version upgrade changed how the model subword-tokenizes medical abbreviations, HPV among them. That shifted a set of known-equivalent phrase pairs from just above the cosine-similarity threshold to just below, flipping them from HIT to MISS with no change anywhere in the classifier or the test suite, only a dependency bump in the Lambda container. A standing set of those phrase pairs, asserted HIT for months in the tier-two suite, is what caught the flip before the image shipped.",
+      "metric": "semantic_cache_defects_caught"
+    },
+    {
+      "id": "nlp-pipeline-benchmark-suite",
+      "title": "Pre-merge micro-benchmark suite for the NLP pipeline",
+      "period": "2026",
+      "tech": ["Python", "pytest-benchmark", "GitHub Actions"],
+      "body": "Production monitoring can tell you latency regressed; it can't stop a regression from merging. I built a pytest-benchmark suite that isolates each of the four classification-pipeline stages (regex pre-filter, semantic-cache lookup, the LLM call, response parsing) against a fixed synthetic corpus, gated in CI against a committed per-stage baseline. The LLM-call stage fights back: network jitter and the occasional timeout produce outlier latencies that have nothing to do with the code under test, so a raw p95 would trip the gate on noise as often as on a real regression. I run a Grubbs test to exclude timeout-driven outliers from that distribution before computing p95, which is what keeps the gate trustworthy enough that people don't route around it. It has already caught real regressions before they reached production.",
+      "metric": "benchmark_ci_regressions_caught"
+    },
+    {
+      "id": "cache-endpoint-config",
+      "title": "Cache endpoint configuration management",
+      "period": "2025",
+      "tech": ["Python", "YAML", "AWS ElastiCache (Valkey)", "CloudWatch"],
+      "body": "Extending config management to the semantic cache's endpoint strings turned up a validation gap that logging alone couldn't close. ElastiCache Serverless publishes a multi-AZ DNS name that resolves successfully from inside and outside the Lambda VPC whether or not it is the record for the cluster you meant, so a cold-start check that only confirms the name resolves proves nothing about which cluster answered. Two incidents made that concrete: a Lambda redeploy that pointed one country's traffic at another country's cache, serving coherent but wrong-language cache hits before anomalous intent distribution surfaced it, and a staging endpoint promoted to production that fell through to live generation at a multi-hour latency cost. The fix replaced the DNS check with an actual Valkey PING against the resolved address before the cache layer is enabled for that invocation; a failed PING falls back to direct LLM classification rather than serving from an unverified cluster. That check is what cut diagnosis time for this incident class.",
+      "metric": "valkey_coldstart_diagnosis_time"
     },
     {
       "id": "api-test-data-generator",

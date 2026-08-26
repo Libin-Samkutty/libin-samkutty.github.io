@@ -55,7 +55,7 @@
         { "name": "TypeScript", "level": "working" },
         { "name": "Visual regression", "level": "working", "note": "Tight pixel tolerance, CI-only baselines. Cross-OS font rendering makes local baselines a trap." },
         { "name": "Robot Framework and pabot", "level": "working", "evidence": "/work/from-robot-to-playwright/", "note": "Two years of it, then the diagnosis that four of its limits were structural." },
-        { "name": "Botium", "level": "working", "note": "140+ conversational flows. Maintained as an internal fork; upstream adoption collapsed after the 2022 acquisition." },
+        { "name": "Botium", "level": "working", "evidence": "https://github.com/Libin-Samkutty/botium-chatbot-test-framework", "note": "140+ conversational flows. Maintained as an internal fork; upstream adoption collapsed after the 2022 acquisition." },
         { "name": "Service virtualization and mock design", "level": "working", "note": "Signed webhooks, controllable clocks, write-blocking proxies for test-data isolation." },
         { "name": "JMeter", "level": "working", "evidence": "/writing/threshold-gates-vs-trend-views/" },
         { "name": "Selenium", "level": "familiar" }

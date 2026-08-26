@@ -36,15 +36,6 @@
         line-height: 1.38;
     }
 
-    /*
-      The résumé page's lede reads "Ctrl+P prints cleanly", which is an
-      instruction for a screen and noise on a sheet of paper. It is the only
-      piece of copy on the site that is meaningless once printed.
-    */
-    body.resume .page__lede {
-        display: none;
-    }
-
     /* Buttons are a screen affordance; the address they point to is already
        printed as literal text in the Contact section below. */
     .resume__scan .button-row {

@@ -1249,6 +1249,43 @@
       "publish": true
     },
 
+    "semantic_cache_defects_caught": {
+      "value": { "routing": 5, "boundary": 3 },
+      "display": "5 routing misclassification defects and 3 cache-boundary regressions",
+      "unit": "caught by the semantic-cache regression suite in its first six months",
+      "confidence": "exact",
+      "basis": "Defect records, September 2023 to March 2024, against a suite that grew from zero coverage on this system.",
+      "asOf": "2024-03-01",
+      "attribution": "self",
+      "source": "vault://projects.md#PROJ-008",
+      "publish": true,
+      "scopeNote": "Every one of the eight landed at the same near-duplicate/sufficiently-different similarity boundary, not at the exact-match or clearly-different tiers."
+    },
+
+    "benchmark_ci_regressions_caught": {
+      "value": 2,
+      "display": "two regressions caught pre-merge",
+      "unit": "pre-production performance regressions caught by the CI gate before merge",
+      "confidence": "exact",
+      "basis": "A fastembed library upgrade that raised semantic-cache lookup p95 from roughly 110ms to 190ms (reverted), and a prompt restructure that raised classification p95 from roughly 950ms to 1,320ms via token-count increase (resolved by truncation). CI PR gate logs.",
+      "asOf": "2026-06-01",
+      "attribution": "self",
+      "source": "vault://projects.md#PROJ-028",
+      "publish": true
+    },
+
+    "valkey_coldstart_diagnosis_time": {
+      "value": { "from": 45, "to": 0 },
+      "display": "~45 minutes → immediate",
+      "unit": "to diagnose a cache-endpoint misconfiguration",
+      "confidence": "exact",
+      "basis": "Incident postmortems for two prior misconfiguration incidents (cross-country cache contamination and a staging-to-production endpoint promotion), compared against the structured cold-start log check that replaced cross-referencing Lambda env vars, CloudWatch logs and BigQuery intent distributions by hand.",
+      "asOf": "2025-12-01",
+      "attribution": "self",
+      "source": "vault://projects.md#PROJ-030",
+      "publish": true
+    },
+
     "weight_budgets": {
       "value": { "css": 92160, "font": 163840, "script": 15360, "total": 614400 },
       "display": "CSS ≤ 90KB · fonts ≤ 160KB · script ≤ 15KB · total ≤ 600KB",
