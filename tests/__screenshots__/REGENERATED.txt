@@ -1,4 +1,4 @@
-Regenerated: Retry after two apt-mirror hangs during Install Chromium on the previous dispatch attempts. Regenerating after PR #28: résumé sidebar layout, homepage callout grid + timeline detail, /work/ column grids, colophon 2-col layout, chart padding fix, and prior in-progress branch changes. Confirmed via diff images that all failing routes/themes are intentional, cumulative changes, not regressions.
-Commit:      07680fb4fba29c8311ca0bbf9f2432861f5ccc0f
-Ref:         refs/heads/feature/instrument-rebuild
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/32305702439
+Regenerated: Confirmed intentional content changes from PR #30: shortened 'How Libin' to 'How I' in three case-study card descriptions (reflows the homepage Selected work cards ~28px shorter) and removed the resume page's screen-only lede paragraph (~93-119px shorter). Verified via pr-checks.yml run 32986220992 diff images — only these two routes affected, no unintended layout change.
+Commit:      2856c429c633cceb39d5494cbf75d2d24e274a36
+Ref:         refs/heads/main
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/32986582629
