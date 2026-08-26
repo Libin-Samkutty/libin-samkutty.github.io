@@ -2,7 +2,7 @@
 layout: layouts/case-study.njk
 title: One evaluation framework, six product lines, three generation architectures
 shortTitle: One framework, three architectures
-description: How Libin built one evaluation framework across six AI product lines and three generation architectures without pretending they were the same system.
+description: How I built one evaluation framework across six AI product lines and three generation architectures without pretending they were the same system.
 outcome: One reusable evaluation framework, driven by a single field on each test case, now gates six AI product lines across three different generation architectures instead of running six separate systems.
 flagship: true
 demos:

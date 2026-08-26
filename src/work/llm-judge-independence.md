@@ -2,7 +2,7 @@
 layout: layouts/case-study.njk
 title: Rebuilding an LLM judge that was grading its own homework
 shortTitle: The judge that graded its own homework
-description: How Libin diagnosed circularity bias in the platform's first LLM-as-a-judge and rebuilt it around an independent model, binary verdicts and calibration.
+description: How I diagnosed circularity bias in the platform's first LLM-as-a-judge and rebuilt it around an independent model, binary verdicts and calibration.
 outcome: Diagnosed why the platform's first LLM judge was grading its own homework, then rebuilt it around an independent model, binary verdicts and a calibration protocol every judge since has used.
 number: 1
 order: 1
