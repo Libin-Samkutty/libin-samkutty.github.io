@@ -5,6 +5,7 @@ title: Capabilities
 shortTitle: Capabilities
 description: A capability matrix with three honest levels rather than percentage bars, where every Core claim links to the case study that proves it.
 lede: Three levels, defined. Every Core claim links to the work that proves it. No percentages, because a "90% Playwright" bar encodes nothing you can check.
+outline: true
 ---
 <div class="level-key">
     <dl>
@@ -42,11 +43,21 @@ lede: Three levels, defined. Every Core claim links to the work that proves it. 
 </section>
 {% endfor %}
 
+{#
+  Twelve repositories were twelve bare paragraphs, each capped at the reading
+  measure by base.css, stacked down a 1100px column. A repository is a record —
+  name, what it does, language, licence — not a paragraph, so it gets the card
+  grid the rest of the site uses for records.
+#}
 <h2>Open source</h2>
-{% for project in skills.openSource %}
-<p>
-    <a href="{{ project.url }}" rel="noopener">{{ project.name }}</a> · {{ project.description }}
-    {{ project.language }}{% if project.license %}, {{ project.license }}{% endif %}.
-    {% if project.metric %}{% metric project.metric %}{% endif %}
-</p>
-{% endfor %}
+<ul class="card-list card-list--three">
+    {% for project in skills.openSource %}
+    <li class="card card--plain">
+        <h3 class="card__title"><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a></h3>
+        <p class="card__body">{{ project.description }}</p>
+        <p class="card__meta">
+            {{ project.language }}{% if project.license %} · {{ project.license }}{% endif %}{% if project.metric %} · {% metric project.metric %}{% endif %}
+        </p>
+    </li>
+    {% endfor %}
+</ul>

@@ -1,4 +1,4 @@
-<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="snippets-arch-title snippets-arch-desc" class="diagram">
+<svg width="640" height="200" viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="snippets-arch-title snippets-arch-desc" class="diagram">
     <title id="snippets-arch-title">Smart Snippets architecture with intent classification</title>
     <desc id="snippets-arch-desc">An intent classifier routes the utterance; a semantic cache serves repeat questions directly, otherwise generation draws on curated snippet content. There is no retrieval step.</desc>
     <defs>

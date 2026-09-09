@@ -1,4 +1,4 @@
-<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="rag-arch-title rag-arch-desc" class="diagram">
+<svg width="640" height="200" viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="rag-arch-title rag-arch-desc" class="diagram">
     <title id="rag-arch-title">RAG retrieval architecture</title>
     <desc id="rag-arch-desc">A query is retrieved by dense and sparse search, fused, then used to ground a generated response. Retrieval quality and generation quality are both evaluated.</desc>
     <defs>

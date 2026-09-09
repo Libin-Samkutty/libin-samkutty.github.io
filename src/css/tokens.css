@@ -150,6 +150,30 @@
        because layout.css, article.css and the context strip all share it. */
     --rail-width: 11rem;
 
+    /* The evidence aside in the document grid: the context strip's labels and
+       values stacked, not the 51ch reading column. Wide enough for a two-word
+       label above a short sentence without hyphenating, narrow enough that the
+       prose beside it keeps the composition band's centre. */
+    --aside-width: 15rem;
+
+    /* What the sticky header occupies, so anything else that sticks can clear
+       it. The header is `position: sticky` with a z-index of 20
+       (components.css), so a sticky element offset by `--space-l` alone slides
+       underneath it — which is what the résumé sidebar does today and gets away
+       with only because its content is short enough never to reach the top.
+
+       Measured off the rendered page with scripts/ui-shots.mjs's approach, not
+       derived from the CSS: 73.47px at 390, 74.84px at 768, 61px at 1280 and
+       1920. The wrap at 48em is what drops it — below that breakpoint the
+       nav toggle and the brand's two lines stack taller. Two values rather
+       than one average, because a sticky offset that is too small hides content
+       under the header and one that is too large opens a visible gap.
+
+       Not derived at runtime. A JS-measured custom property would make every
+       sticky offset depend on a script this site guarantees it can work
+       without. */
+    --header-height: 4.75rem;
+
     /* ---------------------------------------------------------------- space */
 
     --space-3xs: 0.25rem;
@@ -200,12 +224,27 @@
     --shadow-overlay: 0 1px 2px rgb(23 19 16 / 0.06), 0 18px 40px -18px rgb(23 19 16 / 0.24);
 }
 
+/* Above 48em the brand stops stacking and the nav toggle is gone, so the header
+   loses roughly 13px. 48em because that is where components.css swaps the
+   header's layout, not because the number looks tidy. */
+@media (min-width: 48em) {
+    :root {
+        --header-height: 3.875rem;
+    }
+}
+
 /* 75rem holds up to 96em (1536px). Past that, a fixed band leaves more than a
    third of the viewport as flat margin on each side, so the band grows once
-   more — still centred, still short of full-bleed. */
+   more — still centred, still short of full-bleed.
+
+   90rem rather than the 84rem this used to be. At 1920 the old value left 30%
+   of the screen as flat margin, which is the complaint that started this
+   change; 90rem brings it to 25% and gives the document grid's content track
+   enough room for a wide table without the prose beside it moving at all — the
+   reading column is capped at 51ch and is not affected by this number. */
 @media (min-width: 96em) {
     :root {
-        --wrap-max: 84rem;
+        --wrap-max: 90rem;
     }
 }
 

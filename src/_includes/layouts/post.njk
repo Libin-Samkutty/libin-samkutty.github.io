@@ -19,15 +19,24 @@ eleventyComputed:
     </header>
 
     {#
-      Plain `.wrap`, not `.wrap--measure` — `.wrap--measure` centers its own
-      narrower box independently of the header above it, which visibly indents
-      the body away from the header's left edge. `.post__body`'s prose elements
-      (base.css) already cap their own inline-size to the reading measure, the
-      same pattern case-study and page bodies use, so the column reads at the
-      right width while staying flush with everything above it.
+      The document grid, two tracks: rail and content.
+
+      An aside holding the post's tags was the first version and it lost more
+      than it gained. Reserving the third track took the content column from
+      1104px to 800, which changed nothing for prose — that is capped at 51ch in
+      base.css either way — but made every table in a post taller. One post came
+      out 119px longer than before the refit, to display four tags. They are
+      back in the footer, where a tag list reads as a coda rather than as
+      something you need before the article.
     #}
-    <div class="post__body wrap">
-        {{ content | safe }}
+    <div class="wrap doc">
+        <div class="doc__rail" data-outline></div>
+
+        <div class="post__body doc__main">
+            <!--outline:start-->
+            {{ content | safe }}
+            <!--outline:end-->
+        </div>
     </div>
 
     <footer class="post__footer wrap">

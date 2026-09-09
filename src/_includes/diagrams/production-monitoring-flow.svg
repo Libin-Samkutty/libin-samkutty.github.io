@@ -1,4 +1,4 @@
-<svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="prod-mon-title prod-mon-desc" class="diagram">
+<svg width="640" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="prod-mon-title prod-mon-desc" class="diagram">
     <title id="prod-mon-title">Production monitoring pipeline</title>
     <desc id="prod-mon-desc">Live traffic is sampled, checked with structural assertions, scored by an LLM judge, routed to a human annotation queue, and the results feed back into the golden dataset.</desc>
     <defs>

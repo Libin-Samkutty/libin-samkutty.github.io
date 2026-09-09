@@ -6,8 +6,12 @@ shortTitle: Work
 description: Six case studies on AI evaluation systems, production monitoring and test infrastructure, each with an explicit section on what I would do differently.
 ---
 <article class="page">
+    {# Plain `.wrap`, so the title and the lede sit side by side at 64em like
+       every other page header. As `.wrap--measure` this was a 520px column
+       stacked in a 1344px band: 410px of vertical space for five lines, with
+       the rest of the row empty. #}
     <header class="page__header">
-        <div class="wrap wrap--measure">
+        <div class="wrap">
             <h1 class="page__title">Work</h1>
             <p class="page__lede">
                 Six systems, written up in full: the problem, what could not be changed, the options
@@ -18,7 +22,7 @@ description: Six case studies on AI evaluation systems, production monitoring an
         </div>
     </header>
 
-    <div class="wrap wrap--measure">
+    <div class="wrap">
         {% architectureNote %}
     </div>
 

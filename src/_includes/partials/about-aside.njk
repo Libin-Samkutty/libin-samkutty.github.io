@@ -1,0 +1,45 @@
+{#
+  The /about/ aside.
+
+  Every value is read from the data layer rather than typed here, for the same
+  reason prose figures come from metrics.json: this page and the résumé and the
+  footer all state the current role, and three hand-copied copies is how the
+  previous site ended up claiming two different job titles.
+
+  It reuses `.context-strip`, the case-study component, rather than introducing
+  a second label-and-value block that would drift from it.
+#}
+{% set current = timeline.roles | selectattr("current") | first %}
+<dl class="context-strip">
+    {% if current %}
+    <div class="context-strip__row">
+        <dt>Currently</dt>
+        <dd>{{ current.title }} at <a href="{{ site.employer.url }}" rel="noopener">{{ site.employer.name }}</a>, on <a href="{{ site.client.url }}" rel="noopener">{{ site.client.name }}</a></dd>
+    </div>
+    {% endif %}
+
+    <div class="context-strip__row">
+        <dt>Based in</dt>
+        <dd>{{ site.location.city }}, {{ site.location.region }}, {{ site.location.country }}</dd>
+    </div>
+
+    <div class="context-strip__row">
+        <dt>Open to</dt>
+        <dd>
+            <ul class="chips">
+                {% for role in site.targetRoles %}<li class="chip">{{ role }}</li>{% endfor %}
+            </ul>
+        </dd>
+    </div>
+
+    <div class="context-strip__row">
+        <dt>Elsewhere</dt>
+        <dd>
+            <ul class="chips">
+                <li><a class="chip chip--link" href="{{ site.profiles.linkedin }}" rel="me noopener">LinkedIn</a></li>
+                <li><a class="chip chip--link" href="{{ site.profiles.github }}" rel="me noopener">GitHub</a></li>
+                <li><a class="chip chip--link" href="{{ '/resume/' | url }}">Résumé</a></li>
+            </ul>
+        </dd>
+    </div>
+</dl>
