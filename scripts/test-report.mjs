@@ -220,10 +220,42 @@ for (const key of Object.keys(reported)) {
 }
 
 const onCI = process.env.GITHUB_ACTIONS === "true";
-const commit = process.env.GITHUB_SHA ?? null;
 const runId = process.env.GITHUB_RUN_ID;
 const server = process.env.GITHUB_SERVER_URL ?? "https://github.com";
 const repository = process.env.GITHUB_REPOSITORY;
+
+/**
+ * On a `pull_request` event, GITHUB_SHA is a synthetic merge of the branch into
+ * its base and GITHUB_REF_NAME is something like "34/merge". Neither survives
+ * the PR: the commit exists on no branch and the ref is not a place. Publishing
+ * them would put a SHA on the page that nobody can look up, which is worse than
+ * publishing nothing.
+ *
+ * So on a pull request the head commit and head branch are read out of the event
+ * payload instead. Both are real and both stay real. On a push, GITHUB_SHA is
+ * already the commit that was pushed and needs no correction.
+ */
+function provenance() {
+    const sha = process.env.GITHUB_SHA ?? null;
+    const ref = process.env.GITHUB_REF_NAME ?? null;
+
+    if (process.env.GITHUB_EVENT_NAME !== "pull_request") return { commit: sha, branch: ref };
+
+    const eventPath = process.env.GITHUB_EVENT_PATH;
+    if (!eventPath || !existsSync(eventPath)) return { commit: sha, branch: process.env.GITHUB_HEAD_REF ?? ref };
+
+    try {
+        const event = JSON.parse(readFileSync(eventPath, "utf8"));
+        return {
+            commit: event.pull_request?.head?.sha ?? sha,
+            branch: event.pull_request?.head?.ref ?? process.env.GITHUB_HEAD_REF ?? ref
+        };
+    } catch {
+        return { commit: sha, branch: process.env.GITHUB_HEAD_REF ?? ref };
+    }
+}
+
+const { commit, branch } = provenance();
 
 const suites = [...files.values()]
     .map(({ projects, ...rest }) => ({ ...rest, projects: [...projects].sort() }))
@@ -234,8 +266,11 @@ const latest = {
     source: onCI ? "ci" : "local",
     commit,
     commitShort: commit ? commit.slice(0, 7) : null,
-    branch: process.env.GITHUB_REF_NAME ?? null,
+    branch,
     workflow: process.env.GITHUB_WORKFLOW ?? null,
+    // Whether this run is the one that published the site, or a branch check.
+    // The page says different things about the two and must not guess.
+    deployed: process.env.GITHUB_EVENT_NAME === "push" && branch === "main",
     runUrl: runId && repository ? `${server}/${repository}/actions/runs/${runId}` : null,
     runner: process.env.RUNNER_OS ?? null,
     playwright: raw.config?.version ?? null,

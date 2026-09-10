@@ -19,8 +19,11 @@
         {% if run.failed %}
         This record is red, so the commit it describes did not deploy. The site you are reading is an
         earlier one.
-        {% else %}
+        {% elif run.deployed %}
         Every gate held, which is why the commit this describes is the one now serving this page.
+        {% else %}
+        Every gate held. This one ran on a branch rather than on the deploy, so it is the run that
+        cleared the change for merging, not the run that published this page.
         {% endif %}
     </p>
 </div>
