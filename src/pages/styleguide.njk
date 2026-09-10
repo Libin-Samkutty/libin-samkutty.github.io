@@ -125,6 +125,41 @@ plain-language label sit in the main column.</p>
     </li>
 </ol>
 
+<h3>Evidence record, three abreast</h3>
+
+<p>The <code>evidence--columns</code> modifier, as the homepage uses it. The
+grade moves below the figure and the rail becomes a stack, because a third of
+the band has no room for a label beside a 42px value.</p>
+
+<p>It is a modifier and not the default for a reason this page proved: applied
+to <code>.evidence</code> itself, the long estimate above rendered seven
+characters to the line in a 285px column and ran 1,882px tall. Short figures
+only.</p>
+
+<ol class="record-list evidence evidence--columns">
+    <li class="record evidence__item" data-confidence="exact">
+        <div class="evidence__figure">
+            <p class="evidence__value">{% metric "golden_dataset_india_mh" %}</p>
+            <p class="evidence__label">Golden-dataset cases gating every India Maternal Health release</p>
+        </div>
+        <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
+    </li>
+    <li class="record evidence__item" data-confidence="exact">
+        <div class="evidence__figure">
+            <p class="evidence__value">{% metric "languages" %}</p>
+            <p class="evidence__label">Languages the platform answers in</p>
+        </div>
+        <div class="evidence__grade">{% grade "languages" %}</div>
+    </li>
+    <li class="record evidence__item" data-confidence="approximate">
+        <div class="evidence__figure">
+            <p class="evidence__value">{% metric "nightly_eval_cost" %}</p>
+            <p class="evidence__label">Cost of the full nightly evaluation run</p>
+        </div>
+        <div class="evidence__grade">{% grade "nightly_eval_cost" %}</div>
+    </li>
+</ol>
+
 <h2>Gate</h2>
 
 <p>The secondary motif. A result and the limitation beside it, always paired and

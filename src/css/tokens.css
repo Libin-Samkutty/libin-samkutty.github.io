@@ -224,10 +224,20 @@
     --shadow-overlay: 0 1px 2px rgb(23 19 16 / 0.06), 0 18px 40px -18px rgb(23 19 16 / 0.24);
 }
 
-/* Above 48em the brand stops stacking and the nav toggle is gone, so the header
-   loses roughly 13px. 48em because that is where components.css swaps the
-   header's layout, not because the number looks tidy. */
-@media (min-width: 48em) {
+/* 64em, not 48em.
+
+   Measured across widths on a real page: 66.9px at 767, then 74.8px from 768
+   to about 850 as the inline nav appears and the brand's second line is still
+   wrapping, settling at 61px from roughly 900 upward. The drop is therefore
+   not at a breakpoint this system has, and inventing one for it is not worth a
+   sticky offset.
+
+   So the smaller value starts at 64em, which is both an existing breakpoint and
+   the width where the only consumer — the document grid's sticky rail — comes
+   into play. Below it the token stays 4.75rem, which is a little more than the
+   74.8px worst case: over-reserving puts a sticky element a couple of pixels
+   low, while under-reserving hides its first line behind the header. */
+@media (min-width: 64em) {
     :root {
         --header-height: 3.875rem;
     }
