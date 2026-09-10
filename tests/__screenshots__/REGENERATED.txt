@@ -1,4 +1,4 @@
-Regenerated: Layout density refit (PR #32): document grid with section rail and context aside, two-column page headers, 3-up evidence and horizontal timeline on the homepage, intrinsic diagram sizing, wrap-max 84rem to 90rem.
-Commit:      15bdc8068c9d1b93299215b8d99f66b17d2258c5
-Ref:         refs/heads/feature/layout-density-refit
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34403482625
+Regenerated: Interactive test lab (PR follow-up to #32): new /lab/ route, Lab added to the primary nav so every page header changes, and the lab result components added to /styleguide/.
+Commit:      3e692fd5411ecd9f7547f8dd9be347c96f61a7ef
+Ref:         refs/heads/feature/interactive-test-lab
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34465731668
