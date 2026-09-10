@@ -18,7 +18,14 @@ module.exports = {
                 "http://localhost/index.html",
                 "http://localhost/work/index.html",
                 "http://localhost/work/llm-judge-independence/index.html",
-                "http://localhost/resume/index.html"
+                "http://localhost/resume/index.html",
+
+                // /tests/ audited under exactly the same assertions as every
+                // other route, with no per-path relaxation. It is the page most
+                // likely to grow — it renders two inline SVGs and four tables
+                // from a record that gets longer as the suite does — and a page
+                // that publishes this site's budgets should be held to them.
+                "http://localhost/tests/index.html"
             ],
             settings: {
                 preset: "desktop",

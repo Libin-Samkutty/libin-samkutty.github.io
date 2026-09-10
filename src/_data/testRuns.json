@@ -1,0 +1,14 @@
+{
+    "_meta": {
+        "purpose": "The last recorded run of this site's own Playwright suite, and the trend across recent runs. Rendered at /tests/.",
+        "generatedBy": "scripts/test-report.mjs, from test-results/report.json",
+        "note": "This describes the previous run, not a live one. A static site cannot execute its own tests on request, and the page says so rather than implying otherwise.",
+        "accepted": "Written by a machine on a runner, committed by a person. The workflows upload it as an artifact; nothing pushes it.",
+        "retries": "playwright.config.js sets retries to 0, so there is no retry data and therefore no flake rate to publish. /tests/ must not imply one.",
+        "history": "Newest first, at most 20 runs. Only runs whose record was committed appear, so gaps are commits nobody accepted a record for.",
+        "minimumTests": 200,
+        "empty": "No record has been accepted yet. /tests/ renders its empty state from this, and tests/test-report.spec.js holds its content assertions until there is something to assert. The first green run on a runner produces the real one as an artifact; committing that replaces this file wholesale."
+    },
+    "latest": null,
+    "history": []
+}

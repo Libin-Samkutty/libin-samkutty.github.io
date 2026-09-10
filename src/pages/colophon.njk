@@ -3,8 +3,8 @@ layout: layouts/page.njk
 permalink: /colophon/
 title: Colophon
 shortTitle: Colophon
-description: How this site is built, the performance and accessibility budgets enforced on every commit, and why it carries no AI-generated or stock imagery.
-lede: Publishing the budgets and what enforces them is a stronger argument for quality discipline than claiming it in prose would be.
+description: What this site is built with, why every request resolves to its own origin, and why it carries no AI-generated or stock imagery.
+lede: What this site is built with, and what it deliberately refuses to load. The budgets themselves now sit with the suite that enforces them.
 ---
 <div class="colophon">
     <section class="colophon__budgets" aria-labelledby="colophon-budgets">
@@ -16,16 +16,10 @@ lede: Publishing the budgets and what enforces them is a stronger argument for q
             case studies, applied to this site's own delivery.
         </p>
 
-        <ul>
-            <li>{% metric "a11y_budgets" %}</li>
-            <li>{% metric "perf_budgets" %}</li>
-            <li>{% metric "weight_budgets" %}</li>
-        </ul>
-
         <p>
-            Per the Web Almanac's 2025 crawl, most of the web fails the contrast and focus-visibility
-            checks this site's accessibility budget requires on every route, in both themes, at both a
-            desktop and a mobile viewport.
+            The budgets themselves, the suite that enforces them and the last recorded run are all on
+            <a href="{{ '/tests/' | url }}">the tests page</a>, so there is one place to read what gates
+            this site rather than a list here and a run there.
         </p>
     </section>
 

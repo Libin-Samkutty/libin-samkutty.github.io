@@ -370,6 +370,35 @@
     color: var(--color-text-muted);
 }
 
+/*
+  The text inside a chart, which was painting black in both themes.
+
+  SVG `<text>` does not inherit `color` — it takes `fill`, whose initial value
+  is black. The shapes in these charts carry `fill="currentColor"` inline and so
+  followed the theme; the value and axis labels carried no fill and had no rule
+  anywhere, so every one of them rendered black, including on a dark surface.
+  Setting fill here rather than as an attribute keeps it one declaration for
+  both {% chart %} and {% runTrend %}.
+
+  Sizes are in user units, scaled by each SVG's viewBox. The two shortcodes draw
+  at different widths and therefore at slightly different apparent sizes, which
+  is close enough to be right and much simpler than parameterising it.
+*/
+.chart__value,
+.chart__label {
+    fill: currentColor;
+    font-family: var(--font-mono);
+}
+
+.chart__value {
+    font-size: 13px;
+    font-weight: var(--weight-semibold);
+}
+
+.chart__label {
+    font-size: 11px;
+}
+
 /* ================================================================ scrollable table */
 
 /*

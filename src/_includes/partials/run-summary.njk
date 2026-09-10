@@ -1,0 +1,57 @@
+{#
+  The headline of a recorded test run: the verdict, the counts, and where the
+  run came from.
+
+  Reads a `run` variable rather than the data file directly, so /tests/ can pass
+  the real record and /styleguide/ can pass a frozen fixture through the same
+  markup. Set `volatile` to add `data-volatile` to the figures that move when a
+  new record is accepted — /tests/ does, /styleguide/ must not, because masking
+  the fixture would blank the component out of the baseline that guards it.
+
+  The verdict is a word, not a colour. `.run-status` tints its border from the
+  signal tokens as well, but a reader who cannot see the tint still reads
+  "Passed", and so does a screenshot.
+#}
+{% set volatileAttr = " data-volatile" if volatile else "" %}
+<div class="run-status {{ 'is-fail' if run.failed else 'is-pass' }}">
+    <p class="run-status__verdict">{{ "Failed" if run.failed else "Passed" }}</p>
+    <p class="run-status__note">
+        {% if run.failed %}
+        This record is red, so the commit it describes did not deploy. The site you are reading is an
+        earlier one.
+        {% else %}
+        Every gate held, which is why the commit this describes is the one now serving this page.
+        {% endif %}
+    </p>
+</div>
+
+<dl class="run-summary">
+    <div class="run-summary__item">
+        <dt>Tests</dt>
+        <dd class="run-summary__figure"{{ volatileAttr | safe }}>{{ run.total }}</dd>
+    </div>
+    <div class="run-summary__item">
+        <dt>Passed</dt>
+        <dd class="run-summary__figure"{{ volatileAttr | safe }}>{{ run.passed }}</dd>
+    </div>
+    <div class="run-summary__item">
+        <dt>Failed</dt>
+        <dd class="run-summary__figure"{{ volatileAttr | safe }}>{{ run.failed }}</dd>
+    </div>
+    <div class="run-summary__item">
+        <dt>Skipped</dt>
+        <dd class="run-summary__figure"{{ volatileAttr | safe }}>{{ run.skipped }}</dd>
+    </div>
+    <div class="run-summary__item">
+        <dt>Wall clock</dt>
+        <dd class="run-summary__figure"{{ volatileAttr | safe }}>{{ (run.durationMs / 1000) | round }}s</dd>
+    </div>
+</dl>
+
+<p class="run-summary__meta"{{ volatileAttr | safe }}>
+    Recorded {{ run.recordedAt | readableDate }} on
+    {% if run.runUrl %}<a href="{{ run.runUrl }}" rel="noopener">{{ run.workflow }}</a>{% else %}{{ run.workflow or "an unrecorded workflow" }}{% endif %}
+    {%- if run.commitShort %}, commit <code>{{ run.commitShort }}</code>{% endif %}
+    {%- if run.branch %} on <code>{{ run.branch }}</code>{% endif %}.
+    Playwright {{ run.playwright }}{% if run.runner %} on {{ run.runner }}{% endif %}{% if run.workers %}, {{ run.workers }} workers{% endif %}.
+</p>

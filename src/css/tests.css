@@ -1,0 +1,146 @@
+/*
+  /tests/ — the published record of the suite that gates this site.
+
+  Borrows the site's existing voices rather than introducing a reporting
+  aesthetic: `.record`'s mono labels, the chart's figure frame, the ordinary
+  table styles. It should read as a page of this site that happens to be a
+  report, not as an embedded dashboard.
+
+  Every colour is a token. The pass and fail states use the existing signal
+  tokens rather than introducing green and red, for the same reason the rest of
+  the site does not: the accent lavender fails as text at 2.72:1, and a state
+  that is only a colour is not a state every reader can see. The verdict carries
+  the word "Passed" or "Failed" too, and so does every row that has a state.
+*/
+
+/* ---------------------------------------------------------------- verdict */
+
+.run-status {
+    margin-block: var(--space-l);
+    padding: var(--space-m);
+    border-radius: var(--radius-s);
+    border-inline-start: 2px solid var(--color-border-strong);
+    background-color: var(--color-surface-sunken);
+}
+
+.run-status.is-pass {
+    border-inline-start-color: var(--color-accent);
+}
+
+.run-status.is-fail {
+    border-inline-start-color: var(--color-signal);
+}
+
+.run-status__verdict {
+    font-family: var(--font-mono);
+    font-size: var(--step-1);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    line-height: var(--leading-tight);
+}
+
+.run-status__note {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+}
+
+/* ---------------------------------------------------------------- figures */
+
+/*
+  The headline counts, laid out as a row rather than a list, because a handful
+  of figures read faster side by side than stacked. `auto-fit` rather than a
+  fixed column count so the same block serves the five-figure run summary and
+  the four-figure coverage summary without a modifier.
+*/
+.run-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    gap: var(--space-m);
+    margin-block: var(--space-l);
+    padding-block: var(--space-m);
+    border-block: var(--hairline);
+}
+
+.run-summary dt {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-3xs);
+}
+
+.run-summary dd {
+    margin-inline-start: 0;
+}
+
+.run-summary__figure {
+    font-family: var(--font-mono);
+    font-size: var(--step-3);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    font-variant-numeric: tabular-nums;
+}
+
+.run-summary__meta {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    color: var(--color-text-subtle);
+}
+
+/* The second line in a table cell, for the pair of viewports a suite runs at. */
+.run-projects {
+    display: block;
+    margin-block-start: var(--space-3xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    color: var(--color-text-subtle);
+}
+
+/* ---------------------------------------------------------------- trend */
+
+/*
+  Two panels, side by side once there is room. 60em, matching the site's own
+  set — below it they stack, which is the only thing a 320-unit plot can do on a
+  phone and still be legible.
+
+  The panels themselves are `.chart`, so they inherit its figure spacing and its
+  muted colour. What is here is only the arrangement.
+*/
+.run-trend {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-m);
+    margin-block: var(--space-l);
+}
+
+@media (min-width: 60em) {
+    .run-trend {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-l);
+        align-items: start;
+    }
+}
+
+/* The panel's own block margin would double up with the grid gap. */
+.run-trend__panel {
+    margin-block: 0;
+}
+
+/*
+  The current value lives in the caption rather than beside its own point on
+  the plot. Tracking the point put the label on top of the line whenever the
+  series ended on a downward leg, and here it is real text: selectable,
+  scalable, and legible at any zoom.
+*/
+.chart__now {
+    font-family: var(--font-mono);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+}

@@ -321,6 +321,170 @@ export default function (eleventyConfig) {
     });
 
     /**
+     * The run-history trend on /tests/.
+     *
+     * A separate shortcode from {% chart %} rather than an extension of it,
+     * because the two draw different kinds of number. {% chart %} draws a
+     * published claim: it requires an entry in charts.json whose `metric`
+     * resolves in metrics.json, and refuses to plot a figure the data layer does
+     * not carry. This draws a machine-written record of runs that happened, which
+     * is the same case as /archive/ printing `{{ item.year }}` across 34 rows —
+     * generated data, not a claim, and there is deliberately no way to pass a
+     * series into {% chart %} from a page.
+     *
+     * It takes the history array rather than reading the data file, so one
+     * renderer serves /tests/ with the real record and /styleguide/ with a frozen
+     * fixture. That matters: /tests/ is not a screenshot route, but /styleguide/
+     * is, and a component whose geometry moved on every accepted run would either
+     * fail every baseline or have to be masked out of them — which would mean the
+     * visual suite stopped guarding it.
+     */
+    const TREND_PANELS = [
+        {
+            key: "size",
+            title: "Suite size",
+            unit: "tests per run",
+            column: "Tests",
+            value: (run) => run.total,
+            format: (value) => String(value)
+        },
+        {
+            key: "duration",
+            title: "Wall clock",
+            unit: "seconds per run",
+            column: "Duration",
+            value: (run) => Math.round((run.durationMs ?? 0) / 1000),
+            format: (value) => `${value}s`
+        }
+    ];
+
+    eleventyConfig.addShortcode("runTrend", (history, prefix = "trend") => {
+        if (!Array.isArray(history) || history.length === 0) {
+            throw new Error(
+                `{% runTrend %} — needs a non-empty run history. Guard the call with {% if testRuns.history.length %} so the page renders its empty state instead of this throwing.`
+            );
+        }
+
+        // Oldest to newest, left to right. The record is stored newest-first
+        // because that is the order every other consumer of it wants.
+        const runs = [...history].reverse();
+
+        const width = 320;
+        const height = 180;
+        // Room on the left for the two axis figures, and under the plot for the
+        // commit labels at each end.
+        const pad = { top: 26, right: 14, bottom: 34, left: 38 };
+        const plotW = width - pad.left - pad.right;
+        const plotH = height - pad.top - pad.bottom;
+
+        const panels = TREND_PANELS.map((panel) => {
+            const values = runs.map(panel.value);
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const span = max - min;
+            const stepX = runs.length > 1 ? plotW / (runs.length - 1) : 0;
+
+            const points = runs.map((run, index) => ({
+                run,
+                value: values[index],
+                x: runs.length > 1 ? pad.left + stepX * index : pad.left + plotW / 2,
+                // A series whose values are all equal has no range to scale
+                // into, so it sits on the midline rather than dividing by zero.
+                y: pad.top + (span ? plotH * (1 - (values[index] - min) / span) : plotH / 2)
+            }));
+
+            const titleId = `${prefix}-${panel.key}-title`;
+            const descId = `${prefix}-${panel.key}-desc`;
+
+            let body = "";
+
+            if (points.length > 1) {
+                const path = points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
+                body += `<path d="${path}" fill="none" stroke="currentColor" stroke-width="1.5" class="chart__line" />`;
+            }
+
+            for (const point of points) {
+                body += `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="2.5" fill="currentColor" class="chart__point" />`;
+
+                // A run with failures gets a ring as well as a dot, so it is
+                // marked by shape. Nothing on this site carries meaning by
+                // colour alone, and a red dot in a chart is the easiest place to
+                // forget that.
+                if (point.run.failed > 0) {
+                    body +=
+                        `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="6" fill="none" ` +
+                        `stroke="currentColor" stroke-width="1.5" class="chart__point chart__point--failed" />`;
+                }
+            }
+
+            // The two ends of the range, so a plot that does not start at zero
+            // says what it does start at.
+            if (span) {
+                body +=
+                    `<text x="${pad.left - 6}" y="${pad.top + 4}" text-anchor="end" class="chart__label">${escapeHtml(panel.format(max))}</text>` +
+                    `<text x="${pad.left - 6}" y="${pad.top + plotH + 4}" text-anchor="end" class="chart__label">${escapeHtml(panel.format(min))}</text>`;
+            }
+
+            // The newest value goes in the caption rather than beside its point.
+            // Tracking the point put it on top of the line whenever the series
+            // ended on a downward leg, and when the newest value was also the
+            // maximum it printed the same figure twice. As caption text it is
+            // real text — selectable, scalable, and never colliding.
+            const newest = points[points.length - 1];
+
+            // Only the ends are labelled on the axis. Twenty commit hashes will
+            // not fit across 272 units, and the table below carries all of them.
+            const baseline = height - 10;
+            if (points.length > 1) {
+                body +=
+                    `<text x="${pad.left}" y="${baseline}" text-anchor="start" class="chart__label">${escapeHtml(points[0].run.commitShort ?? "—")}</text>` +
+                    `<text x="${pad.left + plotW}" y="${baseline}" text-anchor="end" class="chart__label">${escapeHtml(newest.run.commitShort ?? "—")}</text>`;
+            } else {
+                body += `<text x="${newest.x.toFixed(1)}" y="${baseline}" text-anchor="middle" class="chart__label">${escapeHtml(newest.run.commitShort ?? "—")}</text>`;
+            }
+
+            const scaleNote = span ? `Vertical axis spans ${panel.format(min)} to ${panel.format(max)}, not zero.` : "Every recorded run holds the same value.";
+            const failedCount = runs.filter((run) => run.failed > 0).length;
+            const failedNote = failedCount
+                ? ` ${failedCount} run${failedCount === 1 ? "" : "s"} recorded failures and ${failedCount === 1 ? "is" : "are"} ringed.`
+                : "";
+
+            const rows = [...runs]
+                .reverse()
+                .map(
+                    (run) =>
+                        `<tr><th scope="row">${escapeHtml(run.commitShort ?? "—")}</th>` +
+                        `<td>${escapeHtml(dateFormat.format(new Date(run.recordedAt)))}</td>` +
+                        `<td>${escapeHtml(panel.format(panel.value(run)))}</td>` +
+                        `<td>${run.failed > 0 ? "failed" : "passed"}</td></tr>`
+                )
+                .join("");
+
+            return (
+                `<figure class="chart run-trend__panel">` +
+                `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" ` +
+                `aria-labelledby="${titleId} ${descId}" class="chart__svg">` +
+                `<title id="${titleId}">${escapeHtml(panel.title)}, last ${runs.length} recorded run${runs.length === 1 ? "" : "s"}</title>` +
+                `<desc id="${descId}">${escapeHtml(panel.unit)}, ${runs.length} data point${runs.length === 1 ? "" : "s"}. ${escapeHtml(scaleNote)}${escapeHtml(failedNote)}</desc>` +
+                body +
+                `</svg>` +
+                `<table class="visually-hidden"><caption>${escapeHtml(panel.title)} (${escapeHtml(panel.unit)})</caption>` +
+                `<thead><tr><th scope="col">Commit</th><th scope="col">Recorded</th><th scope="col">${escapeHtml(panel.column)}</th><th scope="col">Result</th></tr></thead>` +
+                `<tbody>${rows}</tbody></table>` +
+                // Last child, not between the svg and the table: <figcaption>
+                // is only permitted as the first or last child of a <figure>.
+                // The table it follows is visually hidden, so the caption still
+                // renders directly under the plot.
+                `<figcaption class="chart__caption">${escapeHtml(panel.title)}, now ` +
+                `<strong class="chart__now">${escapeHtml(panel.format(newest.value))}</strong></figcaption>` +
+                `</figure>`
+            );
+        });
+
+        return `<div class="run-trend">${panels.join("")}</div>`;
+    });
+
+    /**
      * Hand-authored SVG partials, inlined rather than <img>-referenced so
      * currentColor picks up the page's own theme instead of a rasterised palette.
      */

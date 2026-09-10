@@ -1,0 +1,290 @@
+---
+layout: layouts/page.njk
+permalink: /tests/
+title: The suite that gates this site
+shortTitle: Tests
+description: The last recorded run of this site's own Playwright suite, its trend across recent runs, and the budgets every commit is gated against.
+lede: This site is gated by its own tests. Here is the run that let the version you are reading ship, what each suite checks, and what the whole thing costs.
+eyebrow: Evidence
+outline: true
+---
+{% if testRuns.latest %}
+
+<h2 id="the-run">The latest run</h2>
+
+{% set run = testRuns.latest %}
+{% set volatile = true %}
+{% include "partials/run-summary.njk" %}
+
+<p>
+    That workflow link is the point of this page. Everything below is reduced
+    from a machine-readable report the run wrote about itself, and the link goes
+    to the run, so nothing here has to be taken on trust.
+</p>
+
+<h2 id="trend">Trend</h2>
+
+{% if testRuns.history.length > 1 %}
+{% runTrend testRuns.history %}
+
+<p>
+    Suite size is the series that moves, because it grows as the site does. Both
+    plots are scaled to the range they cover rather than to zero, and each says
+    where its range starts. A run that recorded failures is ringed.
+</p>
+
+<p>
+    The history is as deep as what has been committed, and no deeper. Records are
+    produced by the runner and accepted by hand, so a gap is a commit nobody
+    accepted a record for rather than a run that did not happen.
+</p>
+{% else %}
+<p>
+    Not yet. A trend needs more than one accepted record, and there is one. The
+    plots appear here once a second run has been recorded; the section is
+    deliberately empty rather than showing a single point as though it were a
+    line.
+</p>
+{% endif %}
+
+<h2 id="by-suite">By suite</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Spec</th>
+            <th scope="col">What it asserts</th>
+            <th scope="col">Tests</th>
+            <th scope="col">Passed</th>
+            <th scope="col">Failed</th>
+            <th scope="col">Skipped</th>
+            <th scope="col">Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for suite in testRuns.latest.suites %}
+        <tr>
+            <th scope="row"><code>{{ suite.file }}</code></th>
+            <td>
+                {{ suite.purpose }}
+                {% if suite.projects.length > 1 %}<span class="run-projects">Runs twice: {{ suite.projects | join(" and ") }}.</span>{% endif %}
+            </td>
+            <td class="numeric">{{ suite.tests }}</td>
+            <td class="numeric">{{ suite.passed }}</td>
+            <td class="numeric">{{ suite.failed }}</td>
+            <td class="numeric">{{ suite.skipped }}</td>
+            <td class="numeric" data-volatile>{{ (suite.ms / 1000) | round }}s</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p>
+    The times are the sum of every test in that file, not wall clock. The suite
+    runs in parallel across workers, so they add up to more than the run took.
+</p>
+
+{% if testRuns.latest.failures.length %}
+<h2 id="failures">Failures</h2>
+
+<p>
+    This section renders only when the record holds failures, so a red run cannot
+    publish a bare count with nothing behind it.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Spec</th>
+            <th scope="col">Test</th>
+            <th scope="col">Project</th>
+            <th scope="col">Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for failure in testRuns.latest.failures %}
+        <tr>
+            <th scope="row"><code>{{ failure.file }}</code></th>
+            <td>{{ failure.title }}</td>
+            <td>{{ failure.project }}</td>
+            <td>{{ failure.message }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<h2 id="slowest">Slowest tests</h2>
+
+<p>
+    Where the time actually goes. Screenshot comparison and axe both drive a real
+    browser over a whole page, so they dominate — which is the argument for
+    keeping the visual suite pointed at one styleguide page and a handful of
+    sample routes instead of every route on the site.
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Test</th>
+            <th scope="col">Spec</th>
+            <th scope="col">Project</th>
+            <th scope="col">Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for test in testRuns.latest.slowest %}
+        <tr>
+            <th scope="row">{{ test.title }}</th>
+            <td><code>{{ test.file }}</code></td>
+            <td>{{ test.project }}</td>
+            <td class="numeric" data-volatile>{{ (test.ms / 1000) | round(1) }}s</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2 id="coverage">What the suite covers</h2>
+
+<p>
+    Routes are discovered from the build output rather than listed in a spec, so
+    a page added next month is covered by every suite without anyone remembering
+    to add it. These counts come from that discovery, not from a tally kept by
+    hand.
+</p>
+
+<dl class="run-summary">
+    <div class="run-summary__item">
+        <dt>Pages built</dt>
+        <dd class="run-summary__figure" data-volatile>{{ testRuns.latest.coverage.routes }}</dd>
+    </div>
+    <div class="run-summary__item">
+        <dt>Content pages</dt>
+        <dd class="run-summary__figure" data-volatile>{{ testRuns.latest.coverage.contentPages }}</dd>
+    </div>
+    <div class="run-summary__item">
+        <dt>In the sitemap</dt>
+        <dd class="run-summary__figure" data-volatile>{{ testRuns.latest.coverage.indexablePages }}</dd>
+    </div>
+    <div class="run-summary__item">
+        <dt>axe scans</dt>
+        <dd class="run-summary__figure" data-volatile>{{ testRuns.latest.coverage.axeRuns }}</dd>
+    </div>
+</dl>
+
+<p>
+    Pages built is larger than content pages because redirect stubs and the 404
+    are held to their own rules and checked separately. The axe count is every
+    content page in both themes at both viewports, which is where most of the run
+    time in the table above comes from.
+</p>
+
+{% else %}
+
+<h2 id="the-run">No run recorded yet</h2>
+
+<p>
+    This page renders a record written by the test suite on a CI runner. None has
+    been accepted yet, so there is nothing to show — and showing a number anyway,
+    from a run on a laptop, is the specific failure this page is built to avoid.
+</p>
+
+<p>
+    A record produced locally cannot be honest here. The visual suite compares
+    against baselines generated on Ubuntu, and Windows rasterises text
+    differently enough that a local run reports failures which are a font
+    difference rather than a defect. So the record has to come from the runner,
+    and <code>tests/test-report.spec.js</code> refuses to let one that did not
+    reach the site.
+</p>
+
+{% endif %}
+
+<h2 id="gates">How this site is gated</h2>
+
+<p>
+    A quality-focused Lighthouse CI run holds every pull request to fixed
+    budgets, not targets. Exceed one and the build fails. That is the same
+    discipline described in the case studies, applied to this site's own
+    delivery.
+</p>
+
+<ul>
+    <li>{% metric "a11y_budgets" %}</li>
+    <li>{% metric "perf_budgets" %}</li>
+    <li>{% metric "weight_budgets" %}</li>
+</ul>
+
+<p>
+    Per the Web Almanac's 2025 crawl, most of the web fails the contrast and
+    focus-visibility checks this site's accessibility budget requires on every
+    route, in both themes, at both a desktop and a mobile viewport.
+</p>
+
+<p>
+    The budgets and the suite block at different points, on purpose. HTML
+    validation and the Playwright suite run on both the pull request and the
+    deploy, because two changes that each pass alone can produce a duplicate
+    title or a dead link once merged, and nothing re-checks that unless the
+    deploy does. Lighthouse blocks pull requests only. A performance regression
+    is worth arguing about before it merges, but on the deploy path it would let
+    a shared runner having a slow minute stop a one-line copy fix from reaching
+    production.
+</p>
+
+<h2 id="not-here">What is not here</h2>
+
+<p>
+    <strong>A flake rate.</strong> <code>playwright.config.js</code> sets retries
+    to zero, so a test either passes or fails and there is no retry data to
+    derive a flake rate from. I could publish one by turning retries on and
+    counting second attempts, and until I do, this page does not get to imply a
+    number it cannot produce. Zero retries is also the honest setting for a suite
+    this size: a retry that turns red green is a bug that ships.
+</p>
+
+<p>
+    <strong>A coverage percentage.</strong> These are end-to-end assertions over
+    built HTML, not unit tests over branches. A line-coverage figure for a static
+    site would measure the wrong thing precisely.
+</p>
+
+<p>
+    <strong>Per-test history.</strong> The trend is run-level: totals, failures
+    and duration. Tracking every test's result over time would need a store that
+    outlives a commit, and the honest version of that is a database rather than a
+    file in a repository. Until there is a reason to run one, the trend says what
+    a file can say.
+</p>
+
+<p>
+    <strong>A live result.</strong> The counts above are the previous run, not one
+    that started when you opened this page. This site is static files on GitHub
+    Pages: there is no server here to run a suite on request. The page could fetch
+    the current status from an API instead, and that would cost this site the one
+    claim it is most careful about — every request on a published page resolving
+    to its own origin. A link to the run is worth more than a badge, and costs
+    nothing.
+</p>
+
+<h2 id="pipeline">How the record gets here</h2>
+
+<p>
+    Playwright writes a JSON report,
+    <code>scripts/test-report.mjs</code> reduces it to the few fields this page
+    renders, prepends it to the run history, and the result is committed. The
+    reducer refuses to write a report holding too few tests to be the whole
+    suite, so running one spec file and publishing the outcome cannot happen
+    quietly. It also refuses when a spec file has no description recorded for it,
+    because a row a reader has to guess at is worse than no row, and when
+    Playwright's own totals disagree with its per-test records, which means the
+    shape this script reads has moved under it.
+</p>
+
+<p>
+    The workflows upload that file as an artifact rather than committing it back.
+    A workflow that pushes to <code>main</code> on every deploy triggers itself,
+    needs write permission the job does not have, and turns a published figure
+    into something nobody chose to publish. It is the same arrangement as the
+    visual baselines: the machine produces it, a person accepts it.
+</p>

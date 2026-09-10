@@ -3,6 +3,9 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pages, siteDir } from "./helpers/routes.mjs";
+// Moved to a helper because scripts/test-report.mjs enforces the same list
+// against the text a test run writes about itself before /tests/ publishes it.
+import { denylist } from "./helpers/disclosure.mjs";
 import { pdfText } from "../scripts/pdf-text.mjs";
 
 const metrics = JSON.parse(
@@ -88,18 +91,6 @@ const withheldPatterns = new Set(WITHHELD_BECAUSE.map(({ pattern }) => String(pa
 const withheldMetricIds = new Set(WITHHELD_BECAUSE.map(({ metricId }) => metricId).filter(Boolean));
 
 const resumeIsWithheld = !existsSync(resumePublishedPath);
-
-const denylist = [
-        { pattern: /\bAS-\d{3,}\b/, why: "internal ticket ID" },
-        { pattern: /\bMSD\b/, why: "pharma partner name" },
-        { pattern: /\bBayer\b/, why: "pharma partner name" },
-        { pattern: /\b4\+\s*years\b/i, why: "stale experience figure; it is 4.5+" },
-        { pattern: /\b2M registered\b/i, why: "unpublished metric" },
-        { pattern: /47 findings/i, why: "security finding breakdown" },
-        { pattern: /2 High, 7 Medium/i, why: "security finding breakdown" },
-        { pattern: /shrank from 11/i, why: "client staffing detail" },
-        { pattern: /stored XSS/i, why: "names a specific vulnerability class found on a client system" }
-    ];
 
 test.describe("disclosure policy", () => {
     for (const { pattern, why } of denylist) {
