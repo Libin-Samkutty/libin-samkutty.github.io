@@ -1,4 +1,4 @@
-Regenerated: Interactive test lab (PR follow-up to #32): new /lab/ route, Lab added to the primary nav so every page header changes, and the lab result components added to /styleguide/.
-Commit:      3e692fd5411ecd9f7547f8dd9be347c96f61a7ef
+Regenerated: Test lab, final: evidence--columns modifier replaces the component-wide three-up rule, styleguide gains both evidence forms and the lab result components, Lab added to primary nav.
+Commit:      47753dc0f5d4374fda09cd7d59a2535eccd5921e
 Ref:         refs/heads/feature/interactive-test-lab
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34465731668
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34477732593
