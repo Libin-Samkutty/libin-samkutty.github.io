@@ -6,9 +6,218 @@
         "accepted": "Written by a machine on a runner, committed by a person. The workflows upload it as an artifact; nothing pushes it.",
         "retries": "playwright.config.js sets retries to 0, so there is no retry data and therefore no flake rate to publish. /tests/ must not imply one.",
         "history": "Newest first, at most 20 runs. Only runs whose record was committed appear, so gaps are commits nobody accepted a record for.",
-        "minimumTests": 200,
-        "empty": "No record has been accepted yet. /tests/ renders its empty state from this, and tests/test-report.spec.js holds its content assertions until there is something to assert. The first green run on a runner produces the real one as an artifact; committing that replaces this file wholesale."
+        "minimumTests": 200
     },
-    "latest": null,
-    "history": []
+    "latest": {
+        "recordedAt": "2026-09-10T17:20:01.242Z",
+        "source": "ci",
+        "commit": "a6069278b7a57384c9a83297d33bfa40d6173b6d",
+        "commitShort": "a606927",
+        "branch": "feature/test-report",
+        "workflow": "PR checks",
+        "deployed": false,
+        "runUrl": "https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34507477589",
+        "runner": "Linux",
+        "playwright": "1.62.1",
+        "workers": 2,
+        "projects": [
+            "desktop",
+            "mobile"
+        ],
+        "durationMs": 115636,
+        "total": 626,
+        "passed": 616,
+        "failed": 0,
+        "skipped": 10,
+        "suites": [
+            {
+                "file": "html-quality.spec.js",
+                "purpose": "Byte-level and structural checks: no BOM, unique titles and descriptions, one h1, no heading skips, every image dimensioned.",
+                "tests": 277,
+                "passed": 277,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 307,
+                "projects": [
+                    "desktop"
+                ]
+            },
+            {
+                "file": "a11y.spec.js",
+                "purpose": "axe-core over every page in both themes, on desktop and a Pixel 7, plus the keyboard and focus behaviour a scanner cannot see.",
+                "tests": 144,
+                "passed": 142,
+                "failed": 0,
+                "skipped": 2,
+                "flaky": 0,
+                "ms": 159300,
+                "projects": [
+                    "desktop",
+                    "mobile"
+                ]
+            },
+            {
+                "file": "links.spec.js",
+                "purpose": "Every root-relative link and every fragment resolves to something that exists on disk.",
+                "tests": 101,
+                "passed": 101,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 79,
+                "projects": [
+                    "desktop"
+                ]
+            },
+            {
+                "file": "content-consistency.spec.js",
+                "purpose": "Reads the built HTML and the withheld résumé PDF against the disclosure denylist and the list of retired numbers.",
+                "tests": 42,
+                "passed": 40,
+                "failed": 0,
+                "skipped": 2,
+                "flaky": 0,
+                "ms": 82,
+                "projects": [
+                    "desktop"
+                ]
+            },
+            {
+                "file": "urls.spec.js",
+                "purpose": "Every legacy URL still resolves, and every redirect stub is a real 200 with a canonical and a working link.",
+                "tests": 28,
+                "passed": 28,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 3417,
+                "projects": [
+                    "desktop"
+                ]
+            },
+            {
+                "file": "visual.spec.js",
+                "purpose": "Full-page screenshots of the styleguide and four sample routes, in both themes, at two viewports.",
+                "tests": 20,
+                "passed": 20,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 51807,
+                "projects": [
+                    "desktop",
+                    "mobile"
+                ]
+            },
+            {
+                "file": "sitemap.spec.js",
+                "purpose": "The sitemap lists every indexable page, no assets, no noindex pages, and stays sorted.",
+                "tests": 7,
+                "passed": 7,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 4,
+                "projects": [
+                    "desktop"
+                ]
+            },
+            {
+                "file": "test-report.spec.js",
+                "purpose": "Guards this page's own record: that it came from a runner, that it is green, and that its detail and its trend describe the same run.",
+                "tests": 7,
+                "passed": 1,
+                "failed": 0,
+                "skipped": 6,
+                "flaky": 0,
+                "ms": 1,
+                "projects": [
+                    "desktop"
+                ]
+            }
+        ],
+        "slowest": [
+            {
+                "title": "/styleguide/ matches its baseline (light)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 5083
+            },
+            {
+                "title": "/styleguide/ matches its baseline (dark)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 4801
+            },
+            {
+                "title": "/work/ai-evaluation-framework/ matches its baseline (dark)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 4083
+            },
+            {
+                "title": "/work/ai-evaluation-framework/ matches its baseline (light)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 4035
+            },
+            {
+                "title": "/ matches its baseline (dark)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 3412
+            },
+            {
+                "title": "/ matches its baseline (light)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 3374
+            },
+            {
+                "title": "/resume/ matches its baseline (light)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 2846
+            },
+            {
+                "title": "/resume/ matches its baseline (dark)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 2784
+            },
+            {
+                "title": "/styleguide/ matches its baseline (light)",
+                "file": "visual.spec.js",
+                "project": "desktop",
+                "ms": 2529
+            },
+            {
+                "title": "/writing/aggregate-metrics-hide-the-failure/ matches its baseline (dark)",
+                "file": "visual.spec.js",
+                "project": "mobile",
+                "ms": 2469
+            }
+        ],
+        "failures": [],
+        "coverage": {
+            "routes": 38,
+            "contentPages": 25,
+            "indexablePages": 24,
+            "axeRuns": 100
+        }
+    },
+    "history": [
+        {
+            "recordedAt": "2026-09-10T17:20:01.242Z",
+            "commit": "a6069278b7a57384c9a83297d33bfa40d6173b6d",
+            "commitShort": "a606927",
+            "source": "ci",
+            "total": 626,
+            "passed": 616,
+            "failed": 0,
+            "skipped": 10,
+            "durationMs": 115636
+        }
+    ]
 }
