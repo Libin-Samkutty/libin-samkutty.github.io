@@ -64,6 +64,34 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
+      # The snapshot /tests/ renders, reduced from the run that just happened
+      # and uploaded for a person to commit.
+      #
+      # Deliberately an artifact rather than a commit back to the repository. A
+      # workflow that pushes to main on every deploy triggers itself, needs
+      # write permission this job does not have, and turns a published figure
+      # into something nobody chose to publish. Same reasoning as the visual
+      # baselines: the machine produces it, a person accepts it.
+      #
+      # This is also the only place the snapshot can honestly come from. Run
+      # locally on Windows, the visual suite fails against Ubuntu-generated
+      # baselines and the reducer would faithfully publish twenty failures that
+      # are a font difference rather than a defect. tests/test-report.spec.js
+      # rejects a record that did not come from here.
+      - name: Record the run for /tests/
+        if: always()
+        run: npm run test:report
+        continue-on-error: true
+
+      - name: Upload the run record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-run
+          path: src/_data/testRuns.json
+          retention-days: 30
+          if-no-files-found: warn
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
