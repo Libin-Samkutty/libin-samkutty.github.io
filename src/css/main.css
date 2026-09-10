@@ -19,5 +19,6 @@
 @import url("layout.css") layer(layout);
 @import url("components.css") layer(components);
 @import url("article.css") layer(components);
+@import url("lab.css") layer(components);
 @import url("utilities.css") layer(utilities);
 @import url("print.css") layer(overrides);

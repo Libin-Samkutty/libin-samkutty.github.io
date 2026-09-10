@@ -1,0 +1,296 @@
+/*
+  The test lab.
+
+  One route uses this, and it is the only place on the site with a control that
+  does real work rather than navigating. It still borrows the site's components
+  where it can — `.button`, the chip's radius, the record rail's mono voice —
+  so it reads as part of the same object rather than as an embedded tool.
+
+  Every colour is a token. The pass and fail states use the existing signal
+  tokens rather than introducing green and red, for the same reason the rest of
+  the site does not: the accent lavender fails as text at 2.72:1, and a state
+  that is only a colour is not a state a colour-blind reader can see. Each row
+  carries the word "pass" or "fail" too.
+*/
+
+.lab {
+    margin-block: var(--space-l);
+}
+
+/* ---------------------------------------------------------------- picker */
+
+.lab__bar {
+    margin-block-end: var(--space-m);
+}
+
+.lab__count {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-2xs);
+}
+
+.lab__picker {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+}
+
+.lab__tab {
+    font: inherit;
+    font-size: var(--step--1);
+    padding: var(--space-2xs) var(--space-s);
+    border: var(--hairline);
+    border-radius: var(--radius-pill);
+    background-color: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+}
+
+.lab__tab:hover {
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+}
+
+.lab__tab.is-current {
+    background-color: var(--color-surface-sunken);
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+    font-weight: var(--weight-medium);
+}
+
+/* The word, not just the mark — a tick alone is invisible to a screen reader
+   and ambiguous to everyone else. */
+.lab__tab-state:not(:empty) {
+    margin-inline-start: var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    color: var(--color-accent-text);
+}
+
+.lab__prompt {
+    font-size: var(--step-0);
+    max-inline-size: var(--measure);
+}
+
+.lab__runs {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    color: var(--color-text-subtle);
+    margin-block-start: var(--space-2xs);
+}
+
+/* ---------------------------------------------------------------- panes */
+
+.lab__panes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-m);
+    margin-block-start: var(--space-m);
+}
+
+/* 60em, matching the site's own set. Below it the editor sits above the app,
+   which is the order you work in anyway: write, then look. */
+@media (min-width: 60em) {
+    .lab__panes {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: var(--space-l);
+        align-items: start;
+    }
+}
+
+.lab__label {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-2xs);
+    display: block;
+}
+
+.lab__label + .lab__frame,
+.lab__label + .lab__output {
+    margin-block-end: var(--space-m);
+}
+
+/*
+  A plain textarea. A contenteditable with syntax highlighting was the
+  alternative and it loses more than it gains: it breaks the caret, breaks
+  undo, breaks screen readers and breaks mobile keyboards, in exchange for
+  colour. This has none of those problems and costs no bytes.
+*/
+.lab__editor {
+    inline-size: 100%;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: var(--leading-normal);
+    padding: var(--space-s);
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--color-surface-sunken);
+    color: var(--color-text);
+    resize: vertical;
+    tab-size: 2;
+}
+
+.lab__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-block: var(--space-s);
+}
+
+.lab__hint summary {
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+    cursor: pointer;
+}
+
+.lab__hint p {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+}
+
+.lab__frame {
+    inline-size: 100%;
+    block-size: 20rem;
+    border: var(--hairline);
+    border-radius: var(--radius-s);
+    background-color: var(--color-bg);
+}
+
+/* ---------------------------------------------------------------- output */
+
+.lab__output:empty {
+    display: none;
+}
+
+.lab-verdict {
+    font-size: var(--step--1);
+    padding: var(--space-s);
+    border-radius: var(--radius-s);
+    border-inline-start: 2px solid var(--color-border-strong);
+    background-color: var(--color-surface-sunken);
+    margin-block-end: var(--space-s);
+    max-inline-size: var(--measure);
+}
+
+.lab-verdict.is-pass {
+    border-inline-start-color: var(--color-accent);
+}
+
+.lab-verdict.is-fail {
+    border-inline-start-color: var(--color-signal);
+}
+
+.lab-run {
+    margin-block-end: var(--space-m);
+}
+
+.lab-run__title {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-block-end: var(--space-2xs);
+}
+
+.lab-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+}
+
+.lab-step {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-s);
+    align-items: baseline;
+    padding-block: var(--space-3xs);
+    border-block-start: var(--hairline);
+}
+
+.lab-step__title {
+    flex: 1 1 12rem;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+}
+
+/*
+  The status word is generated as a class, so it is rendered as a prefix here
+  rather than left implicit in a colour. `::before` content is announced by
+  most screen readers and, more to the point, it is legible in a screenshot.
+*/
+.lab-step__title::before {
+    content: "· ";
+    color: var(--color-text-subtle);
+}
+
+.lab-step.is-pass .lab-step__title::before {
+    content: "pass ";
+    color: var(--color-accent-text);
+}
+
+.lab-step.is-fail .lab-step__title::before {
+    content: "fail ";
+    color: var(--color-signal-text);
+}
+
+.lab-step__ms {
+    color: var(--color-text-subtle);
+    font-variant-numeric: tabular-nums;
+}
+
+.lab-step__error {
+    flex: 1 1 100%;
+    margin-block-start: var(--space-2xs);
+    padding: var(--space-s);
+    border-radius: var(--radius-s);
+    background-color: var(--color-surface-sunken);
+    font-size: var(--step--2);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------- static */
+
+/*
+  The JavaScript-off version, and the printed one. It is not a fallback in the
+  apologetic sense: it carries every challenge, its starting test, its lesson
+  and its hint, because nothing on this site may need a script to be readable.
+*/
+.lab-static {
+    list-style: none;
+    padding: 0;
+    counter-reset: challenge;
+}
+
+.lab-static__item {
+    counter-increment: challenge;
+    padding-block-start: var(--space-l);
+    margin-block-start: var(--space-l);
+    border-block-start: var(--hairline);
+}
+
+.lab-static__item h3::before {
+    content: counter(challenge) ". ";
+    font-family: var(--font-mono);
+    color: var(--color-text-subtle);
+}
+
+.lab-static__lesson {
+    color: var(--color-text-muted);
+}

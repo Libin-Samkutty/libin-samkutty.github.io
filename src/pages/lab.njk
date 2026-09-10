@@ -1,0 +1,177 @@
+---
+layout: layouts/page.njk
+permalink: /lab/
+title: Test lab
+shortTitle: Lab
+description: Write Playwright-shaped tests against a demo app and run them in your browser, with a parity suite that checks the runner behaves the way Playwright does.
+lede: Six challenges, each one a failure mode I have actually hit. Write the test, run it here, and read what it says when it fails.
+eyebrow: Interactive
+outline: true
+pageScript: lab/ui.js
+---
+{#
+  No wrapper element around this content. `base.css` spaces the body with
+  `:is(.page__body, …) > * + *`, a direct-child selector, so a single
+  containing div silently removes the space between every paragraph on the
+  page. `data-lab` goes on the panel it actually refers to instead.
+#}
+<h2 id="what-this-is">What this is, and what it is not</h2>
+
+<p>
+    This is not Playwright. Playwright drives a real browser from a Node process
+    over a debugging protocol, and nothing in a web page can do that — so a
+    portfolio that claims to run Playwright in your browser is claiming something
+    that cannot happen.
+</p>
+
+<p>
+    What runs here is a small test runner I wrote for this page. It implements
+    the locator and auto-waiting semantics Playwright uses — <code>getByRole</code>
+    with accessible-name matching, strict mode, retrying assertions, real
+    timeouts — against a demo app in a same-origin iframe. The test code you
+    read and edit below is the test code you would write in a real suite. The
+    engine underneath it is not the real engine.
+</p>
+
+<p>
+    The claim that it behaves the same is checkable rather than asserted.
+    <code>tests/lab-parity.spec.js</code> runs every challenge through real
+    Playwright against the same demo app and asserts the same outcome this
+    runner produces. If the two ever disagree, the build goes red and the
+    sentence above stops being true until someone fixes it. That suite is the
+    receipt, and it is the part of this page I would want reviewed.
+</p>
+
+<h2 id="the-demo-app">The demo app</h2>
+
+<p>
+    An answer-review console: a generated answer, two scores, and a reviewer who
+    approves or flags it. It is shaped like the systems in the case studies so
+    the tests are about the domain I work in. Everything in it is invented —
+    no production messages, prompts, retrieved content or dataset material, and
+    it is not a depiction of any client system.
+</p>
+
+<p>
+    It has four variants, and the challenges switch between them: a normal one, a
+    <strong>flaky</strong> one whose review takes anywhere from 120ms to 900ms to
+    load, a <strong>renamed</strong> one where a button's label changed, and an
+    <strong>unnamed</strong> one where a control has no accessible name at all.
+</p>
+
+<h2 id="challenges">Challenges</h2>
+
+<div class="lab" data-lab hidden>
+    <div class="lab__bar">
+        <p class="lab__count" data-lab-count></p>
+        <ul class="lab__picker" data-lab-picker>
+            {% for item in labChallenges.items %}
+            <li>
+                <button type="button" class="lab__tab" data-challenge="{{ item.id }}">
+                    <span class="lab__tab-title">{{ item.title }}</span>
+                    <span class="lab__tab-state" data-lab-state></span>
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <p class="lab__prompt" data-lab-prompt></p>
+    <p class="lab__runs" data-lab-runs></p>
+
+    <div class="lab__panes">
+        <div class="lab__pane">
+            <label class="lab__label" for="lab-editor">Test code</label>
+            <textarea id="lab-editor" class="lab__editor" spellcheck="false" autocomplete="off" rows="12" data-lab-editor></textarea>
+            <p class="lab__actions">
+                <button type="button" class="button button--primary" data-lab-run>Run test</button>
+                <button type="button" class="button button--ghost" data-lab-reset>Reset</button>
+            </p>
+            <details class="lab__hint">
+                <summary>Hint</summary>
+                <p data-lab-hint></p>
+            </details>
+        </div>
+
+        <div class="lab__pane">
+            <p class="lab__label">The app under test</p>
+            {#
+              `title` rather than aria-label: an iframe's accessible name comes
+              from title, and axe checks for exactly that. Sandboxed to scripts
+              only — no same-origin token, because srcdoc already inherits this
+              origin and adding it back would be noise.
+            #}
+            <iframe class="lab__frame" title="Answer review demo application" sandbox="allow-scripts allow-same-origin" data-lab-frame></iframe>
+
+            <p class="lab__label">Result</p>
+            <div class="lab__output" role="status" aria-live="polite" data-lab-output></div>
+        </div>
+    </div>
+
+    <script type="application/json" data-lab-challenges>{{ labChallenges.items | dump | safe }}</script>
+</div>
+
+
+{#
+  The static version. Not a placeholder for the interactive one — it is the
+  page, and the panel above is layered on top of it. With JavaScript off you
+  get every challenge, its starting test, the lesson it teaches and its hint.
+
+  ui.js hides this once the panel is live, because the panel supersedes it and
+  showing both made half a 7000px page a restatement of the other half. That is
+  replacement, not removal: turn JavaScript off and this is what the page is.
+#}
+<noscript>
+    <p><strong>The runner needs JavaScript.</strong> Every challenge, its starting test and its answer are below regardless.</p>
+</noscript>
+
+<ol class="lab-static" data-lab-static>
+    {% for item in labChallenges.items %}
+    <li class="lab-static__item">
+        <h3 id="challenge-{{ item.id }}">{{ item.title }}</h3>
+        <p>{{ item.prompt }}</p>
+        <pre><code>{{ item.start }}</code></pre>
+        <p class="lab-static__lesson"><strong>The lesson:</strong> {{ item.lesson }}</p>
+        <details>
+            <summary>Hint</summary>
+            <p>{{ item.hint }}</p>
+        </details>
+    </li>
+    {% endfor %}
+</ol>
+
+<h2 id="how-the-runner-works">How the runner works</h2>
+
+<p>
+    A locator is a description, not an element. Nothing is queried when you call
+    <code>getByRole</code>; the query runs when an action or an assertion asks
+    for the element, and it keeps running every 50ms until the element turns up
+    or the deadline passes. That is the whole reason a Playwright test does not
+    need sleeps, and it is why the second challenge is solved by replacing four
+    lines with one.
+</p>
+
+<p>
+    Actions wait for more than existence. <code>click()</code> waits until the
+    element is visible <em>and</em> enabled, which is Playwright's actionability
+    check. My first version only waited for visible, so it clicked the demo
+    app's approve button while it was still disabled and the test failed two
+    lines later with no clue why. The parity suite caught that on its first run
+    — real Playwright passed, this runner did not — and that divergence is the
+    best argument I have for why the suite exists.
+</p>
+
+<p>
+    Assertions retry the same way. <code>expect(locator).toHaveText("ready")</code>
+    is not a comparison — it is a wait with a comparison attached. Getting that
+    wrong would make the flake challenge passable by a sleep and unpassable by
+    the correct answer, which is exactly backwards, so the parity suite checks it.
+</p>
+
+<p>
+    Accessible names are computed the shallow way: <code>aria-label</code>, then
+    <code>aria-labelledby</code>, then the associated label, then text content.
+    It is not the full accessible-name algorithm and does not pretend to be. It
+    is enough for the fourth challenge to make its point, which is that a
+    role-based locator is an accessibility assertion wearing a different hat.
+</p>

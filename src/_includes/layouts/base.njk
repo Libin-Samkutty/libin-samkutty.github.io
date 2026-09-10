@@ -19,5 +19,12 @@
     {% include "partials/footer.njk" %}
 
     <script src="{{ '/js/site.js' | url }}" type="module"></script>
+    {#
+      One extra module, for the one page that needs it. `pageScript` in front
+      matter, not a bundle: the Lighthouse script budget is 15 KB and site.js
+      already spends 7 of it, so the lab's runner must never load on a route
+      that is not the lab. This is the mechanism that guarantees it.
+    #}
+    {% if pageScript %}<script src="{{ ('/js/' + pageScript) | url }}" type="module"></script>{% endif %}
 </body>
 </html>

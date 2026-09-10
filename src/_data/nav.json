@@ -2,6 +2,7 @@
   "primary": [
     { "label": "Home", "url": "/" },
     { "label": "Work", "url": "/work/" },
+    { "label": "Lab", "url": "/lab/" },
     { "label": "Writing", "url": "/writing/" },
     { "label": "About", "url": "/about/" },
     { "label": "Résumé", "url": "/resume/" },

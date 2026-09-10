@@ -1,0 +1,71 @@
+{
+    "_meta": {
+        "purpose": "The /lab/ challenges. Each one is a real failure mode I have hit on the platform's suite, reduced to the smallest version that still teaches it.",
+        "validation": "A challenge is solved when the visitor's test produces the required outcome against the required app variant — not when their source matches an expected answer. Checking the source would be checking for a memorised string; checking the outcome checks whether the test works. One consequence is accepted deliberately: a long fixed timeout can pass the flake challenge. The challenge says so afterwards rather than trying to forbid it.",
+        "runs": "`runs` lists the variants the test must satisfy. `flaky` randomises the app's load delay between 120ms and 900ms, so a challenge listing it three times is asking for a test that passes three unpredictable loads in a row — which a fixed short sleep will not do reliably.",
+        "disclosure": "Every question, answer and score in the demo app is invented. Nothing here is drawn from production traffic, prompt text, retriever content or a golden dataset."
+    },
+
+    "items": [
+        {
+            "id": "first-test",
+            "title": "Read the state, not the click",
+            "prompt": "The approve button is disabled until the review loads. Click it once the app is ready, and assert the status line reports one approval.",
+            "lesson": "Assert on the state the user would see, not on the fact that you performed an action. `click()` succeeding only tells you an element was clickable.",
+            "runs": ["default"],
+            "requires": "pass",
+            "start": "// `page` and `expect` are the only globals.\n// The app is an answer-review queue. Approve is disabled while it loads.\n\nawait page.getByTestId('approve').click();\n\nawait expect(page.getByTestId('status')).toHaveText('approved 1');",
+            "hint": "This one already passes. Run it, then read the step timeline: the click waited for the button to become clickable on its own."
+        },
+        {
+            "id": "auto-wait",
+            "title": "Sleep, then read once",
+            "prompt": "This test sleeps for 200ms and then reads the answer a single time. The app's load takes anywhere from 120ms to 900ms, and the challenge runs three times. Make it pass every time.",
+            "lesson": "The flake is not the sleep on its own — it is the sleep plus a one-shot read. `textContent()` returns whatever is there at that instant and never looks again, so the sleep becomes load-bearing. A retrying assertion removes the need for both.",
+            "runs": ["flaky", "flaky", "flaky"],
+            "requires": "pass",
+            "start": "// textContent() reads once. It does not retry.\nawait page.waitForTimeout(200);\n\nconst answer = await page.getByTestId('answer').textContent();\n\nif (!answer.includes('anomaly scan')) {\n    throw new Error('Answer had not loaded yet: ' + answer);\n}",
+            "hint": "Replace all of it with one line: `await expect(page.getByTestId('answer')).toContainText('anomaly scan');`. The assertion polls until it matches or five seconds pass, so neither the sleep nor the manual check is doing anything a retry would not do better."
+        },
+        {
+            "id": "resilient-locator",
+            "title": "Survive the rename",
+            "prompt": "A designer renamed the approve button from \"Approve\" to \"Accept answer\". This test runs against both versions. Write a locator that finds it either way, without matching the flag button too.",
+            "lesson": "Couple your locator to what the element is, not to the copy on it. A test id survives a rewording; a visible string is content and content changes.",
+            "runs": ["default", "renamed"],
+            "requires": "pass",
+            "start": "await page.getByRole('button', { name: 'Approve' }).click();\n\nawait expect(page.getByTestId('status')).toContainText('approved');",
+            "hint": "`getByTestId('approve')` is stable across both. In a real app, prefer a role plus an accessible name that is itself stable — and when the copy is genuinely volatile, a test id is the honest choice."
+        },
+        {
+            "id": "missing-name",
+            "title": "The button nobody can find",
+            "prompt": "In this variant the flag control is an icon button with no accessible name. Write a test that fails, and read the error: your test is reporting a real accessibility defect.",
+            "lesson": "A role-based locator is an accessibility assertion in disguise. If `getByRole('button', { name: … })` cannot find your control, a screen reader user cannot either — the test failure and the bug are the same fact.",
+            "runs": ["unnamed"],
+            "requires": "fail",
+            "start": "await page.getByRole('button', { name: 'Flag for review' }).click();\n\nawait expect(page.getByTestId('status')).toHaveText('flagged');",
+            "hint": "Run it as written. It should time out. The button is on the page and is clickable by test id — but it has no name, so it does not exist as far as the accessibility tree is concerned."
+        },
+        {
+            "id": "strict-mode",
+            "title": "One element, or none",
+            "prompt": "This locator matches more than one element. Fix it so the test resolves exactly one, and assert the score.",
+            "lesson": "A locator that matches several elements and silently uses the first is how a suite starts testing something other than what it claims. Strict mode turns that into an error instead of a slow surprise.",
+            "runs": ["default"],
+            "requires": "pass",
+            "start": "await expect(page.locator('dd')).toHaveText('0.82');",
+            "hint": "There are two `dd` elements, faithfulness and safety. `getByTestId('faithfulness')` names the one you mean."
+        },
+        {
+            "id": "negative-assertion",
+            "title": "Prove the loading state goes away",
+            "prompt": "Assert that the spinner is visible while the review loads, and gone once it has. Both halves must hold.",
+            "lesson": "Testing that something appears is half a test. A loading state that never clears looks identical to a fast one if you only ever assert the end state.",
+            "runs": ["flaky", "flaky"],
+            "requires": "pass",
+            "start": "// The spinner has data-testid=\"spinner\" and is removed when the review lands.\n\nawait expect(page.getByTestId('spinner')).toBeVisible();",
+            "hint": "Add a second assertion: `await expect(page.getByTestId('spinner')).not.toBeVisible();` — the negated form retries too, so it waits for the spinner to go rather than checking once."
+        }
+    ]
+}

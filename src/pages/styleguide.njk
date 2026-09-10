@@ -344,3 +344,53 @@ author has to remember to prevent.</p>
     <li id="fn-styleguide">The footnote treatment, including the return link.
     <a href="#fnref-styleguide">Back to the text</a>.</li>
 </ol>
+
+<h2>Test-lab result</h2>
+
+<p>The parts of <a href="{{ '/lab/' | url }}">the test lab</a> that hold still.
+The panel itself is not here: its output depends on a test run and its
+durations change every time, so a screenshot of it would fail every baseline
+for reasons that have nothing to do with design. The step rows and the verdict
+are the components carrying the new CSS, and they are deterministic, so they
+are what gets covered.</p>
+
+<p>The status is a word before it is a colour. A row that signalled pass and
+fail only by hue would be two identical rows to a colour-blind reader, and
+unreadable in a screenshot diff — which is where these are mostly looked at.</p>
+
+<p class="lab-verdict is-pass">Solved. Assert on the state the user would see,
+not on the fact that you performed an action.</p>
+
+<section class="lab-run is-pass">
+    <h3 class="lab-run__title">Run 1 · default — pass <span>(412ms)</span></h3>
+    <ol class="lab-steps">
+        <li class="lab-step is-pass">
+            <span class="lab-step__title">click getByTestId("approve")</span>
+            <span class="lab-step__ms">138ms</span>
+        </li>
+        <li class="lab-step is-pass">
+            <span class="lab-step__title">expect(getByTestId("status")).toHaveText("approved 1")</span>
+            <span class="lab-step__ms">54ms</span>
+        </li>
+    </ol>
+</section>
+
+<p class="lab-verdict is-fail">Not yet — 2 of 3 runs failed. A test that passes
+sometimes is a test that fails sometimes.</p>
+
+<section class="lab-run is-fail">
+    <h3 class="lab-run__title">Run 2 · flaky — fail <span>(5204ms)</span></h3>
+    <ol class="lab-steps">
+        <li class="lab-step is-pass">
+            <span class="lab-step__title">waitForTimeout(200)</span>
+            <span class="lab-step__ms">201ms</span>
+        </li>
+        <li class="lab-step is-fail">
+            <span class="lab-step__title">expect(getByTestId("answer")).toContainText("anomaly scan")</span>
+            <span class="lab-step__ms">5001ms</span>
+            <pre class="lab-step__error">Timed out 5000ms waiting for expect(getByTestId("answer")).toContainText("anomaly scan")
+  Expected: "anomaly scan"
+  Received: "Loading review…"</pre>
+        </li>
+    </ol>
+</section>
