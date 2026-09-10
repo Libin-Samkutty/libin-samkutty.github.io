@@ -80,6 +80,27 @@
         padding: 0;
     }
 
+    /*
+      The document grid collapses on paper. A sticky rail has no meaning in a
+      medium with no viewport, and its links point at anchors a reader cannot
+      click, so the table of contents goes entirely; the context strip stays and
+      falls back above the article, which is where it printed before this grid
+      existed.
+    */
+    .doc {
+        display: block;
+    }
+
+    .doc__rail {
+        display: none;
+    }
+
+    /* Sticky is meaningless on paper and browsers disagree on what it degrades
+       to, so it is pinned back to static rather than left to chance. */
+    .resume__scan {
+        position: static;
+    }
+
     a {
         color: inherit;
         text-decoration: underline;

@@ -1,4 +1,4 @@
-<svg viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pyramid-title pyramid-desc" class="diagram">
+<svg width="480" height="260" viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pyramid-title pyramid-desc" class="diagram">
     <title id="pyramid-title">Five testing layers</title>
     <desc id="pyramid-desc">From broadest to narrowest: unit and API tests, contract and integration tests, end-to-end suites, AI evaluation against a golden dataset, and production monitoring of live traffic.</desc>
 

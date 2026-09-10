@@ -24,10 +24,166 @@
     inline-size: min(100% - 2 * var(--gutter), var(--measure));
 }
 
+/* ---------------------------------------------------------------- document */
+
+/*
+  The document grid: a section rail, the content column, and a context aside.
+
+  This exists because the composition band was already 1200px and prose is
+  capped at 51ch per element in base.css, so every long-form page rendered a
+  520px text column pinned to the left of a band more than twice its width.
+  Widening the text is not the fix — 51ch is the right measure and is untouched
+  by any of this. The fix is to give the leftover width a job.
+
+  Track 1 is a sticky table of contents. Track 2 holds the article: prose still
+  stops at its own measure inside it, while tables, code blocks and diagrams
+  use the whole track. Track 3 is the context strip, which costs a few hundred
+  pixels stacked above the article and nothing at all beside it.
+
+  The article footer deliberately stays a full-width row below the grid rather
+  than joining the aside. Putting it in track 3 would mean placing it before
+  the prose in source order, so a reader on a phone — or anyone reading
+  linearly — would hit "related work" and a call to action before the article.
+  It gets denser in place instead.
+
+  64em, not 48em: below about 1024px a third track leaves the content column
+  narrower than the measure it has to hold. Under that this rule never matches
+  and the layout is the single stacked column it has always been.
+*/
+.doc {
+    display: grid;
+
+    /* `minmax(0, 1fr)`, not the implicit `auto`. An implicit grid column sizes
+       to max-content, so at 390px the context strip's longest sentence pushed
+       the column wider than the phone and the text was cut off at the right
+       edge. `minmax(0, …)` lets the track shrink below its content and the
+       text wraps instead. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-l);
+}
+
+@media (min-width: 64em) {
+    /*
+      The content track is `1fr`, not `--measure`.
+
+      Sizing it to the measure was the first attempt and it cost more than it
+      saved: prose is already capped at 51ch per element in base.css, so a
+      measure-wide track changed nothing for paragraphs while squeezing every
+      table, code block and diagram from the full band down to 520px. Those grew
+      taller by roughly what the context strip had stopped costing, and the
+      document height came out 2px shorter than before the change — all of the
+      rearrangement, none of the benefit.
+
+      A flexible track restores what the wide band was for in the first place,
+      which is the exact thing base.css's own comment says it exists for: "a
+      table, a grid or an architecture note can use the width it needs". The
+      prose cap keeps the reading column at 51ch inside it, unchanged.
+    */
+    .doc {
+        grid-template-columns: var(--rail-width) minmax(0, 1fr);
+        column-gap: var(--space-xl);
+
+        /* Start, not stretch: a sticky child cannot stick inside a track that
+           has been stretched to the row's full height, because the element
+           already fills it and has nothing to scroll within. */
+        align-items: start;
+    }
+
+    /*
+      An explicit modifier rather than `.doc:not(:has(.doc__aside))`. `:has()`
+      shipped in Firefox 121 and lightningcss is targeting 120 here, so the
+      selector would compile through and then silently fail to match for those
+      users, collapsing the layout for the one group that cannot report it.
+
+      The aside is a fixed track. As `minmax(0, …)` it would size to its content
+      and leave the leftover as a gap between the prose and the strip, which
+      reads as a mistake rather than as a column.
+    */
+    .doc--aside {
+        grid-template-columns: var(--rail-width) minmax(0, 1fr) var(--aside-width);
+    }
+}
+
+/*
+  Source order is rail, aside, content. Visual order at this width is rail,
+  content, aside — so the two differ and the placement below is what reconciles
+  them. Without it, auto-placement would put the aside in the middle.
+
+  The source order is the phone's order, and it is the one that had to be
+  right: the rail is a single scrolling line there, then the attribution, then
+  the article. Reading linearly you get "where this goes", "whose work this
+  was", then the work.
+*/
+@media (min-width: 64em) {
+    .doc__rail {
+        grid-column: 1;
+        grid-row: 1;
+        position: sticky;
+        inset-block-start: calc(var(--header-height) + var(--space-m));
+
+        /* A rail longer than the viewport must scroll on its own, or its last
+           items are unreachable while it is stuck. */
+        max-block-size: calc(100vb - var(--header-height) - var(--space-xl));
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+    }
+
+    .doc__main {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .doc__aside {
+        grid-column: 3;
+        grid-row: 1;
+    }
+}
+
+/*
+  Below 64em the same markup becomes a single scrolling row of section links
+  rather than a vertical list.
+
+  A `<details>` disclosure was the first attempt and was wrong twice: forcing a
+  closed one open at desktop needs either JS or `display: contents` on
+  `<details>`, which does not reliably override the closed state, and leaving it
+  open at mobile puts ten links between the h1 and the first paragraph.
+
+  A one-line scroller costs about 44px, hides nothing, and needs no state. It
+  gets no `tabindex` — unlike `.table-scroll`, which needs one because a table
+  has no focusable children. This has nothing but links, so tabbing through them
+  scrolls the row on its own.
+*/
+@media (max-width: 63.99em) {
+    .doc__rail ol {
+        display: flex;
+        gap: var(--space-m);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+
+        /* The row is a rail of its own, so it reads as navigation rather than
+           as the article's first list. */
+        padding-block-end: var(--space-2xs);
+        border-block-end: var(--hairline);
+    }
+
+    .doc__rail li {
+        flex: none;
+    }
+}
+
 /* ---------------------------------------------------------------- sections */
 
+/*
+  --space-xl, not --space-2xl: 64px between sections instead of 96.
+
+  96px is right for a band that changes colour, where the padding is doing the
+  separating on its own. Between two plain sections that already have a heading
+  to mark the boundary it was doing the job twice, and the homepage stacks eight
+  of them — around 220px of the page spent restating a break the h2 had already
+  made. The tinted and ruled bands below keep the larger value.
+*/
 .section {
-    padding-block: var(--space-2xl);
+    padding-block: var(--space-xl);
 }
 
 .section + .section {

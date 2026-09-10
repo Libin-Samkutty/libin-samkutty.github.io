@@ -36,31 +36,47 @@ bodyClass: home
     </div>
 </section>
 
+{# Plain `.wrap`, not `.wrap--measure`: three graded figures are not prose and
+   read across the band, three abreast, rather than stacked in a reading
+   column that put them below the fold. #}
 <section class="section" aria-labelledby="evidence-title">
-    <div class="wrap wrap--measure">
+    <div class="wrap">
         <h2 class="visually-hidden" id="evidence-title">Evidence</h2>
 
+        {#
+          Figure first, provenance second.
+
+          The grade used to come first because it sits in the rail at tablet
+          width and grid auto-placement fills the rail from the first child. Once
+          these render as three columns the rail is gone, so leading with the
+          grade meant four lines of basis text above every figure — which pushed
+          all three values off the first screen, and inverted the point: the
+          grade qualifies the number, so the number has to arrive first.
+
+          CSS places them explicitly at 48em, so the rail layout is unchanged
+          and this is now the reading order at every width.
+        #}
         <ol class="record-list evidence">
             <li class="record evidence__item" data-confidence="exact">
-                <div class="evidence__grade">{% grade "platform_scale" %}</div>
-                <div>
+                <div class="evidence__figure">
                     <p class="evidence__value">{% metric "platform_scale" %}</p>
                     <p class="evidence__label">What the evaluation systems on this site cover</p>
                 </div>
+                <div class="evidence__grade">{% grade "platform_scale" %}</div>
             </li>
             <li class="record evidence__item" data-confidence="exact">
-                <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
-                <div>
+                <div class="evidence__figure">
                     <p class="evidence__value">{% metric "golden_dataset_india_mh" %}</p>
                     <p class="evidence__label">Golden-dataset cases gating every India Maternal Health release</p>
                 </div>
+                <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
             </li>
             <li class="record evidence__item" data-confidence="approximate">
-                <div class="evidence__grade">{% grade "nightly_eval_cost" %}</div>
-                <div>
+                <div class="evidence__figure">
                     <p class="evidence__value">{% metric "nightly_eval_cost" %}</p>
                     <p class="evidence__label">Cost of the full nightly evaluation run</p>
                 </div>
+                <div class="evidence__grade">{% grade "nightly_eval_cost" %}</div>
             </li>
         </ol>
     </div>
@@ -185,7 +201,7 @@ bodyClass: home
 </section>
 
 <section class="section" aria-labelledby="timeline-title">
-    <div class="wrap wrap--measure">
+    <div class="wrap">
         <h2 class="section__title" id="timeline-title">Where I've been</h2>
 
         <ol class="timeline">

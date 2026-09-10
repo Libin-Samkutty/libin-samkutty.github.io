@@ -6,6 +6,72 @@
   its hedge and its provenance, and the limitation callout.
 */
 
+/* ================================================================ section rail */
+
+/*
+  The generated table of contents. Built by the `documentOutline` transform in
+  eleventy.config.js from the page's own h2s, so it cannot list a section that
+  does not exist or miss one that does.
+
+  Mono and small, like every other rail on this site (the record's grade
+  column, the context strip's labels, the case-study number). It is apparatus,
+  not content, and should read as the same kind of thing as the other apparatus.
+*/
+.doc__rail {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-wide);
+}
+
+.doc__rail-title {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-block-end: var(--space-s);
+}
+
+.doc__rail ol {
+    list-style: none;
+    padding-inline-start: 0;
+    margin-block: 0;
+}
+
+.doc__rail a {
+    display: block;
+    padding-block: var(--space-3xs);
+    color: var(--color-text-muted);
+    text-decoration: none;
+
+    /* No underline at rest, because eleven underlined links stacked in a
+       column read as a block of texture rather than as a list. The hover and
+       focus states put it back. */
+    border-inline-start: 2px solid transparent;
+    padding-inline-start: var(--space-2xs);
+}
+
+.doc__rail a:hover {
+    color: var(--color-text);
+    border-inline-start-color: var(--color-border-strong);
+}
+
+@media (min-width: 64em) {
+    .doc__rail-title {
+        padding-inline-start: calc(var(--space-2xs) + 2px);
+    }
+}
+
+/* The scrolling row at narrow widths has no room for a left rule per item. */
+@media (max-width: 63.99em) {
+    .doc__rail a {
+        border-inline-start: 0;
+        padding-inline-start: 0;
+        white-space: nowrap;
+    }
+}
+
 /* ================================================================ page header */
 
 .page__header,
@@ -78,6 +144,51 @@
     .page__lede,
     .case-study__outcome {
         font-size: var(--step-0);
+    }
+}
+
+/*
+  The header, side by side.
+
+  The title caps at 24ch and the lede at 51ch, so stacked they occupied a 600px
+  column and left the rest of a 1344px band empty — 410px of vertical space on
+  /work/ for five lines of text. Beside each other they cost one block instead
+  of two and the band is actually used.
+
+  No markup change and no `:has()`. The eyebrow spans both tracks and the two
+  remaining children auto-place into them, so a header with no lede simply
+  leaves the second track empty and the title keeps its cap either way.
+
+  Baseline-aligned rather than top-aligned: the title's cap height and the
+  lede's first line are what the eye pairs, and top alignment leaves the
+  smaller text visibly floating.
+*/
+@media (min-width: 64em) {
+    /*
+      `:not(.wrap--measure)` is load-bearing. /work/ composes its header as
+      `.wrap.wrap--measure`, so without the guard this split a 520px box into
+      two ~250px columns and the lede went from four lines to eight — the page
+      got 122px taller from a rule meant to shorten it. A two-column header only
+      makes sense on a container that has two columns' worth of room.
+    */
+    .case-study__header > .wrap,
+    .page__header > .wrap:not(.wrap--measure) {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        column-gap: var(--space-xl);
+        align-items: baseline;
+    }
+
+    .case-study__eyebrow,
+    .page__eyebrow {
+        grid-column: 1 / -1;
+    }
+
+    /* The stacking margins are what separated them vertically; side by side
+       they only push the lede's first line off the title's baseline. */
+    .case-study__outcome,
+    .page__lede {
+        margin-block-start: 0;
     }
 }
 
@@ -173,6 +284,90 @@
         padding-inline-start: calc(var(--space-s) - 2px);
         margin-inline-start: -2px;
     }
+}
+
+/*
+  In the document grid's aside the strip is 15rem wide, so the label-beside-
+  value form above does not fit — an 11rem rail inside a 15rem column leaves
+  4rem for the value. It reverts to the stacked form it already uses below
+  48em rather than getting a third layout of its own.
+
+  Ordered after the 48em block, not given a higher specificity, so the two
+  cannot get into a specificity argument later.
+*/
+/*
+  Not sticky, deliberately.
+
+  It was, briefly, and it did nothing: `.doc__aside` is a grid item under
+  `align-items: start`, so it is exactly as tall as the strip and a sticky child
+  has no room inside it to travel. Making the aside itself sticky would work,
+  but a 400px panel of role, scope and stack pinned beside 9000px of article is
+  reference material demanding attention it does not need. The rail sticks
+  because navigation has to be reachable from anywhere; this is read once, near
+  the top, which is where it now sits.
+*/
+@media (min-width: 64em) {
+    .doc__aside .context-strip {
+        margin-block-end: 0;
+    }
+
+    .doc__aside .context-strip__row {
+        display: block;
+    }
+
+    .doc__aside .context-strip dt {
+        margin-block-end: var(--space-3xs);
+    }
+
+    .doc__aside .context-strip__row--attribution {
+        padding-inline-start: var(--space-s);
+        margin-inline-start: 0;
+    }
+}
+
+/* ================================================================ figures */
+
+/*
+  Diagrams and charts had no CSS at all until now — not a light touch, an
+  omission. Both are inline SVG with a viewBox and, until this change, no
+  width or height, so they had no intrinsic size and the reset's
+  `max-inline-size: 100%` stretched them to whatever container they landed in.
+  A 640-unit diagram rendered at 1200px: a 1.9x upscale drawing its 1.5px
+  strokes at nearly 3, in a design that otherwise cares about hairlines.
+
+  The fix is intrinsic dimensions on the SVGs themselves, which the reset then
+  scales down and never up. What is left here is the frame around them.
+*/
+/*
+  `.diagram` is the <svg> itself — the shortcode inlines the file verbatim and
+  the class sits on its root element, with no <figure> around it. So the
+  spacing goes on the SVG rather than on a wrapper, and `.chart`, which the
+  shortcode does wrap in a <figure>, gets the same block rhythm separately.
+*/
+.chart {
+    margin-block: var(--space-l);
+    margin-inline: 0;
+}
+
+/*
+  Centred within the reading column rather than flush left. A diagram narrower
+  than the measure looks like a mistake when it is left-aligned under a
+  paragraph that runs past it, and like a figure when it is centred.
+*/
+.diagram {
+    margin-block: var(--space-l);
+    margin-inline: auto;
+}
+
+.chart__svg {
+    margin-inline: auto;
+}
+
+/* Both draw in currentColor, so they inherit the theme and need no per-theme
+   rules. Muted against body text: they are illustration, not emphasis. */
+.diagram,
+.chart__svg {
+    color: var(--color-text-muted);
 }
 
 /* ================================================================ scrollable table */

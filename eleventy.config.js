@@ -301,7 +301,14 @@ export default function (eleventyConfig) {
 
         return (
             `<figure class="chart">` +
-            `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="${titleId} ${descId}" class="chart__svg">` +
+            // width and height as well as the viewBox, so the SVG has an
+            // intrinsic size. With only a viewBox it has none, and the reset's
+            // `max-inline-size: 100%` lets it fill whatever box it lands in —
+            // which meant a 640-unit chart rendering at 1200px and drawing its
+            // 1.5px strokes at nearly 3. Now the reset scales it down and never
+            // up, and the aspect ratio is known before paint, so it reserves its
+            // own space instead of shifting the page.
+            `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="${titleId} ${descId}" class="chart__svg">` +
             `<title id="${titleId}">${escapeHtml(chart.title)}</title>` +
             `<desc id="${descId}">${escapeHtml(chart.unit)}, ${entries.length} data points.</desc>` +
             body +
@@ -496,6 +503,102 @@ export default function (eleventyConfig) {
     });
 
     /* ---------------------------------------------------------------- transforms */
+
+    /**
+     * Gives every section heading an id and builds the rail's table of contents
+     * from the same list, in one pass.
+     *
+     * One pass is the point. `tests/links.spec.js` asserts that every `#fragment`
+     * on the site resolves to a real `id`, and the cheapest way to satisfy that
+     * permanently is to make it impossible to violate: the hrefs are generated
+     * from the same array as the ids, so they cannot drift apart. Two passes, or
+     * a hand-maintained list in front matter, would both need a human to keep
+     * them in step.
+     *
+     * Chosen over markdown-it-anchor plus a TOC plugin. Those are two more
+     * dependencies, and they only see markdown — `/styleguide/` and the other
+     * .njk pages never touch markdown-it, so half the site would be uncovered.
+     *
+     * The body is delimited by comments rather than matched by class, because a
+     * regex cannot find the close tag of a nested element and every article body
+     * contains nested divs. The comments are removed on the way out.
+     */
+    eleventyConfig.addTransform("documentOutline", function (content) {
+        if (!this.page.outputPath || !this.page.outputPath.endsWith(".html")) return content;
+
+        const RAIL = '<div class="doc__rail" data-outline></div>';
+        const body = content.match(/<!--outline:start-->([\s\S]*?)<!--outline:end-->/);
+        if (!body) return content;
+
+        // Existing ids anywhere on the page, so a generated one cannot collide
+        // with a hand-written anchor — `/skills/` already puts `id="group-…"` on
+        // its h2s, and `#main` exists on every page.
+        const taken = new Set([...content.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]));
+
+        // The rail's own heading id is not in the document yet, so reserve it
+        // before generating anything that could slug to the same string.
+        taken.add("doc-outline-title");
+
+        const slugify = (html) =>
+            html
+                .replace(/<[^>]+>/g, "")
+                .replace(/&[a-z]+;|&#\d+;/gi, "")
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-+|-+$/g, "");
+
+        const headings = [];
+
+        const annotated = body[1].replace(
+            /<h2\b([^>]*)>([\s\S]*?)<\/h2>/g,
+            (whole, attrs, inner) => {
+                const existing = attrs.match(/\bid="([^"]+)"/);
+
+                let id = existing ? existing[1] : slugify(inner);
+                if (!id) return whole; // A heading with no text to slug is left alone.
+
+                if (!existing) {
+                    // A case study and a post can both have "Results". Only the
+                    // generated ones are disambiguated; an author-written id is
+                    // theirs and is left exactly as typed.
+                    let candidate = id;
+                    let n = 2;
+                    while (taken.has(candidate)) candidate = `${id}-${n++}`;
+                    id = candidate;
+                }
+                taken.add(id);
+
+                // The label keeps the heading's own escaped markup minus any
+                // inline tags, so an apostrophe stays an entity and is never
+                // double-escaped on the way into the link.
+                headings.push({ id, label: inner.replace(/<[^>]+>/g, "").trim() });
+
+                return existing ? whole : `<h2${attrs} id="${id}">${inner}</h2>`;
+            }
+        );
+
+        // Function replacements throughout, never string ones: `$&`, `$1` and
+        // friends are substitution patterns in a string replacement, and article
+        // prose is entirely capable of containing them.
+        const withIds = content.replace(body[0], () => annotated);
+
+        // No headings means no rail. Removing the placeholder is deliberate: an
+        // empty <nav> is a landmark a screen-reader user can jump into and find
+        // nothing in.
+        if (!headings.length) return withIds.replace(RAIL, () => "");
+
+        const items = headings
+            .map(({ id, label }) => `<li><a href="#${id}">${label}</a></li>`)
+            .join("");
+
+        const nav =
+            `<nav class="doc__rail" aria-labelledby="doc-outline-title">` +
+            `<h2 class="doc__rail-title" id="doc-outline-title">On this page</h2>` +
+            `<ol>${items}</ol>` +
+            `</nav>`;
+
+        return withIds.replace(RAIL, () => nav);
+    });
 
     /**
      * Wraps every table in a focusable, labelled scroll region.

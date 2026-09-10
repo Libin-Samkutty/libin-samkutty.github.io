@@ -1,4 +1,4 @@
-Regenerated: Confirmed intentional content changes from PR #30: shortened 'How Libin' to 'How I' in three case-study card descriptions (reflows the homepage Selected work cards ~28px shorter) and removed the resume page's screen-only lede paragraph (~93-119px shorter). Verified via pr-checks.yml run 32986220992 diff images — only these two routes affected, no unintended layout change.
-Commit:      2856c429c633cceb39d5494cbf75d2d24e274a36
-Ref:         refs/heads/main
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/32986582629
+Regenerated: Layout density refit (PR #32): document grid with section rail and context aside, two-column page headers, 3-up evidence and horizontal timeline on the homepage, intrinsic diagram sizing, wrap-max 84rem to 90rem.
+Commit:      15bdc8068c9d1b93299215b8d99f66b17d2258c5
+Ref:         refs/heads/feature/layout-density-refit
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34403482625

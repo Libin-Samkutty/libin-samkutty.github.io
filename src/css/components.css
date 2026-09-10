@@ -528,6 +528,19 @@ html:not(.js) .theme-toggle {
     margin-block-end: var(--space-m);
 }
 
+/*
+  18ch is right while the headline is the only thing on the screen. Once the
+  hero is sharing the first screen with the evidence rows it costs a line: at
+  1920 the claim broke across four, and the fourth was "person ever sees them."
+  22ch takes it to three without touching the type size, which is what was
+  actually doing the work.
+*/
+@media (min-width: 64em) {
+    .hero__title {
+        max-inline-size: 22ch;
+    }
+}
+
 .hero__lede {
     font-size: var(--step-1);
     line-height: var(--leading-normal);
@@ -596,8 +609,16 @@ html:not(.js) .theme-toggle {
 }
 
 @media (min-width: 64em) {
+    /*
+      Was `--space-2xl --space-3xl`, which is 96px above and 128px below. On a
+      900px viewport that padding plus a four-line headline filled the entire
+      first screen with the hero and nothing else — no evidence, no work, no
+      reason to keep scrolling except faith. A hero is an introduction, not a
+      splash screen, so it now gives back 64px and the evidence rows clear the
+      fold.
+    */
     .hero {
-        padding-block: var(--space-2xl) var(--space-3xl);
+        padding-block: var(--space-xl) var(--space-l);
     }
 
     .hero__inner {
@@ -607,6 +628,16 @@ html:not(.js) .theme-toggle {
     .hero__portrait {
         max-inline-size: none;
     }
+}
+
+/*
+  The hero is not a `.section`, so the rule that zeroes a section's top padding
+  after another section does not match it, and the evidence rows were paying
+  the hero's bottom padding and their own top padding back to back — 160px of
+  nothing between the buttons and the first figure.
+*/
+.hero + .section {
+    padding-block-start: var(--space-l);
 }
 
 /* ================================================================ buttons */
@@ -732,6 +763,70 @@ html:not(.js) .theme-toggle {
 @media (min-width: 48em) {
     .evidence__value {
         font-size: var(--step-4);
+    }
+
+    /*
+      Explicit placement, because the source order is figure-then-grade and the
+      rail here is the grade. Without this, auto-placement would put the figure
+      in the 11rem rail and the grade in the wide column.
+    */
+    .evidence__item > .evidence__grade {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .evidence__item > .evidence__figure {
+        grid-column: 2;
+        grid-row: 1;
+    }
+}
+
+/*
+  Three across, once there is room.
+
+  As a stacked list inside `.wrap--measure` these three short rows occupied a
+  51ch column and about 380px of the first screen, which on a 900px viewport was
+  the difference between a visitor seeing the evidence and seeing only the hero.
+  They are three figures with a grade and a label each — the least prose-like
+  content on the site, and the last thing that should be held to a reading
+  measure.
+
+  The rail becomes a stack: at a third of the band there is no room for a grade
+  beside a value, and the grade reads as a caption above its figure anyway.
+*/
+@media (min-width: 64em) {
+    .record-list.evidence {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-l);
+    }
+
+    .record-list.evidence > .evidence__item {
+        /* Undo the subgrid rail the record list sets up at 48em. */
+        grid-column: auto;
+        grid-template-columns: minmax(0, 1fr);
+
+        /* A rule between columns rather than above rows, so the three read as
+           siblings instead of as a list that happens to wrap. */
+        border-block-start: none;
+        border-inline-start: var(--hairline);
+        padding-block: 0;
+        padding-inline-start: var(--space-m);
+    }
+
+    .record-list.evidence > .evidence__item:first-child {
+        border-inline-start: none;
+        padding-inline-start: 0;
+    }
+
+    /* Back to one column and source order: figure, then the grade under it. */
+    .evidence__item > .evidence__grade,
+    .evidence__item > .evidence__figure {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .evidence__grade {
+        margin-block-start: var(--space-s);
     }
 }
 
@@ -1102,6 +1197,44 @@ html:not(.js) .theme-toggle {
 .timeline__org {
     font-size: var(--step--1);
     color: var(--color-text-muted);
+}
+
+/*
+  Horizontal, once there is room.
+
+  Five career markers stacked vertically cost about 400px of the homepage
+  inside a 51ch column, for five short date-and-label pairs. Laid along the
+  band the same five read left to right, which is also the direction the dates
+  run, and cost about a quarter of that.
+
+  The spine rotates with it: the rule moves from the inline start to the block
+  start and the dots sit on it. `auto-fit` rather than `repeat(5, …)` because
+  the markers come from timeline.json and a sixth one should not need a CSS
+  change to land correctly.
+*/
+@media (min-width: 64em) {
+    .timeline {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+        gap: var(--space-l);
+        margin-inline-start: 0;
+        border-inline-start: none;
+        border-block-start: var(--hairline-strong);
+    }
+
+    .timeline__item {
+        padding-inline-start: 0;
+        padding-block: var(--space-m) 0;
+    }
+
+    .timeline__item:last-child {
+        padding-block-end: 0;
+    }
+
+    .timeline__item::before {
+        inset-inline-start: 0;
+        inset-block-start: -4.5px;
+    }
 }
 
 /* ================================================================ other systems */

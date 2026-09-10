@@ -1,4 +1,4 @@
-<svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dispatcher-arch-title dispatcher-arch-desc" class="diagram">
+<svg width="640" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="dispatcher-arch-title dispatcher-arch-desc" class="diagram">
     <title id="dispatcher-arch-title">Family Planning dispatcher architecture</title>
     <desc id="dispatcher-arch-desc">A dispatcher routes the utterance to a node in a defined journey graph, which produces an LLM-generated response for that step. There is no retrieval step.</desc>
     <defs>

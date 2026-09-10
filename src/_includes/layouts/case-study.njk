@@ -16,53 +16,71 @@ ogType: article
     </header>
 
     {#
-      The context strip. "What was mine / what wasn't" sits here rather than in a
-      footnote at the bottom, because a reader who stops after the first screen
-      should still leave with an accurate picture of the attribution.
-    #}
-    <div class="wrap">
-        <dl class="context-strip">
-            <div class="context-strip__row">
-                <dt>Role at the time</dt>
-                <dd>{{ roleAtTime }}</dd>
-            </div>
-            <div class="context-strip__row">
-                <dt>Scope</dt>
-                <dd>{{ scope }}</dd>
-            </div>
-            <div class="context-strip__row">
-                <dt>Stack</dt>
-                <dd>
-                    <ul class="chips">
-                        {% for item in stack %}<li class="chip">{{ item }}</li>{% endfor %}
-                    </ul>
-                </dd>
-            </div>
-            <div class="context-strip__row">
-                <dt>What was mine</dt>
-                <dd>{{ mine }}</dd>
-            </div>
-            {% if notMine %}
-            <div class="context-strip__row context-strip__row--attribution">
-                <dt>What wasn't</dt>
-                <dd>{{ notMine }}</dd>
-            </div>
-            {% endif %}
-            {% if demos %}
-            <div class="context-strip__row">
-                <dt>Public demos</dt>
-                <dd>
-                    <ul class="chips">
-                        {% for demo in demos %}<li><a class="chip chip--link" href="{{ demo.url }}" rel="noopener">{{ demo.name }}</a></li>{% endfor %}
-                    </ul>
-                </dd>
-            </div>
-            {% endif %}
-        </dl>
-    </div>
+      The document grid: section rail, prose, context strip.
 
-    <div class="case-study__body wrap">
-        {{ content | safe }}
+      Source order is rail, context strip, prose — which is exactly the order a
+      phone renders them in, and the order anyone reading linearly gets. The
+      rail is one scrolling line at that width, not ten stacked links, so it
+      costs a reader about 44px before the attribution they actually need.
+
+      At 64em CSS moves the strip to the right of the prose. It keeps its place
+      in the reading order and stops costing vertical space, which is the whole
+      trade.
+    #}
+    <div class="wrap doc doc--aside">
+        <div class="doc__rail" data-outline></div>
+
+        {#
+          "What was mine / what wasn't" sits with the article, not in a footnote
+          at the bottom, because a reader who stops after the first screen should
+          still leave with an accurate picture of the attribution.
+        #}
+        <div class="doc__aside">
+            <dl class="context-strip">
+                <div class="context-strip__row">
+                    <dt>Role at the time</dt>
+                    <dd>{{ roleAtTime }}</dd>
+                </div>
+                <div class="context-strip__row">
+                    <dt>Scope</dt>
+                    <dd>{{ scope }}</dd>
+                </div>
+                <div class="context-strip__row">
+                    <dt>Stack</dt>
+                    <dd>
+                        <ul class="chips">
+                            {% for item in stack %}<li class="chip">{{ item }}</li>{% endfor %}
+                        </ul>
+                    </dd>
+                </div>
+                <div class="context-strip__row">
+                    <dt>What was mine</dt>
+                    <dd>{{ mine }}</dd>
+                </div>
+                {% if notMine %}
+                <div class="context-strip__row context-strip__row--attribution">
+                    <dt>What wasn't</dt>
+                    <dd>{{ notMine }}</dd>
+                </div>
+                {% endif %}
+                {% if demos %}
+                <div class="context-strip__row">
+                    <dt>Public demos</dt>
+                    <dd>
+                        <ul class="chips">
+                            {% for demo in demos %}<li><a class="chip chip--link" href="{{ demo.url }}" rel="noopener">{{ demo.name }}</a></li>{% endfor %}
+                        </ul>
+                    </dd>
+                </div>
+                {% endif %}
+            </dl>
+        </div>
+
+        <div class="case-study__body doc__main">
+            <!--outline:start-->
+            {{ content | safe }}
+            <!--outline:end-->
+        </div>
     </div>
 
     <footer class="case-study__footer wrap">

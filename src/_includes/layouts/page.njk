@@ -11,14 +11,45 @@ layout: layouts/base.njk
     </header>
 
     {#
-      Plain `.wrap`, not `.wrap--measure` — `.wrap--measure` centers its own
-      narrower box independently of the header above it, which visibly indents
-      the body away from the header's left edge. `.page__body`'s prose elements
-      (base.css) already cap their own inline-size to the reading measure, the
-      same pattern case-study and post bodies use, so the column reads at the
-      right width while staying flush with everything above it.
+      `outline: true` in front matter opts a page into the document grid. It is
+      opt-in rather than automatic because this layout serves pages that must
+      not get it: `/resume/` runs its own two-column sticky grid, and nesting
+      that inside this one would squeeze the whole record into 51ch; `/contact/`
+      is four paragraphs and a rail would be longer than the page.
+
+      Everything else keeps the plain `.wrap`. Not `.wrap--measure` — that
+      centers its own narrower box independently of the header above it, which
+      visibly indents the body away from the header's left edge. `.page__body`'s
+      prose elements cap their own inline-size in base.css instead, so the
+      column reads at the right width while staying flush.
     #}
+    {% if outline %}
+    {#
+      `asidePartial` names a partial to render in the third track. A page whose
+      body is nothing but prose needs one: the content track is flexible so that
+      tables and component grids can use the band, which is right for /skills/
+      and /styleguide/ but leaves a 580px void beside a page that is only
+      paragraphs. Filling it with something worth reading beats narrowing the
+      grid to hide it.
+    #}
+    <div class="wrap doc{% if asidePartial %} doc--aside{% endif %}">
+        <div class="doc__rail" data-outline></div>
+
+        {% if asidePartial %}
+        <div class="doc__aside">
+            {% include "partials/" + asidePartial %}
+        </div>
+        {% endif %}
+
+        <div class="page__body doc__main">
+            <!--outline:start-->
+            {{ content | safe }}
+            <!--outline:end-->
+        </div>
+    </div>
+    {% else %}
     <div class="page__body wrap">
         {{ content | safe }}
     </div>
+    {% endif %}
 </article>
