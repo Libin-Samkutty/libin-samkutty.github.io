@@ -125,6 +125,41 @@ plain-language label sit in the main column.</p>
     </li>
 </ol>
 
+<h3>Evidence record, three abreast</h3>
+
+<p>The <code>evidence--columns</code> modifier, as the homepage uses it. The
+grade moves below the figure and the rail becomes a stack, because a third of
+the band has no room for a label beside a 42px value.</p>
+
+<p>It is a modifier and not the default for a reason this page proved: applied
+to <code>.evidence</code> itself, the long estimate above rendered seven
+characters to the line in a 285px column and ran 1,882px tall. Short figures
+only.</p>
+
+<ol class="record-list evidence evidence--columns">
+    <li class="record evidence__item" data-confidence="exact">
+        <div class="evidence__figure">
+            <p class="evidence__value">{% metric "golden_dataset_india_mh" %}</p>
+            <p class="evidence__label">Golden-dataset cases gating every India Maternal Health release</p>
+        </div>
+        <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
+    </li>
+    <li class="record evidence__item" data-confidence="exact">
+        <div class="evidence__figure">
+            <p class="evidence__value">{% metric "languages" %}</p>
+            <p class="evidence__label">Languages the platform answers in</p>
+        </div>
+        <div class="evidence__grade">{% grade "languages" %}</div>
+    </li>
+    <li class="record evidence__item" data-confidence="approximate">
+        <div class="evidence__figure">
+            <p class="evidence__value">{% metric "nightly_eval_cost" %}</p>
+            <p class="evidence__label">Cost of the full nightly evaluation run</p>
+        </div>
+        <div class="evidence__grade">{% grade "nightly_eval_cost" %}</div>
+    </li>
+</ol>
+
 <h2>Gate</h2>
 
 <p>The secondary motif. A result and the limitation beside it, always paired and
@@ -344,3 +379,35 @@ author has to remember to prevent.</p>
     <li id="fn-styleguide">The footnote treatment, including the return link.
     <a href="#fnref-styleguide">Back to the text</a>.</li>
 </ol>
+
+<h2>Test report</h2>
+
+<p>The components <a href="{{ '/tests/' | url }}">/tests/</a> is built from: the
+run verdict, the headline counts, and the two trend panels.</p>
+
+<p>Rendered here from <code>testRunsSample.json</code>, a frozen fixture, and
+not from the real record. That is the whole reason this section exists. The real
+record changes every time a run is accepted, and a component whose geometry
+moved on every accepted run would either fail every baseline or have to be
+masked out of them — and a masked component is one the visual suite has stopped
+guarding. Every figure below is invented, including the commit hashes.</p>
+
+{% set run = testRunsSample.latest %}
+{% include "partials/run-summary.njk" %}
+
+<h3>Verdict, failed</h3>
+
+<p>The same block for a red record. The word changes, the border tint changes,
+and the note says what a red record means for the page you are on.</p>
+
+{% set run = testRunsSample.latestFailed %}
+{% include "partials/run-summary.njk" %}
+
+<h3>Trend</h3>
+
+<p>Suite size and wall clock over the recorded runs. Both plots scale to the
+range they cover rather than to zero, and each prints where its range starts.
+The ringed point is a run that recorded failures — marked by shape, because
+nothing on this site carries meaning by colour alone.</p>
+
+{% runTrend testRunsSample.history, "sg" %}

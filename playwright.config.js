@@ -19,7 +19,16 @@ export default defineConfig({
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
     retries: 0,
-    reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : [["list"]],
+    /**
+     * The JSON reporter is on in both modes, because /tests/ renders a real run
+     * and the reducer that feeds it (scripts/test-report.mjs) needs something to
+     * read whether the run happened on a laptop or on the runner. It writes a
+     * file and prints nothing, so it does not compete with the human-readable
+     * reporter beside it.
+     */
+    reporter: process.env.CI
+        ? [["github"], ["html", { open: "never" }], ["json", { outputFile: "test-results/report.json" }]]
+        : [["list"], ["json", { outputFile: "test-results/report.json" }]],
 
     use: {
         baseURL,

@@ -49,6 +49,30 @@ jobs:
       - name: Budgets
         run: npm run test:perf
 
+      # The same record the deploy workflow produces, on the branch. /tests/
+      # publishes a run in which the visual suite passed, and the only place
+      # that happens is a Linux runner with the committed baselines — so a PR
+      # that changes the suite gets its snapshot from its own green check rather
+      # than from a developer's machine.
+      #
+      # `always()` because a red run is still worth recording for whoever is
+      # reading the artifact. `continue-on-error` because this reports on the
+      # gate rather than being one: the reducer refusing to write must not turn
+      # a green check red.
+      - name: Record the run for /tests/
+        if: always()
+        run: npm run test:report
+        continue-on-error: true
+
+      - name: Upload the run record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-run
+          path: src/_data/testRuns.json
+          retention-days: 30
+          if-no-files-found: warn
+
       - name: Upload failures
         if: failure()
         uses: actions/upload-artifact@v4

@@ -1,0 +1,245 @@
+{
+    "_meta": {
+        "purpose": "A frozen fixture for /styleguide/, so the run-summary and trend components have a deterministic target.",
+        "why": "The real record at src/_data/testRuns.json changes every time a run is accepted. /tests/ is not a screenshot route so that does not matter there, but /styleguide/ is, and a component whose geometry moved on every accepted run would either fail every baseline or have to be masked out of them — and a masked component is one the visual suite has stopped guarding.",
+        "invented": "Every figure here is made up, including the commit hashes. It exists to exercise the renderer, not to report anything. Nothing on a published page reads this file.",
+        "covers": "Eight runs so the line has shape, one of them with failures so the ringed marker is in the baseline, and a spread of durations so the vertical axis is not flat."
+    },
+    "latest": {
+        "recordedAt": "2026-09-08T09:14:02.118Z",
+        "source": "ci",
+        "commit": "b7c1e94aa2f60d3518cf47a0e6b28d5139f4c082",
+        "commitShort": "b7c1e94",
+        "branch": "main",
+        "workflow": "Deploy",
+        "deployed": true,
+        "runUrl": "https://github.com/example/example/actions/runs/1",
+        "runner": "Linux",
+        "playwright": "1.62.1",
+        "workers": 4,
+        "projects": ["desktop", "mobile"],
+        "durationMs": 154820,
+        "total": 619,
+        "passed": 615,
+        "failed": 0,
+        "skipped": 4,
+        "suites": [
+            {
+                "file": "html-quality.spec.js",
+                "purpose": "Byte-level and structural checks: no BOM, unique titles and descriptions, one h1, no heading skips, every image dimensioned.",
+                "tests": 277,
+                "passed": 277,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 1702,
+                "projects": ["desktop"]
+            },
+            {
+                "file": "a11y.spec.js",
+                "purpose": "axe-core over every page in both themes, on desktop and a Pixel 7, plus the keyboard and focus behaviour a scanner cannot see.",
+                "tests": 144,
+                "passed": 140,
+                "failed": 0,
+                "skipped": 4,
+                "flaky": 0,
+                "ms": 309411,
+                "projects": ["desktop", "mobile"]
+            },
+            {
+                "file": "links.spec.js",
+                "purpose": "Every root-relative link and every fragment resolves to something that exists on disk.",
+                "tests": 101,
+                "passed": 101,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 884,
+                "projects": ["desktop"]
+            },
+            {
+                "file": "urls.spec.js",
+                "purpose": "Every legacy URL still resolves, and every redirect stub is a real 200 with a canonical and a working link.",
+                "tests": 62,
+                "passed": 62,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 7420,
+                "projects": ["desktop"]
+            },
+            {
+                "file": "visual.spec.js",
+                "purpose": "Full-page screenshots of the styleguide and four sample routes, in both themes, at two viewports.",
+                "tests": 20,
+                "passed": 20,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 41260,
+                "projects": ["desktop", "mobile"]
+            },
+            {
+                "file": "content-consistency.spec.js",
+                "purpose": "Reads the built HTML and the withheld résumé PDF against the disclosure denylist and the list of retired numbers.",
+                "tests": 9,
+                "passed": 9,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 148,
+                "projects": ["desktop"]
+            },
+            {
+                "file": "sitemap.spec.js",
+                "purpose": "The sitemap lists every indexable page, no assets, no noindex pages, and stays sorted.",
+                "tests": 5,
+                "passed": 5,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 61,
+                "projects": ["desktop"]
+            },
+            {
+                "file": "test-report.spec.js",
+                "purpose": "Guards this page's own record: that it came from a runner, that it is green, and that its detail and its trend describe the same run.",
+                "tests": 1,
+                "passed": 1,
+                "failed": 0,
+                "skipped": 0,
+                "flaky": 0,
+                "ms": 12,
+                "projects": ["desktop"]
+            }
+        ],
+        "slowest": [
+            { "title": "/styleguide/ matches its baseline (dark)", "file": "visual.spec.js", "project": "desktop", "ms": 8412 },
+            { "title": "/styleguide/ matches its baseline (light)", "file": "visual.spec.js", "project": "desktop", "ms": 7988 },
+            { "title": "/styleguide/ matches its baseline (dark)", "file": "visual.spec.js", "project": "mobile", "ms": 6104 },
+            { "title": "/work/ai-evaluation-framework/ has no axe violations (dark)", "file": "a11y.spec.js", "project": "mobile", "ms": 4870 },
+            { "title": "/work/ai-evaluation-framework/ has no axe violations (light)", "file": "a11y.spec.js", "project": "mobile", "ms": 4655 },
+            { "title": "/resume/ has no axe violations (dark)", "file": "a11y.spec.js", "project": "mobile", "ms": 4102 },
+            { "title": "/ has a visible focus indicator on every focusable element", "file": "a11y.spec.js", "project": "desktop", "ms": 3944 },
+            { "title": "/skills/ has no axe violations (light)", "file": "a11y.spec.js", "project": "desktop", "ms": 3517 },
+            { "title": "every legacy URL still resolves", "file": "urls.spec.js", "project": "desktop", "ms": 3268 },
+            { "title": "/writing/ has no axe violations (dark)", "file": "a11y.spec.js", "project": "desktop", "ms": 2981 }
+        ],
+        "failures": [],
+        "coverage": {
+            "routes": 41,
+            "contentPages": 27,
+            "indexablePages": 26,
+            "axeRuns": 108
+        }
+    },
+    "latestFailed": {
+        "recordedAt": "2026-09-02T11:07:31.960Z",
+        "source": "ci",
+        "commit": "9d52b6c0e8f14a7739cb2851dd60e4a3f7118b45",
+        "commitShort": "9d52b6c",
+        "branch": "main",
+        "workflow": "Deploy",
+        "deployed": true,
+        "runUrl": "https://github.com/example/example/actions/runs/2",
+        "runner": "Linux",
+        "playwright": "1.62.1",
+        "workers": 4,
+        "projects": ["desktop", "mobile"],
+        "durationMs": 178330,
+        "total": 612,
+        "passed": 604,
+        "failed": 4,
+        "skipped": 4
+    },
+    "history": [
+        {
+            "recordedAt": "2026-09-08T09:14:02.118Z",
+            "commit": "b7c1e94aa2f60d3518cf47a0e6b28d5139f4c082",
+            "commitShort": "b7c1e94",
+            "source": "ci",
+            "total": 619,
+            "passed": 615,
+            "failed": 0,
+            "skipped": 4,
+            "durationMs": 154820
+        },
+        {
+            "recordedAt": "2026-09-05T16:40:55.402Z",
+            "commit": "4f0a83d17be5c9204ad6318f7ce41b90882dd6a3",
+            "commitShort": "4f0a83d",
+            "source": "ci",
+            "total": 619,
+            "passed": 615,
+            "failed": 0,
+            "skipped": 4,
+            "durationMs": 161045
+        },
+        {
+            "recordedAt": "2026-09-02T11:07:31.960Z",
+            "commit": "9d52b6c0e8f14a7739cb2851dd60e4a3f7118b45",
+            "commitShort": "9d52b6c",
+            "source": "ci",
+            "total": 612,
+            "passed": 604,
+            "failed": 4,
+            "skipped": 4,
+            "durationMs": 178330
+        },
+        {
+            "recordedAt": "2026-08-29T14:22:09.517Z",
+            "commit": "3ab7f1e5cc90d64821be407af35d19c6008e2b77",
+            "commitShort": "3ab7f1e",
+            "source": "ci",
+            "total": 612,
+            "passed": 608,
+            "failed": 0,
+            "skipped": 4,
+            "durationMs": 149712
+        },
+        {
+            "recordedAt": "2026-08-26T08:51:44.203Z",
+            "commit": "c60e2d84ab73f915402cd8e1b6f7a0359dd41c28",
+            "commitShort": "c60e2d8",
+            "source": "ci",
+            "total": 608,
+            "passed": 604,
+            "failed": 0,
+            "skipped": 4,
+            "durationMs": 152488
+        },
+        {
+            "recordedAt": "2026-08-21T19:33:12.881Z",
+            "commit": "e14c7b9052fa6d3318740bce29d5a186ff03c614",
+            "commitShort": "e14c7b9",
+            "source": "ci",
+            "total": 604,
+            "passed": 600,
+            "failed": 0,
+            "skipped": 4,
+            "durationMs": 145920
+        },
+        {
+            "recordedAt": "2026-08-18T10:05:58.640Z",
+            "commit": "7f39ad61c4b28e0570dc9a13f6be2408811cd5e9",
+            "commitShort": "7f39ad6",
+            "source": "ci",
+            "total": 601,
+            "passed": 597,
+            "failed": 0,
+            "skipped": 4,
+            "durationMs": 141377
+        },
+        {
+            "recordedAt": "2026-08-14T13:48:20.075Z",
+            "commit": "2c8b40f7e91d5a6640b3cd18ae7f2059dd6114b3",
+            "commitShort": "2c8b40f",
+            "source": "ci",
+            "total": 601,
+            "passed": 597,
+            "failed": 0,
+            "skipped": 4,
+            "durationMs": 139604
+        }
+    ]
+}

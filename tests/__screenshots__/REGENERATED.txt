@@ -1,4 +1,4 @@
-Regenerated: Layout density refit (PR #32): document grid with section rail and context aside, two-column page headers, 3-up evidence and horizontal timeline on the homepage, intrinsic diagram sizing, wrap-max 84rem to 90rem.
-Commit:      15bdc8068c9d1b93299215b8d99f66b17d2258c5
-Ref:         refs/heads/feature/layout-density-refit
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34403482625
+Regenerated: Published test report (PR #34): Tests added to nav.secondary so every page footer changes, /styleguide/ gains the run-summary and trend components from a frozen fixture, the three-up evidence row becomes .evidence--columns, and --header-height moves its override from 48em to 64em.
+Commit:      9e2ea7d690ed8ff306a3b23712815c5b172d3d11
+Ref:         refs/heads/feature/test-report
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34505969616
