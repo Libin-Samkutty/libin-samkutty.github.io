@@ -3,7 +3,7 @@ layout: layouts/page.njk
 permalink: /about/
 title: About
 shortTitle: About
-description: Libin Samkutty is a Senior QA Automation Engineer and sole QA on a digital health AI platform spanning six countries and three generation architectures.
+description: "Libin Samkutty, Senior QA Automation Engineer: how he got here, what he is like to work with, and where he disagrees with the rest of testing."
 lede: I started as the person who wrote test cases. I am now the person who decides what "correct" means for a system that generates its answers.
 outline: true
 asidePartial: about-aside.njk
@@ -27,10 +27,18 @@ asidePartial: about-aside.njk
 <h2>How I got here</h2>
 
 <p>
-    I joined as an intern in January 2022 and converted to full time that May. The project had no
-    QA process, so the first year was building one from nothing: templates, severity standards,
-    the first UI automation suite, the first API suite, the first CI integration. It is unglamorous
-    work and it is the reason I have opinions about test infrastructure that are not borrowed.
+    Jeavio put me on Nivi in January 2022, as an intern, and never took me off it.
+    {{ timeline.roles | length }} titles since, one platform, one client, {% metric "experience_years" %}.
+    The most recent one changed nothing about the scope; the title just caught up with it. Depth
+    over breadth, and I know which of those a hiring manager is usually told to prefer.
+</p>
+
+<p>
+    The project had no QA process yet, so the first year was building one from zero: templates,
+    severity standards, the first UI automation suite, the first API suite, the first CI
+    integration. It is unglamorous work, and it is the reason I have opinions about test
+    infrastructure that are not borrowed. That year alone: {% metric "defect_escape_rate_reduction" %},
+    {% metric "associate_defects_caught" %}, and {% metric "etl_anomalies_surfaced" %}.
 </p>
 
 <p>
@@ -43,12 +51,39 @@ asidePartial: about-aside.njk
 </p>
 
 <p>
-    QA on the project consolidated to a single engineer in October 2025. I have been Scrum Master
-    since April 2025, and I was promoted to Senior QA Automation Engineer on 1 June 2026. The scope
-    did not change at the promotion; the title caught up with it.
+    Two things nobody asked me to do. I once went looking through production traffic with no bug
+    report and no complaint behind it, just curious whether a routing decision was actually as
+    efficient as it looked. {% metric "unnecessary_llm_invocations" %} were unnecessary, and nobody
+    had measured that before I did.
+    <a href="{{ '/writing/audit-your-own-traffic/' | url }}">The rest of it is here.</a> And the
+    schema-driven test-data generator I maintain exists because I got tired of rewriting the same
+    fixture code across suites, not because anyone asked for a public tool:
+    {% metric "pypi_downloads_30d" %} in the trailing 30 days against {% metric "pypi_downloads" %}
+    total says the interest outlasted the launch.
 </p>
 
 <h2>What I am like to work with</h2>
+
+<p>
+    A senior engineer on the team needed to start contributing to Jeavio's company-wide Robot
+    Framework base, and had never written a test in code before. She was senior to me. There was
+    no training path for that, so I built one and assigned her progressively harder work,
+    reviewing it rather than leaving her to work it out alone. I ran a separate four-month
+    programme for two campus recruits the same year. {% metric "engineers_upskilled" %} in total,
+    and what stuck with me is that mentoring well means designing a path for each person's
+    specific gap rather than running the same onboarding on everyone.
+</p>
+
+<p>
+    I have been Scrum Master since April 2025, on top of QA and analytics,
+    {% metric "scrum_master_sprints" %} of it by now. Earlier this year a ticket we needed sat
+    unacknowledged for three days, blocking two of my engineers, because it depended on a firewall
+    change only the platform team could make. Instead of adding another comment to the ticket, I
+    called their Product Owner directly, Scrum Master to Product Owner, and we agreed on a fix in
+    about fifteen minutes. Both engineers were unblocked by end of day. The failure wasn't the
+    ticket sitting idle; it was mine, at planning, for pulling a cross-team dependency into a
+    sprint and assuming it would resolve itself on its own schedule.
+</p>
 
 <p>
     I write down what went wrong. Every case study on this site has a section on what I would do
@@ -69,53 +104,93 @@ asidePartial: about-aside.njk
     projection says it never happened in production.
 </p>
 
-<h2>Education</h2>
+<h2>What I argue about</h2>
 
-<ul>
-    {% for item in timeline.education %}
-    <li>
-        <strong>{{ item.qualification }}</strong>, {{ item.institution }} ({{ item.affiliation }}),
-        {{ item.end | year }} · {{ item.result }}
-    </li>
-    {% endfor %}
-</ul>
+{#
+  Inline rather than a data file, deliberately.
 
-<h2>Where I have been</h2>
+  The data layer stops a fact drifting between the pages that render it. These
+  render here and nowhere else, so there is nothing to keep in sync. More to
+  the point: most of these carry a link mid-sentence into the case study that
+  already tells the story, and a JSON string cannot hold one without `| safe`,
+  which nothing else in this repo does to author prose. A `{% for %}` would
+  also render every entry to the same shape, which is the failure CONTENT.md
+  names by hand — not every argument should open the same way.
 
-<ol class="timeline">
-    {% for role in timeline.roles %}
-    <li class="timeline__item{% if role.current %} timeline__item--current{% endif %}">
-        <p class="timeline__period">
-            <time datetime="{{ role.start | isoDate }}">{{ role.start | monthYear }}</time>
-            –
-            {% if role.end %}<time datetime="{{ role.end | isoDate }}">{{ role.end | monthYear }}</time>{% else %}present{% endif %}
+  Move this to src/_data/opinions.json the day these need to render on a
+  second route, and not before.
+#}
+
+<p>
+    Positions I would defend if pushed on them, not consensus. A few of these are what testing is
+    actually arguing about right now; the rest are older than that argument, and I think they get
+    discarded too quickly under AI pressure.
+</p>
+
+<h3>Contested in 2026</h3>
+
+<p>Where I land on the arguments still open.</p>
+
+<div class="definition-list">
+    <div class="definition-list__item">
+        <h4 class="definition-list__term">A model cannot be the only judge of a model in its own family</h4>
+        <p class="definition-list__description">
+            The judge inherits the generator's own preferences and its blind spots, so it
+            reliably finds the generator's output reasonable. Obvious failures still surface;
+            the subtle ones, which are the ones worth catching, do not. I built one of these
+            before I understood that, and
+            <a href="{{ '/work/llm-judge-independence/' | url }}">what it took to notice</a> is
+            the more useful half of that story.
         </p>
-        <h3 class="timeline__title">{{ role.title }}</h3>
-        <p class="timeline__org">{{ role.employer }} · client {{ site.client.name }}</p>
-        <p>{{ role.summary }}</p>
-        {% if role.highlights %}
-        <ul>
-            {% for highlight in role.highlights %}<li>{{ highlight }}</li>{% endfor %}
-        </ul>
-        {% endif %}
-        {% if role.id == "associate-qa-engineer" %}
-        <p>
-            Concretely, over that year: {% metric "defect_escape_rate_reduction" %} after the new
-            process took hold, {% metric "associate_defects_caught" %}, and
-            {% metric "etl_anomalies_surfaced" %}.
+    </div>
+
+    <div class="definition-list__item">
+        <h4 class="definition-list__term">Do not mistake a green golden-dataset run for working in production</h4>
+        <p class="definition-list__description">
+            A curated dataset can only test the phrasings someone thought to write, and real
+            users are broader than any curator anticipates. A danger-sign gap sat invisible
+            through four independent layers of testing, mine included, for exactly this reason.
+            <a href="{{ '/work/production-evaluation-pipeline/' | url }}">Production monitoring
+            is what actually caught it.</a>
         </p>
-        {% endif %}
-    </li>
-    {% endfor %}
-</ol>
+    </div>
+</div>
+
+<h3>Older than this argument</h3>
+
+<p>What I think holds regardless of which model generated the answer.</p>
+
+<div class="definition-list">
+    <div class="definition-list__item">
+        <h4 class="definition-list__term">Precision and recall are not worth the same</h4>
+        <p class="definition-list__description">
+            A cache miss falls through safely to live generation. A false hit gets served to
+            someone as an answer. I set the two failure modes to different bars, precision high
+            and recall loose, because folding them into one accuracy number pretends they cost
+            the same.
+            <a href="{{ '/writing/asymmetric-thresholds/' | url }}">They don't.</a>
+        </p>
+    </div>
+
+    <div class="definition-list__item">
+        <h4 class="definition-list__term">Exhaust the tuning before you call a limit structural</h4>
+        <p class="definition-list__description">
+            I used to treat a framework's limits as a design flaw to work around. Then I hit a
+            parallelisation ceiling a fifth worker couldn't move, alongside three other walls
+            that had nothing to do with tuning, and only then did retiring the suite I had built
+            become the right call rather than the lazy one.
+            <a href="{{ '/work/from-robot-to-playwright/' | url }}">The four walls are the
+            actual argument.</a>
+        </p>
+    </div>
+</div>
 
 <h2>What I am looking for</h2>
 
 <p>
     {{ site.targetRoles | join(", ") }}. The common thread is systems where a wrong answer has a
     cost: health, finance, safety, anything regulated. I have spent {% metric "experience_years" %} learning
-    how to be specific about that cost, and I would rather keep doing that than move to a domain
-    where nobody checks.
+    how to be specific about that cost.
 </p>
 
 <p><a href="{{ '/contact/' | url }}">Get in touch</a>, or read <a href="{{ '/work/' | url }}">the work</a>.</p>

@@ -1,4 +1,4 @@
-Regenerated: Homepage repositioning (PR #35): hero, what-I-own, evidence strip removal, timeline rebuild, section spacing, related-links footer fix
-Commit:      f8211c93e28b1ea1fbbf9dcde0b966d684e08d05
-Ref:         refs/heads/feature/systems-first-homepage
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/35524273937
+Regenerated: Footer loses Colophon/Feed, /about/ aside drops Open to, /resume/ Open Source trimmed to four
+Commit:      fada99998b1985c47116285f9d8dc8bb10013772
+Ref:         refs/heads/feature/about-humanize-and-colophon-removal
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/35529464863

@@ -643,6 +643,11 @@ export default function (eleventyConfig) {
 
     eleventyConfig.addFilter("byLevel", (skills, level) => skills.filter((skill) => skill.level === level));
 
+    // The résumé shows a curated subset of skills.openSource so the "one screen
+    // in fifteen seconds" scan does not turn into twelve repositories. /skills/
+    // and /work/ render the full list; only the résumé filters it.
+    eleventyConfig.addFilter("resumeFeatured", (projects) => projects.filter((project) => project.resumeFeatured));
+
     // Flattens skills.groups into one ordered list of Core skill names, for
     // the résumé's scannable header — the "Core capabilities" section below
     // it needs the group structure to attribute each skill, the scan block

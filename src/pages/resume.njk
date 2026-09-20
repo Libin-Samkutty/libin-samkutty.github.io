@@ -90,17 +90,18 @@ bodyClass: resume
 
         <section class="resume__section" aria-labelledby="oss-resume-title">
             <h2 id="oss-resume-title">Open source</h2>
-            {% for project in skills.openSource %}
+            {% for project in skills.openSource | resumeFeatured %}
             <p><a href="{{ project.url }}" rel="noopener">{{ project.name }}</a> · {{ project.description }}</p>
             {% endfor %}
+            <p><a href="{{ '/work/#open-source' | url }}">The rest of the open-source projects</a></p>
         </section>
 
         <section class="resume__section" aria-labelledby="education-title">
             <h2 id="education-title">Education</h2>
             {% for item in timeline.education %}
             <p>
-                <strong>{{ item.qualification }}</strong> · {{ item.institution }} ·
-                {{ item.end | year }} · {{ item.result }}
+                <strong>{{ item.qualification }}</strong> · {{ item.institution }}
+                ({{ item.affiliation }}) · {{ item.end | year }} · {{ item.result }}
             </p>
             {% endfor %}
         </section>
