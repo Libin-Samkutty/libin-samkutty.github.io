@@ -781,34 +781,6 @@
     }
 }
 
-/* ================================================================ colophon */
-
-/*
-  Three short, independent sections rather than continuous prose, so a
-  two-column split fits better here than the single measure-capped column
-  every other page uses. Budgets runs roughly twice the length of Stack or
-  the imagery note, so the columns are sized 3:2 rather than split evenly —
-  an even split would leave Stack and the imagery note stranded above empty
-  space while Budgets was still running.
-
-  Below 60em, `.colophon` has no `display` override and falls back to plain
-  block flow: Budgets, then the aside's two sections, each spaced by the
-  existing h2 rule below — the same single-column reading order every other
-  page uses.
-*/
-:is(.colophon__budgets, .colophon__stack, .colophon__imagery) > * + * {
-    margin-block-start: var(--space-m);
-}
-
-@media (min-width: 60em) {
-    .colophon {
-        display: grid;
-        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-        gap: var(--space-xl);
-        align-items: start;
-    }
-}
-
 /* ================================================================ contact */
 
 .contact-list {

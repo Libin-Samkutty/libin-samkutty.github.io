@@ -99,8 +99,8 @@ bodyClass: resume
             <h2 id="education-title">Education</h2>
             {% for item in timeline.education %}
             <p>
-                <strong>{{ item.qualification }}</strong> · {{ item.institution }} ·
-                {{ item.end | year }} · {{ item.result }}
+                <strong>{{ item.qualification }}</strong> · {{ item.institution }}
+                ({{ item.affiliation }}) · {{ item.end | year }} · {{ item.result }}
             </p>
             {% endfor %}
         </section>
