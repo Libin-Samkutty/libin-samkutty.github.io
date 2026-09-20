@@ -3,7 +3,8 @@
     "purpose": "The only stack list on the site. The résumé, the /skills/ page and the About page all render from here, which is why the old site's three disagreeing lists cannot recur.",
     "source": "vault://skills.md, vault://career.md",
     "noPercentages": "Deliberately no percentages and no bars. A '90% Playwright' bar encodes nothing a reader can check. Three levels with a definition each, and every Core claim linking to the work that proves it, encodes something.",
-    "jsonLd": "`knowsAbout` in the Person JSON-LD is emitted from entries with level 'core' only."
+    "jsonLd": "`knowsAbout` in the Person JSON-LD is emitted from entries with level 'core' only.",
+    "resumeFeatured": "The résumé is a fifteen-second scan, so it renders only the openSource entries marked `resumeFeatured: true`, filtered through the `resumeFeatured` Nunjucks filter. /skills/ and /work/ render the full list; this flag changes nothing there."
   },
 
   "levels": {
@@ -119,27 +120,31 @@
       "license": "MIT",
       "language": "Python",
       "description": "Schema-driven test data generation for API suites. Published to PyPI in February 2026.",
-      "metric": "pypi_downloads"
+      "metric": "pypi_downloads",
+      "resumeFeatured": true
     },
     {
       "name": "ai-eval-tooling-stack",
       "url": "https://github.com/Libin-Samkutty/ai-eval-tooling-stack",
       "license": "MIT",
       "language": "Python",
-      "description": "A local RAG chatbot wrapped in a full open-source AI evaluation, safety and observability stack, built on real industry-standard libraries rather than reimplemented metrics."
+      "description": "A local RAG chatbot wrapped in a full open-source AI evaluation, safety and observability stack, built on real industry-standard libraries rather than reimplemented metrics.",
+      "resumeFeatured": true
     },
     {
       "name": "rag-chatbot-eval",
       "url": "https://github.com/Libin-Samkutty/rag-chatbot-eval",
       "language": "Python",
-      "description": "A localhost chatbot that makes AI evaluation visible: every response shows what was retrieved, what the model answered, and how it scored across eight evaluation dimensions."
+      "description": "A localhost chatbot that makes AI evaluation visible: every response shows what was retrieved, what the model answered, and how it scored across eight evaluation dimensions.",
+      "resumeFeatured": true
     },
     {
       "name": "performance-test-suite",
       "url": "https://github.com/Libin-Samkutty/performance-test-suite",
       "license": "MIT",
       "language": "Python",
-      "description": "An automated JMeter performance suite against public APIs, with CI threshold gating plus an InfluxDB/Grafana trend layer for regressions no single run breaches."
+      "description": "An automated JMeter performance suite against public APIs, with CI threshold gating plus an InfluxDB/Grafana trend layer for regressions no single run breaches.",
+      "resumeFeatured": true
     },
     {
       "name": "botium-chatbot-test-framework",
