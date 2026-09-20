@@ -1,4 +1,4 @@
-Regenerated: Published test report (PR #34): Tests added to nav.secondary so every page footer changes, /styleguide/ gains the run-summary and trend components from a frozen fixture, the three-up evidence row becomes .evidence--columns, and --header-height moves its override from 48em to 64em.
-Commit:      9e2ea7d690ed8ff306a3b23712815c5b172d3d11
-Ref:         refs/heads/feature/test-report
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/34505969616
+Regenerated: Homepage repositioning (PR #35): hero, what-I-own, evidence strip removal, timeline rebuild, section spacing, related-links footer fix
+Commit:      f8211c93e28b1ea1fbbf9dcde0b966d684e08d05
+Ref:         refs/heads/feature/systems-first-homepage
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/35524273937
