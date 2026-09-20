@@ -3,12 +3,12 @@
   "title": "Senior QA Automation Engineer",
   "titleEffective": "2026-06-01",
   "titleSuffix": " | Libin Samkutty",
-  "tagline": "I build the evaluation systems that decide whether an AI answer is safe to ship.",
-  "plainClaim": "I catch unsafe AI answers to health questions before a real person ever sees them.",
+  "tagline": "I own the test infrastructure, the release gates and the evaluation systems for a digital health platform.",
+  "plainClaim": "I own every gate between a change and a real person.",
   "targetRoles": [
-    "Senior AI QA Engineer",
-    "Lead AI Quality Engineer",
-    "Senior SDET (AI)"
+    "Senior SDET",
+    "Lead QA Engineer",
+    "Quality Engineering Lead"
   ],
   "url": "https://libin-samkutty.github.io",
   "locale": "en",

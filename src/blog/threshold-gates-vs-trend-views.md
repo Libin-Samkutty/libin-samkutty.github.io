@@ -8,6 +8,13 @@ dateModified: 2026-08-12
 metrics: [nudge_api_latency_creep]
 tags: [performance, ci, observability, monitoring]
 technical: true
+related:
+  - url: /work/from-robot-to-playwright/
+    why: "the CI suite this ran beside"
+  - url: /work/production-evaluation-pipeline/
+    why: "monitoring what production actually does"
+  - url: /writing/aggregate-metrics-hide-the-failure/
+    why: "why an aggregate can be true and useless at once"
 ---
 
 A threshold gate answers exactly one question: is tonight's run acceptable? It answers it well, cheaply, and without a human. It is also structurally incapable of answering the other question, which is whether you are heading somewhere unacceptable.
@@ -79,4 +86,3 @@ A threshold answers whether tonight is acceptable. Only a trend answers whether 
 
 ---
 
-Related: [the CI suite this ran beside](/work/from-robot-to-playwright/), [monitoring what production actually does](/work/production-evaluation-pipeline/), and [why an aggregate can be true and useless at once](/writing/aggregate-metrics-hide-the-failure/).

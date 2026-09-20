@@ -166,15 +166,25 @@ export default function (eleventyConfig) {
 
     // One phrasing of the RAG clarification, everywhere. Paraphrasing it is how it
     // becomes wrong.
-    eleventyConfig.addShortcode("architectureNote", (variant) => {
+    eleventyConfig.addShortcode("architectureNote", function (variant) {
         // Nunjucks passes "" rather than undefined for a missing argument, so a
         // default parameter value alone would not fire.
         const note = programs.architectureNote[variant || "short"];
         if (!note) throw new Error(`{% architectureNote "${variant}" %} — expected "short" or "long".`);
+
+        // The canonical post renders this note too, and used to offer the
+        // reader "Why the distinction matters" as a link to the page they were
+        // already on. Not an arrow function, because `this.page` is how the
+        // shortcode learns where it is being rendered.
+        const canonical = programs.architectureNote.canonicalPost;
+        const link =
+            this.page && this.page.url === canonical
+                ? ""
+                : ` <a href="${escapeHtml(canonical)}">Why the distinction matters</a>.`;
+
         return (
             `<p class="architecture-note"><span class="architecture-note__label">Architecture</span> ` +
-            `${escapeHtml(note)} ` +
-            `<a href="${escapeHtml(programs.architectureNote.canonicalPost)}">Why the distinction matters</a>.</p>`
+            `${escapeHtml(note)}${link}</p>`
         );
     });
 
@@ -641,7 +651,38 @@ export default function (eleventyConfig) {
         groups.flatMap((group) => group.skills.filter((skill) => skill.level === "core").map((skill) => skill.name))
     );
 
-    eleventyConfig.addFilter("otherThan", (items, url) => items.filter((item) => item.url !== url));
+    /**
+     * Resolves a page's `related` front matter against the built pages, so the
+     * end-of-page list is the same curated set the body used to carry rather
+     * than a global slice of the newest N.
+     *
+     * It throws on an unknown URL for the same reason `{% metric %}` throws on
+     * an unknown key: the version this replaced could not be wrong out loud. It
+     * took the collection, dropped the current page, and sliced the first two,
+     * which is a position-independent window — so every case study from the
+     * third onward advertised the same two links, and every post from the
+     * fourth onward the same three. The failure was invisible on the two pages
+     * anyone checks first, which is why it survived.
+     *
+     * The title comes from the target page, not from the link, so renaming a
+     * case study cannot leave a stale name pointing at it.
+     */
+    eleventyConfig.addFilter("resolveRelated", (related, all) => {
+        if (!related || !related.length) return [];
+
+        return related.map((entry) => {
+            const target = all.find((item) => item.url === entry.url);
+            if (!target) {
+                throw new Error(
+                    `related: no page at "${entry.url}". Front matter must point at a built URL, trailing slash included.`
+                );
+            }
+            if (!entry.why) {
+                throw new Error(`related: "${entry.url}" has no "why". A link with no reason to click it is a footer.`);
+            }
+            return { url: entry.url, title: target.data.title, why: entry.why };
+        });
+    });
 
     /**
      * Breadcrumbs derived from the URL rather than declared per page, so a page

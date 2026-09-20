@@ -8,6 +8,13 @@ dateModified: 2026-08-12
 metrics: [cache_eval_set, cache_thresholds, cache_precision_recall, cache_regression_catch, crisis_prompt_fp_testset]
 tags: [evaluation, thresholds, classifiers, caching]
 technical: true
+related:
+  - url: /work/ai-evaluation-framework/
+    why: "the evaluation framework these gates run inside"
+  - url: /writing/dont-call-it-rag/
+    why: "why the architecture decides the metric"
+  - url: /writing/your-validation-script-shares-the-bug/
+    why: "why a checker that shares a dependency cannot see past it"
 ---
 
 A pass threshold is a claim about cost. Set one number for a whole classifier and you have claimed that both of its failure modes cost the same amount. They almost never do.
@@ -21,8 +28,6 @@ The question that settles the exchange rate is not "how bad does this look". It 
 If one error falls through to a slower, safer path, it costs latency and money. If the other is served to a person as an answer, it costs correctness, and nothing downstream will catch it. Those are two currencies. One threshold cannot price both.
 
 ## Worked example: a semantic response cache
-
-{% architectureNote "short" %}
 
 A vector semantic cache sits in front of generation. A query comes in, gets embedded, and if something close enough is already stored, the stored answer is returned. Cheap and fast. It has exactly two failure modes:
 
@@ -85,4 +90,3 @@ Before you set a number, name the fallback. The error with a safe fallback gets 
 
 ---
 
-Related: [the evaluation framework these gates run inside](/work/ai-evaluation-framework/), [why the architecture decides the metric](/writing/dont-call-it-rag/), and [why a checker that shares a dependency cannot see past it](/writing/your-validation-script-shares-the-bug/).

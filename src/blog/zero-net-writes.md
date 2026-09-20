@@ -8,6 +8,13 @@ dateModified: 2026-08-12
 metrics: [bsp_mock_flakiness, bsp_error_paths, scheduler_clock_collapse, scheduler_dedup_catch]
 tags: [test-infrastructure, mocking, flakiness, ci]
 technical: true
+related:
+  - url: /work/contract-testing-pact/
+    why: "contract testing that caught what a schema check could not"
+  - url: /writing/your-validation-script-shares-the-bug/
+    why: "why a checker sharing a dependency cannot see past it"
+  - url: /work/from-robot-to-playwright/
+    why: "the CI suite this runs inside"
 ---
 
 A suite that writes to shared state works until two things run at once. Then it looks flaky, and it gets debugged as flakiness: reruns, sleeps, retry decorators, a quarantine tag. The actual problem is that the suite has side effects, and side effects do not parallelise.
@@ -80,4 +87,3 @@ Aim for zero net writes: after a run, shared state is what it was before. Get th
 
 ---
 
-Related: [contract testing that caught what a schema check could not](/work/contract-testing-pact/), [why a checker sharing a dependency cannot see past it](/writing/your-validation-script-shares-the-bug/), and [the CI suite this runs inside](/work/from-robot-to-playwright/).

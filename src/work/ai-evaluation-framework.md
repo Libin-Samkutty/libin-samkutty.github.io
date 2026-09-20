@@ -23,6 +23,15 @@ tags: ["AI evaluation", "Golden datasets", "RAGAS", "DeepEval", "CI gating"]
 datePublished: 2026-08-12
 dateModified: 2026-08-12
 lastReviewed: 2026-08-12
+related:
+  - url: /work/llm-judge-independence/
+    why: "the judge design this depends on"
+  - url: /work/production-evaluation-pipeline/
+    why: "what this framework structurally cannot see"
+  - url: /writing/dont-call-it-rag/
+    why: "the architecture distinction in general form"
+  - url: /writing/asymmetric-thresholds/
+    why: "why the cache gates precision and recall differently"
 ---
 
 ## TL;DR
@@ -110,9 +119,3 @@ The adversarial and safety cases run through neither. They use a dedicated binar
 
 The RAG pipeline this framework evaluates is the engineering team's work. I evaluate it; I did not build the retrieval architecture. The golden datasets are a joint artefact: the schema, stratification and tooling are mine, and every clinical fact, ideal context chunk and escalation rule inside them was authored and signed off by the health content team.
 
-## Related links
-
-- [Rebuilding an LLM judge that was grading its own homework](/work/llm-judge-independence/): the judge design this depends on
-- [Judging live production traffic](/work/production-evaluation-pipeline/): what this framework structurally cannot see
-- [Don't call it RAG](/writing/dont-call-it-rag/): the architecture distinction in general form
-- [Asymmetric thresholds](/writing/asymmetric-thresholds/): why the cache gates precision and recall differently

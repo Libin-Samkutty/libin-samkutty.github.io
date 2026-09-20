@@ -17,6 +17,15 @@ tags: ["Contract testing", "Pact", "API testing", "CI gating", "Microservices"]
 datePublished: 2026-08-12
 dateModified: 2026-08-12
 lastReviewed: 2026-08-12
+related:
+  - url: /work/from-robot-to-playwright/
+    why: "the fixture layer built here later absorbed the last Robot suite"
+  - url: /writing/decompose-by-tool-call/
+    why: "testing a classifier by what downstream reads"
+  - url: /writing/your-validation-script-shares-the-bug/
+    why: "why the provider's own view of correctness is not enough"
+  - url: /writing/zero-net-writes/
+    why: "the test-data isolation underneath the API layer"
 ---
 
 ## TL;DR
@@ -100,9 +109,3 @@ That is the whole argument for running both layers, and why I do not call the sc
 - **Still open: the contract covers one consumer pair.** Other services read the classifier's output through paths not under contract, and I know that by asking rather than from a dependency map. The fix is not more Pact: it is establishing what actually consumes those event rows, a data-lineage question I have started and not finished.
 - **I chose a self-hosted broker over a managed one, and would again.** It keeps contract history inside the client's infrastructure alongside the code it describes: the right trade for a health platform, and a real cost rather than a free one.
 
-## Related links
-
-- [From Robot Framework to Playwright](/work/from-robot-to-playwright/): the fixture layer built here later absorbed the last Robot suite
-- [Decompose by tool call](/writing/decompose-by-tool-call/): testing a classifier by what downstream reads
-- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/): why the provider's own view of correctness is not enough
-- [Zero net writes](/writing/zero-net-writes/): the test-data isolation underneath the API layer

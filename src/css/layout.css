@@ -214,11 +214,17 @@
   It reads as a different kind of passage rather than a different kind of
   component.
 */
+/*
+  No margin. The tint and the hairline already announce the passage, so a
+  margin on top of the band's own padding marks the same break twice. With it,
+  the gap above the band was the previous section's --space-xl padding plus
+  --space-2xl of margin plus --space-2xl of padding, none of which collapse:
+  176-256px of nothing between the last card and the heading below it.
+*/
 .section--emphasis {
     background-color: var(--color-surface-sunken);
     border-block: var(--hairline);
     padding-block: var(--space-2xl);
-    margin-block: var(--space-2xl);
 }
 
 .section--emphasis + .section,
@@ -226,10 +232,10 @@
     padding-block-start: 0;
 }
 
+/* Same stack as .section--emphasis above, and dropped for the same reason. */
 .section--cta {
     border-block-start: var(--hairline);
     padding-block: var(--space-2xl);
-    margin-block-start: var(--space-2xl);
 }
 
 .section--cta .section__title {

@@ -85,21 +85,23 @@
     }
   ],
 
+  "_markersRule": "The homepage strip. It shows the progression, so the labels are the titles actually held plus the one scope change that happened without one. Five is the hard cap: at 64em the strip is repeat(auto-fit, minmax(11rem, 1fr)) with a --space-l gap, so six tracks need about 1256px against a 1200px band and the sixth wraps to a second row, where there is no spine to sit on. Scrum Master is deliberately not here; leadership is covered on /about/ and /resume/.",
+
   "markers": [
     {
-      "date": "2023-09-01",
-      "label": "AI testing specialisation begins",
-      "detail": "NLP intent classification and conversational flow coverage."
+      "date": "2022-01-01",
+      "label": "Project Intern",
+      "detail": "Manual functional and API testing on the early NLP chatbot."
     },
     {
-      "date": "2025-01-01",
-      "label": "First LLM-as-a-judge",
-      "detail": "Built for the generative snippets feature, then rebuilt after diagnosing the circularity problem."
+      "date": "2022-05-02",
+      "label": "Associate QA Engineer",
+      "detail": "Built the QA function from zero: process, UI automation, API suite, CI."
     },
     {
-      "date": "2025-04-01",
-      "label": "Scrum Master",
-      "detail": "Concurrent with QA and analytics ownership."
+      "date": "2023-06-01",
+      "label": "QA Engineer",
+      "detail": "Led quality strategy and test automation for the platform."
     },
     {
       "date": "2025-10-01",
@@ -108,7 +110,7 @@
     },
     {
       "date": "2026-06-01",
-      "label": "Promoted to Senior QA Automation Engineer",
+      "label": "Senior QA Automation Engineer",
       "detail": "The scope did not change at the promotion; the title caught up with it."
     }
   ]

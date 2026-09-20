@@ -8,6 +8,13 @@ dateModified: 2026-08-12
 metrics: [stt_latency, stt_duration_banded_collapse]
 tags: [benchmarking, metrics, evaluation, speech]
 technical: true
+related:
+  - url: /writing/audit-your-own-traffic/
+    why: "reading production traffic to learn how users actually vary"
+  - url: /writing/threshold-gates-vs-trend-views/
+    why: "why a threshold and a trend answer different questions"
+  - url: /work/production-evaluation-pipeline/
+    why: "evaluating what runs in production rather than what passes offline"
 ---
 
 Every aggregate is a claim that the thing you averaged over does not matter. Almost nobody checks that claim. It is usually the most load-bearing assumption in the whole measurement.
@@ -77,4 +84,3 @@ Choose the banding dimension from how your users vary, not from what is convenie
 
 ---
 
-Related: [reading production traffic to learn how users actually vary](/writing/audit-your-own-traffic/), [why a threshold and a trend answer different questions](/writing/threshold-gates-vs-trend-views/), and [evaluating what runs in production rather than what passes offline](/work/production-evaluation-pipeline/).
