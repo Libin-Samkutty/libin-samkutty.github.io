@@ -8,6 +8,15 @@ dateModified: 2026-08-12
 metrics: [platform_scale, golden_dataset_india_mh, golden_dataset_hpv, ragas_embedding_swap_catch]
 tags: [rag, architecture, evaluation, ai-testing]
 technical: true
+related:
+  - url: /work/ai-evaluation-framework/
+    why: "the evaluation framework that had to span all three architectures"
+  - url: /work/llm-judge-independence/
+    why: "why the judge has to be independent of the generator"
+  - url: /work/production-evaluation-pipeline/
+    why: "what offline evaluation still misses"
+  - url: /writing/asymmetric-thresholds/
+    why: "why the cache is gated at two different thresholds"
 ---
 
 "So you test a RAG chatbot." It is the sentence I hear most often about my work, and it is wrong about most of the systems I test. The mistake is not pedantry. The evaluation you owe a system is decided by its architecture, and "chatbot" does not name one.
@@ -77,4 +86,3 @@ The fourth is the diagnostic one. If nobody on the team can answer it, no evalua
 
 ---
 
-Related: [the evaluation framework that had to span all three architectures](/work/ai-evaluation-framework/), [why the judge has to be independent of the generator](/work/llm-judge-independence/), [what offline evaluation still misses](/work/production-evaluation-pipeline/), and [why the cache is gated at two different thresholds](/writing/asymmetric-thresholds/).

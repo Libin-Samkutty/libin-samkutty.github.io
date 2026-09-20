@@ -78,13 +78,23 @@
     }
   ],
 
+  "_featuredRule": "Three disciplines, not three instances of one. AI evaluation, test architecture, and integration testing. The two omitted case studies are both reached from the 'Things that didn't work' band on the same page, so five of six are one click from the homepage.",
+
   "featuredCaseStudies": [
-    "llm-judge-independence",
-    "production-evaluation-pipeline",
-    "ai-evaluation-framework"
+    "ai-evaluation-framework",
+    "contract-testing-pact",
+    "from-robot-to-playwright"
   ],
 
   "whatIOwn": [
+    {
+      "title": "Release governance",
+      "body": "I decide what ships. Quality strategy across concurrent product lines, the entry and exit criteria for a release, and the standing authority to hold one."
+    },
+    {
+      "title": "Test infrastructure",
+      "body": "Playwright, API and contract suites, the CI they run in, and the discipline to retire the ones that have stopped earning their runtime."
+    },
     {
       "title": "Evaluation systems",
       "body": "Golden datasets, judge design and calibration, nightly gates. The question is always the same: on what evidence do we believe this answer is safe to send?"
@@ -94,8 +104,12 @@
       "body": "Sampling live traffic, judging it, routing the disagreements to people who know medicine better than I do, and feeding what they find back into the datasets."
     },
     {
-      "title": "The test infrastructure underneath",
-      "body": "Playwright, API and contract suites, the CI they run in, and the discipline to retire the ones that have stopped earning their runtime."
+      "title": "The data platform",
+      "body": "The analytics function came with the role, and it turned out to be where a large share of real defects live. I validate the pipeline that feeds the dashboards rather than the charts, because a dashboard that quietly drops a segment of users is worse than one that is obviously broken."
+    },
+    {
+      "title": "Performance and security",
+      "body": "Load baselines and the trend views that gate them, because a threshold answers whether tonight is acceptable and only a slope answers whether you are heading somewhere unacceptable. Also the platform's first structured security testing pass, run against an authenticated surface."
     }
   ]
 }

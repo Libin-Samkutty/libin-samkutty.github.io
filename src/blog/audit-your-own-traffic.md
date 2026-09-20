@@ -8,6 +8,13 @@ dateModified: 2026-08-12
 metrics: [unnecessary_llm_invocations, voice_vs_text_length, voice_vs_text_noise, voice_vs_text_medical_match, voice_session_engagement]
 tags: [production-data, traffic-analysis, testing-strategy, evaluation]
 technical: true
+related:
+  - url: /work/production-evaluation-pipeline/
+    why: "monitoring production rather than trusting offline results"
+  - url: /writing/aggregate-metrics-hide-the-failure/
+    why: "why an aggregate can be true and useless at once"
+  - url: /work/ai-evaluation-framework/
+    why: "the curated datasets an audit complements"
 ---
 
 Every test set is a theory about what users send. Most test sets are written before anyone has checked. A day spent reading production traffic is the cheapest quality work available to most teams, and almost nobody does it.
@@ -59,7 +66,7 @@ Production traffic is a lagging indicator. It cannot tell you about users you do
 
 So an audit does not replace a curated golden dataset. A curated set is the only instrument for testing what *should* happen, including cases too rare or too dangerous to wait for. You do not get to sit and hope a maternal emergency shows up in a two-week window so you can check the system handles it.
 
-The two answer different questions. The curated set answers "does this pass the cases we designed for". The audit answers "what are real people sending that we never designed for". Building only the first gives a false sense of completeness, and I have the scar to prove it: a class of danger-sign phrasing once survived four independent layers of testing (golden-dataset regression, conversational flow tests, a grounding metric, and manual spot checks) because every one of those layers had been built by people who assumed users ask for help directly, rather than describing a symptom and hoping the system understands the urgency. Four layers, one shared assumption, and only production traffic could see it. That gap is fixed and closed, and the general lesson is not.
+The two answer different questions. The curated set answers "does this pass the cases we designed for". The audit answers "what are real people sending that we never designed for". Building only the first gives a false sense of completeness, and I have the scar to prove it: a class of danger-sign phrasing once survived four independent layers of testing, because every one of them had been built by people who assumed users ask for help directly rather than describing a symptom and hoping the system understands the urgency. Four layers, one shared assumption, and only production traffic could see it. [The pipeline that caught it](/work/production-evaluation-pipeline/) names the four and what each of them was looking at instead. That gap is fixed and closed, and the general lesson is not.
 
 ## The rule
 
@@ -67,4 +74,3 @@ Read a window of real traffic before you decide what to test. Count the input ca
 
 ---
 
-Related: [monitoring production rather than trusting offline results](/work/production-evaluation-pipeline/), [why an aggregate can be true and useless at once](/writing/aggregate-metrics-hide-the-failure/), and [the curated datasets an audit complements](/work/ai-evaluation-framework/).

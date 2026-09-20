@@ -91,13 +91,16 @@ ogType: article
             where a figure is approximate or projected, it says so.
         </p>
 
-        {% set related = collections.caseStudies | otherThan(page.url) | limit(2) %}
-        {% if related.length %}
-        <nav class="related" aria-label="Related case studies">
-            <h2 class="related__title">Related work</h2>
+        {% set relatedPages = related | resolveRelated(collections.all) %}
+        {% if relatedPages.length %}
+        <nav class="related" aria-label="Related reading">
+            <h2 class="related__title">Related</h2>
             <ul class="related__list">
-                {% for item in related %}
-                <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
+                {% for item in relatedPages %}
+                <li>
+                    <a href="{{ item.url | url }}">{{ item.title }}</a>
+                    <span class="related__why">{{ item.why }}</span>
+                </li>
                 {% endfor %}
             </ul>
         </nav>

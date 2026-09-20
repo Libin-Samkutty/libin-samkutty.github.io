@@ -942,7 +942,29 @@
     list-style: none;
     padding: 0;
     display: grid;
-    gap: var(--space-2xs);
+    gap: var(--space-xs);
+}
+
+/*
+  The reason to click, carried over from the curated list that used to sit in
+  the body. It wraps under the title on a narrow screen and sits beside it once
+  there is room, so a four-item list stays four lines on desktop.
+*/
+.related__why {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+    max-inline-size: var(--measure);
+}
+
+@media (min-width: 48em) {
+    .related__why::before {
+        content: "· ";
+    }
+
+    .related__why {
+        display: inline;
+    }
 }
 
 /*

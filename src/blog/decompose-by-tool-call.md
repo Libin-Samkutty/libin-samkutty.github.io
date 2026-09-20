@@ -8,6 +8,13 @@ dateModified: 2026-08-12
 metrics: [prd_decomposition, qa_dev_estimate_ratio]
 tags: [requirements, planning, ai-testing, acceptance-criteria]
 technical: true
+related:
+  - url: /work/ai-evaluation-framework/
+    why: "the evaluation framework these features get tested against"
+  - url: /writing/dont-call-it-rag/
+    why: "why naming the architecture comes before choosing a metric"
+  - url: /writing/audit-your-own-traffic/
+    why: "reading traffic before deciding what to test"
 ---
 
 An AI feature request arrives as a paragraph about what the assistant will feel like to use. That paragraph contains no testable units. The units are the tool calls and state transitions underneath it, and they are usually not mentioned anywhere in the document.
@@ -75,4 +82,3 @@ Decompose an AI feature by its tool calls and state transitions. For each call, 
 
 ---
 
-Related: [the evaluation framework these features get tested against](/work/ai-evaluation-framework/), [why naming the architecture comes before choosing a metric](/writing/dont-call-it-rag/), and [reading traffic before deciding what to test](/writing/audit-your-own-traffic/).

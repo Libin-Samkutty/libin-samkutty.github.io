@@ -17,6 +17,15 @@ tags: ["Production monitoring", "Kafka", "LLM-as-a-judge", "Sampling", "Human-in
 datePublished: 2026-08-12
 dateModified: 2026-08-12
 lastReviewed: 2026-08-12
+related:
+  - url: /work/ai-evaluation-framework/
+    why: "the offline layer this complements"
+  - url: /work/llm-judge-independence/
+    why: "the judge design inside this pipeline"
+  - url: /writing/audit-your-own-traffic/
+    why: "reading what users actually send"
+  - url: /writing/aggregate-metrics-hide-the-failure/
+    why: "why an average would not have found this"
 ---
 
 ## TL;DR
@@ -32,8 +41,6 @@ By late 2025 the offline framework was doing its job: nightly runs, gated thresh
 Then the content team escalated something the framework had no opinion about. Users describing pregnancy complications were receiving responses that were warm, clinically accurate, and contained no instruction to seek care. The golden dataset had zero coverage for that category: not a gap in its size, a gap in its imagination.
 
 That is the structural limit of offline evaluation. A golden dataset measures performance on cases a curator wrote. It cannot describe performance on the actual distribution of how real users phrase things, because that distribution is broader than any curator anticipates. Passing your own test cases and working for real users are different claims.
-
-{% architectureNote %}
 
 ## Constraints
 
@@ -109,9 +116,3 @@ The RAG retrieval latency improvement was the engineering team's work, not mine.
 
 The same is true of {% metric "pipeline_latency_progression" %} and the component breakdown above: I built and ran the benchmarking suite that measured them and told the team where to spend optimisation effort, but the classification, caching and retrieval changes that produced the numbers were the pipeline engineering team's to design and ship.
 
-## Related links
-
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): the offline layer this complements
-- [Rebuilding an LLM judge that was grading its own homework](/work/llm-judge-independence/): the judge design inside this pipeline
-- [Audit your own traffic](/writing/audit-your-own-traffic/): reading what users actually send
-- [Aggregate metrics hide the failure](/writing/aggregate-metrics-hide-the-failure/): why an average would not have found this

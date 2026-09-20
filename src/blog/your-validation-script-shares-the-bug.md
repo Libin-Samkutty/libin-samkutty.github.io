@@ -5,9 +5,18 @@ shortTitle: Your checker shares the bug
 description: When a checker imports the same module, model or config resolution as the code it checks, an entire class of defect becomes invisible to it by construction.
 date: 2026-02-11
 dateModified: 2026-08-12
-metrics: [judge_agreement_geval]
+metrics: []
 tags: [testing, evaluation, independence, mocking]
 technical: true
+related:
+  - url: /work/llm-judge-independence/
+    why: "the judge redesign in full"
+  - url: /work/snapshot-testing-nondeterministic-ai/
+    why: "snapshot testing non-deterministic output"
+  - url: /work/contract-testing-pact/
+    why: "contract testing where a schema check passed and a consumer check failed"
+  - url: /writing/zero-net-writes/
+    why: "mocks that reproduce a contract rather than a response"
 ---
 
 A check is worth only the independence between it and the thing it checks. Share a module, a model, a tokeniser or a config resolver, and a whole class of defect becomes invisible to it: not unlikely, invisible. The check will keep passing, confidently, for exactly as long as the defect exists.
@@ -18,9 +27,9 @@ The first LLM-as-a-judge I built used the same model family as the generator it 
 
 It isn't an independent check. It's closer to a mirror.
 
-The judge shared the generator's language preferences and the generator's failure modes, so it consistently found the generator's output reasonable. Obvious failures still surfaced. A truncated answer is a truncated answer to anybody. The subtle quality drops, the ones that actually matter, stayed invisible, because the judge would have made the same mistake for the same reason.
+The judge shared the generator's language preferences and the generator's failure modes, so it consistently found the generator's output reasonable. Obvious failures still surfaced, because a truncated answer is a truncated answer to anybody. The subtle quality drops, the ones the judge existed to catch, stayed invisible, because the judge would have made the same mistake for the same reason.
 
-The redesign was four constraints: a judge from a different model family, binary verdicts instead of a floating score, a human-annotated calibration set, and temperature zero. On the tone criterion, the result was {% metric "judge_agreement_geval" %}.
+The repair is [its own case study](/work/llm-judge-independence/): four constraints, a calibration protocol, and the agreement figures that came out of it. What matters here is the shape of the mistake rather than the fix, because the shape turns up in places with no model in them at all.
 
 The structural version of that fix now runs across the whole evaluation stack: the retrieval-metrics judge, the criteria judge, and the generator sit on three distinct model families. Not because any one of them is best, but because a regression one of them is blind to is unlikely to be invisible to all three.
 
@@ -77,4 +86,3 @@ Every check inherits the blind spots of everything it shares with the thing it c
 
 ---
 
-Related: [the judge redesign in full](/work/llm-judge-independence/), [snapshot testing non-deterministic output](/work/snapshot-testing-nondeterministic-ai/), [contract testing where a schema check passed and a consumer check failed](/work/contract-testing-pact/), and [mocks that reproduce a contract rather than a response](/writing/zero-net-writes/).

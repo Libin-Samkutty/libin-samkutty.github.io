@@ -46,13 +46,16 @@ eleventyComputed:
         </ul>
         {% endif %}
 
-        {% set related = collections.posts | otherThan(page.url) | limit(3) %}
-        {% if related.length %}
-        <nav class="related" aria-label="More writing">
-            <h2 class="related__title">More writing</h2>
+        {% set relatedPages = related | resolveRelated(collections.all) %}
+        {% if relatedPages.length %}
+        <nav class="related" aria-label="Related reading">
+            <h2 class="related__title">Related</h2>
             <ul class="related__list">
-                {% for item in related %}
-                <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
+                {% for item in relatedPages %}
+                <li>
+                    <a href="{{ item.url | url }}">{{ item.title }}</a>
+                    <span class="related__why">{{ item.why }}</span>
+                </li>
                 {% endfor %}
             </ul>
         </nav>

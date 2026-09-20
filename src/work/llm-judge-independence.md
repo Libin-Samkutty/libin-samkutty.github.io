@@ -17,6 +17,15 @@ tags: ["LLM-as-a-judge", "AI evaluation", "Calibration", "Design failure"]
 datePublished: 2026-08-12
 dateModified: 2026-08-12
 lastReviewed: 2026-08-12
+related:
+  - url: /work/ai-evaluation-framework/
+    why: "these four constraints applied at scale"
+  - url: /work/production-evaluation-pipeline/
+    why: "the same judge running on real conversations"
+  - url: /writing/your-validation-script-shares-the-bug/
+    why: "the general form of the circularity problem"
+  - url: /writing/dont-call-it-rag/
+    why: "why only one of six programs is evaluated for retrieval quality"
 ---
 
 ## TL;DR
@@ -36,8 +45,6 @@ The scores were uninterpretable. A 6 out of 10 had no calibrated reference. I pi
 The second problem was worse. Judging generated text with the same model family that generated it produces systematic circularity bias: the judge shares the generator's language preferences and its failure modes, so it reliably finds the generator's own output reasonable. Obvious degradations still surfaced. The subtle drops (the ones the judge existed to catch) stayed invisible, because the judge would have made the same mistake for the same reason.
 
 It isn't an independent check. It shares the generator's blind spots instead of catching them.
-
-{% architectureNote %}
 
 ## Constraints
 
@@ -108,9 +115,3 @@ I have no measurement of the original judge's error rate, and I will not invent 
 
 The calibration sets were annotated by the health content team: a doctor, a nurse-midwife and a content writer. The clinical judgement encoded in the criteria is theirs. My part was the design that turned their judgement into something a CI job could apply, and the protocol that keeps the two in agreement.
 
-## Related links
-
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): these four constraints applied at scale
-- [Judging live production traffic](/work/production-evaluation-pipeline/): the same judge running on real conversations
-- [Your validation script shares the bug](/writing/your-validation-script-shares-the-bug/): the general form of the circularity problem
-- [Don't call it RAG](/writing/dont-call-it-rag/): why only one of six programs is evaluated for retrieval quality

@@ -1113,14 +1113,35 @@ html:not(.js) .theme-toggle {
 /* ================================================================ definition list */
 
 /*
-  "What I own" as a hairline-ruled definition list rather than a three-card
-  grid — three short statements read faster as a list than as three boxes the
-  eye has to scan independently.
+  "What I own" as a hairline-ruled definition list rather than a card grid —
+  short statements read faster as a list than as boxes the eye has to scan
+  independently.
 */
 
 .definition-list {
     display: grid;
     gap: 0;
+}
+
+/*
+  Six items in a single column is most of a screen on its own. Two columns at
+  60em halves that without turning the list back into cards. Both items in the
+  first row lose their rule the way a single column's first item does, so the
+  top edge of the list stays clean.
+*/
+.definition-list--columns {
+    column-gap: var(--space-xl);
+}
+
+@media (min-width: 60em) {
+    .definition-list--columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .definition-list--columns .definition-list__item:nth-child(-n + 2) {
+        border-block-start: none;
+        padding-block-start: 0;
+    }
 }
 
 .definition-list__item {

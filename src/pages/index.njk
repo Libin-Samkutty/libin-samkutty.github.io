@@ -1,9 +1,9 @@
 ---
 layout: layouts/base.njk
 permalink: /
-title: I build the evaluation systems that decide whether an AI answer is safe to ship
+title: I own every gate between a change and a real person
 shortTitle: Libin Samkutty
-description: Senior QA Automation Engineer building AI evaluation systems, golden datasets and production monitoring for a digital health platform in six countries.
+description: Senior QA Automation Engineer. I own the test infrastructure, release gates, data platform and AI evaluation systems for a digital health platform.
 bodyClass: home
 ---
 <section class="hero">
@@ -14,15 +14,14 @@ bodyClass: home
             <h1 class="hero__title">{{ site.plainClaim }}</h1>
 
             <p class="hero__lede">
-                The platform is a digital health chatbot that answers questions about pregnancy,
-                contraception and vaccination over WhatsApp, in {% metric "languages" %} languages
-                across {% metric "countries" %} countries. I am its only QA engineer. If you hire for
-                quality, safety review or AI evaluation, the case studies below show exactly how I
-                work, including the parts that did not work the first time.
+                Sole QA on a digital health platform in {% metric "countries" %} countries. I own the
+                test infrastructure, the release gates and the data pipeline behind the dashboards.
+                The hardest of those is deciding, on evidence, whether a generated medical answer is
+                safe to send to someone who will act on it.
             </p>
 
             <p class="hero__actions">
-                <a class="button button--primary" href="{{ '/work/' | url }}">Read the case studies</a>
+                <a class="button button--primary" href="{{ '/work/' | url }}">See the work</a>
                 <a class="button button--ghost" href="{{ '/resume/' | url }}">Résumé</a>
             </p>
         </div>
@@ -36,57 +35,15 @@ bodyClass: home
     </div>
 </section>
 
-{# Plain `.wrap`, not `.wrap--measure`: three graded figures are not prose and
-   read across the band, three abreast, rather than stacked in a reading
-   column that put them below the fold. #}
-<section class="section" aria-labelledby="evidence-title">
-    <div class="wrap">
-        <h2 class="visually-hidden" id="evidence-title">Evidence</h2>
-
-        {#
-          Figure first, provenance second.
-
-          The grade used to come first because it sits in the rail at tablet
-          width and grid auto-placement fills the rail from the first child. Once
-          these render as three columns the rail is gone, so leading with the
-          grade meant four lines of basis text above every figure — which pushed
-          all three values off the first screen, and inverted the point: the
-          grade qualifies the number, so the number has to arrive first.
-
-          CSS places them explicitly at 48em, so the rail layout is unchanged
-          and this is now the reading order at every width.
-        #}
-        <ol class="record-list evidence evidence--columns">
-            <li class="record evidence__item" data-confidence="exact">
-                <div class="evidence__figure">
-                    <p class="evidence__value">{% metric "platform_scale" %}</p>
-                    <p class="evidence__label">What the evaluation systems on this site cover</p>
-                </div>
-                <div class="evidence__grade">{% grade "platform_scale" %}</div>
-            </li>
-            <li class="record evidence__item" data-confidence="exact">
-                <div class="evidence__figure">
-                    <p class="evidence__value">{% metric "golden_dataset_india_mh" %}</p>
-                    <p class="evidence__label">Golden-dataset cases gating every India Maternal Health release</p>
-                </div>
-                <div class="evidence__grade">{% grade "golden_dataset_india_mh" %}</div>
-            </li>
-            <li class="record evidence__item" data-confidence="approximate">
-                <div class="evidence__figure">
-                    <p class="evidence__value">{% metric "nightly_eval_cost" %}</p>
-                    <p class="evidence__label">Cost of the full nightly evaluation run</p>
-                </div>
-                <div class="evidence__grade">{% grade "nightly_eval_cost" %}</div>
-            </li>
-        </ol>
-    </div>
-</section>
-
+{# The first thing below the hero is the surface owned, not a figure. A reader
+   deciding in seven seconds needs to place the scope; the numbers that qualify
+   it live in the case studies, where they have room to carry their provenance.
+   `.evidence` is unchanged and still rendered on /styleguide/. #}
 <section class="section" aria-labelledby="own-title">
     <div class="wrap">
         <h2 class="section__title" id="own-title">What I own</h2>
 
-        <div class="definition-list">
+        <div class="definition-list definition-list--columns">
             {% for item in projects.whatIOwn %}
             <div class="definition-list__item" data-reveal>
                 <h3 class="definition-list__term">{{ item.title }}</h3>
@@ -94,8 +51,6 @@ bodyClass: home
             </div>
             {% endfor %}
         </div>
-
-        {% architectureNote %}
     </div>
 </section>
 
@@ -130,10 +85,10 @@ bodyClass: home
     <div class="wrap">
         <h2 class="section__title" id="wrong-title">Things that didn't work</h2>
 
-        <p class="section__intro">
-            Every case study on this site carries a section like this one.
-        </p>
-
+        {# Two, not four. `.callout-grid` is two columns at 60em, so three leaves
+           a hole, and article.css warns against more than two limitation
+           callouts in a viewport. These two also link to the case studies the
+           cards above leave out, so five of six are one click from here. #}
         <div class="callout-grid">
             <div class="callout callout--limitation">
                 <h3 class="callout__title">I built an evaluation system that could not fail</h3>
@@ -157,27 +112,6 @@ bodyClass: home
                 <p><a href="{{ '/work/production-evaluation-pipeline/' | url }}">What the production pipeline caught</a></p>
             </div>
 
-            <div class="callout">
-                <h3 class="callout__title">I spent two years optimising a framework I then retired</h3>
-                <p>
-                    Parallelisation, containerisation, flake reduction: real gains, all of them. Then
-                    the suite grew and the gains eroded, because the cost I kept optimising around was
-                    structural to the framework rather than to my configuration of it. Recognising that
-                    took longer than the migration did.
-                </p>
-                <p><a href="{{ '/work/from-robot-to-playwright/' | url }}">The diagnosis and the migration</a></p>
-            </div>
-
-            <div class="callout">
-                <h3 class="callout__title">Before automation existed, a human had to catch this by hand</h3>
-                <p>
-                    {% metric "live_misconfiguration_users" %}, from a health recommendation set in a
-                    dashboard's UI layer without a matching update to the backend conversation JSON.
-                    No automated check would have caught it, because none existed yet. It is one of the
-                    reasons the suite below got built.
-                </p>
-                <p><a href="{{ '/work/from-robot-to-playwright/' | url }}">Why the suite got built</a></p>
-            </div>
         </div>
     </div>
 </section>
@@ -222,10 +156,11 @@ bodyClass: home
 
 <section class="section section--cta" aria-labelledby="cta-title">
     <div class="wrap wrap--measure">
-        <h2 class="section__title" id="cta-title">Currently open to senior AI quality roles</h2>
+        <h2 class="section__title" id="cta-title">Currently open to senior and lead quality roles</h2>
         <p>
-            {{ site.targetRoles | join(", ") }}. If you are building something where a wrong answer
-            has a cost, that is the problem I want.
+            {{ site.targetRoles | join(", ") }}. I own quality end to end, and the sharpest version
+            of that problem right now is AI evaluation. If a wrong answer has a cost in your
+            product, that is the work I want.
         </p>
         <p class="button-row">
             <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>

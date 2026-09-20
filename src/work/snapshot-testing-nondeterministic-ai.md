@@ -20,6 +20,15 @@ tags: ["Snapshot testing", "Non-determinism", "Prompt regression", "CI gating"]
 datePublished: 2026-08-12
 dateModified: 2026-08-12
 lastReviewed: 2026-08-12
+related:
+  - url: /work/ai-evaluation-framework/
+    why: "the evaluation layer above these structural checks"
+  - url: /work/contract-testing-pact/
+    why: "the same class of failure, one service boundary away"
+  - url: /writing/decompose-by-tool-call/
+    why: "evaluating a classifier by structure rather than by prose"
+  - url: /writing/audit-your-own-traffic/
+    why: "how a canonical set should be derived"
 ---
 
 ## TL;DR
@@ -57,9 +66,9 @@ The failure mode is the interesting part. Neither regression broke anything. The
 
 Serialise the full classification output for a fixed canonical set as a versioned JSON baseline, diff each new prompt version against the prior one, and classify every diff by severity so a reviewer reads a change report instead of a wall of labels.
 
-The principle: **a snapshot test does not need the system to be deterministic; it needs the recorded target to be.** Those are different requirements, and the gap between them is where the engineering lives.
+The blocker everyone names first is non-determinism, and it turns out not to be the blocker. **A snapshot test does not need the system to be deterministic; it needs the recorded target to be.** Those are different requirements, and the gap between them is where the engineering lives.
 
-The second principle, which made the tool survive contact with reviewers: **a diff's job is to judge which differences matter, not just to list them.** A diff that reports everything equally has moved the reading problem rather than solved it.
+What made the tool survive contact with reviewers was a second decision: **a diff's job is to judge which differences matter, not just to list them.** A diff that reports everything equally has moved the reading problem rather than solved it.
 
 ## Implementation
 
@@ -104,9 +113,3 @@ That last line repeats across all three extensions: writing down what the curren
 - **Still open: baseline promotion has no second pair of eyes.** A reviewer approving a prompt PR sees the new baseline in the diff without necessarily reading it, so a real regression can be blessed into the baseline and become invisible. The fix is a separate approval on baseline changes: process rather than code, which is why it is still open.
 - **Still open: nothing verifies the canonical set still resembles production traffic.** It was stratified against the label scheme, not against how people actually write, and has not been re-derived since. The traffic analysis exists; I have not wired the two together.
 
-## Related links
-
-- [One evaluation framework, three architectures](/work/ai-evaluation-framework/): the evaluation layer above these structural checks
-- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/): the same class of failure, one service boundary away
-- [Decompose by tool call](/writing/decompose-by-tool-call/): evaluating a classifier by structure rather than by prose
-- [Audit your own traffic](/writing/audit-your-own-traffic/): how a canonical set should be derived

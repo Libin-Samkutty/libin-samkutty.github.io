@@ -107,7 +107,7 @@
 
     "ci_smoke_runtime": {
       "value": { "from": 62, "to": 11 },
-      "display": "62 → 11 minutes",
+      "display": "62 minutes down to 11 minutes",
       "unit": "minutes, CI smoke suite",
       "confidence": "approximate",
       "basis": "Jenkins build timestamps for the Robot stages; Playwright/Allure CI reports for the current figure.",
@@ -730,7 +730,7 @@
 
     "docker_setup_time": {
       "value": { "from": 240, "to": 12 },
-      "display": "half a day → 12 minutes",
+      "display": "half a day down to 12 minutes",
       "unit": "to stand up a test environment on a new machine",
       "confidence": "estimate",
       "basis": "My own before/after observation around Docker adoption. Not timed formally.",
@@ -1045,7 +1045,7 @@
 
     "playwright_poc": {
       "value": { "robot": 252, "playwright": 47 },
-      "display": "4m 12s → 47s on the same three scenarios",
+      "display": "47s against 4m 12s on the same three scenarios",
       "confidence": "exact",
       "basis": "January 2024 proof of concept, timed on the three highest-failure-rate scenarios in the suite.",
       "asOf": "2024-01-01",
@@ -1058,7 +1058,7 @@
 
     "robot_pabot_smoke": {
       "value": { "from": 62, "to": 17 },
-      "display": "62 → 17 minutes",
+      "display": "17 minutes, down from 62 minutes",
       "unit": "CI smoke suite, after pabot tuning on Robot Framework",
       "confidence": "exact",
       "basis": "Jenkins build timestamps. A naive file-level split only reached 24 minutes, bottlenecked on two oversized suite files; test-level splitting with longest-first scheduling got it to 17.",
@@ -1084,7 +1084,7 @@
 
     "robot_ceiling_erosion": {
       "value": { "smoke": { "from": 17, "to": 28 }, "regression": { "from": 39, "to": 65 } },
-      "display": "17 → 28 minutes smoke and 39 → 65 minutes regression",
+      "display": "28 minutes smoke and 65 minutes regression, up from 17 and 39 minutes",
       "unit": "erosion of the pabot optimisation over roughly a year of suite growth",
       "confidence": "approximate",
       "basis": "Jenkins build history across 2023. The optimisation did not fail; the framework re-authenticated a browser session per suite file regardless of worker count, so every new suite file bought back some of the time the tuning had saved.",
@@ -1098,7 +1098,7 @@
 
     "robot_suite_growth": {
       "value": { "from": 150, "to": 250 },
-      "display": "150 → 250 test cases",
+      "display": "150 test cases to 250",
       "unit": "suite size over the period the pabot optimisation eroded",
       "confidence": "approximate",
       "basis": "Suite size recalled from the Robot Framework repository across 2023, not reconstructed from git history case by case.",

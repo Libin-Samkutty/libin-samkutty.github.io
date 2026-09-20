@@ -22,6 +22,13 @@ tags: ["Framework migration", "CI performance", "Test architecture", "Technical 
 datePublished: 2026-08-12
 dateModified: 2026-08-12
 lastReviewed: 2026-08-12
+related:
+  - url: /work/contract-testing-pact/
+    why: "the fixture layer that absorbed the retired API suite"
+  - url: /work/snapshot-testing-nondeterministic-ai/
+    why: "testing the conversational layer"
+  - url: /writing/threshold-gates-vs-trend-views/
+    why: "the trend argument, learned here"
 ---
 
 ## TL;DR
@@ -58,9 +65,9 @@ Then runtime. This is the part worth reading carefully.
 
 Exhaust optimisation first, then decide whether the framework is still the right one. Treat those as two separate disciplines rather than one continuous effort.
 
-The principle: **an optimisation that decays with growth is not a fix, it is a loan.** When the numbers came back a year later, my first instinct was that the tuning had been wrong. It had not been. The tuning was correct and the growth ate it, because what it optimised around was structural.
+When the numbers came back a year later, my first instinct was that the tuning had been wrong. It had not been. The tuning was correct and the growth ate it, because what it optimised around was structural rather than configurable. **An optimisation that decays with growth is not a fix, it is a loan.**
 
-The second principle, four years later: **retiring a framework you built is part of owning it, and needs the same evidence bar as shipping one.**
+The other lesson took four years to arrive: **retiring a framework you built is part of owning it, and needs the same evidence bar as shipping one.**
 
 ## Implementation
 
@@ -117,8 +124,3 @@ Separately, Robot Framework continues as the company-wide API automation base fr
 
 The conversational suite depends on `botium-core`, whose community adoption collapsed after its 2022 acquisition. We maintain it as an internally-patched fork rather than tracking upstream: a maintenance liability I took on knowingly and would name in any conversation about that suite's future.
 
-## Related links
-
-- [The refactor that broke every journey with valid JSON](/work/contract-testing-pact/): the fixture layer that absorbed the retired API suite
-- [Making a non-deterministic model produce a stable snapshot](/work/snapshot-testing-nondeterministic-ai/): testing the conversational layer
-- [Threshold gates vs trend views](/writing/threshold-gates-vs-trend-views/): the trend argument, learned here
