@@ -64,10 +64,10 @@
       "value": { "from": 9, "to": 2 },
       "display": "$8–10 → $1.80–2.20",
       "unit": "USD of judge-model API spend per nightly run",
-      "label": "Cost of the full nightly evaluation",
+      "label": "Judge-model cost per nightly evaluation run",
       "confidence": "approximate",
-      "basis": "Derived from LLM API billing across judge-model configurations, not a reconciled invoice line item.",
-      "asOf": "2026-06-15",
+      "basis": "Both figures are from LLM API billing for the nightly job. The before figure is the nightly bill for a 60-case sample with GPT-4 Turbo as the RAGAS judge scoring all four metrics. The after figure is the nightly bill for the full 351-case run with GPT-4o as the RAGAS judge, after Faithfulness and Answer Relevancy moved to a custom PASS/FAIL judge that needs fewer calls per case; Context Precision and Context Recall still run through RAGAS. The cheaper model and the fewer calls explain part of the per-case drop, not all of it; the remainder isn't attributed to a specific cause. Stated as ranges because nightly spend varies run to run.",
+      "asOf": "2026-08-01",
       "attribution": "self",
       "provenSlug": "ai-evaluation-framework",
       "source": "vault://metrics.md#MET-057",
@@ -892,15 +892,15 @@
     "ragas_ci_thresholds": {
       "value": { "faithfulness": 0.8, "answerRelevancy": 0.75, "contextPrecision": 0.7, "contextRecall": 0.65 },
       "display": "Faithfulness ≥ 0.80 · Answer Relevancy ≥ 0.75 · Context Precision ≥ 0.70 · Context Recall ≥ 0.65",
-      "unit": "nightly CI failure thresholds, applied to the run average rather than per case",
+      "unit": "nightly CI failure thresholds used before the June 2026 PASS/FAIL migration, applied to the run average rather than per case",
       "confidence": "exact",
-      "basis": "Calibrated against the pre-reranker-removal baseline, with the most headroom left on Context Precision given its documented history of variance.",
+      "basis": "Calibrated against the pre-reranker-removal baseline. Context Precision was given the most headroom of the four by judgment call, not a measured night-to-night spread. Retired for Faithfulness and Answer Relevancy after the June 2026 move to binary PASS/FAIL; Context Precision and Context Recall moved to trend-only monitoring in the same release.",
       "asOf": "2026-06-01",
       "attribution": "self",
       "provenSlug": "ai-evaluation-framework",
       "source": "vault://projects.md#PROJ-001a",
       "publish": true,
-      "scopeNote": "Aggregate thresholds, deliberately. A per-case gate on a float score fails on judge variance rather than on quality; a run average across a stratified dataset moves only when something systematic changes."
+      "scopeNote": "Aggregate thresholds, deliberately, for the period before the June 2026 PASS/FAIL migration. A per-case gate on a float score fails on judge variance rather than on quality; a run average across a stratified dataset moves only when something systematic changes."
     },
 
     "geval_calibration_set": {
