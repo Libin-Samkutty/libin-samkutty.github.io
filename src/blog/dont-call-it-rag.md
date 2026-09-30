@@ -10,7 +10,7 @@ tags: [rag, architecture, evaluation, ai-testing]
 technical: true
 related:
   - url: /work/ai-evaluation-framework/
-    why: "the evaluation framework that had to span all three architectures"
+    why: "the evaluation framework built around this architecture split"
   - url: /work/llm-judge-independence/
     why: "why the judge has to be independent of the generator"
   - url: /work/production-evaluation-pipeline/

@@ -3,14 +3,14 @@ layout: layouts/case-study.njk
 title: Rebuilding an LLM judge that was grading its own homework
 shortTitle: The judge that graded its own homework
 description: How I diagnosed circularity bias in the platform's first LLM-as-a-judge and rebuilt it around an independent model, binary verdicts and calibration.
-outcome: Diagnosed why the platform's first LLM judge was grading its own homework, then rebuilt it around an independent model, binary verdicts and a calibration protocol every judge since has used.
+outcome: Diagnosed why the platform's first LLM judge was grading its own homework, then rebuilt it around an independent model, binary verdicts and a calibration protocol later judges are being moved to.
 number: 1
 order: 1
 period: Q1 2025 – Q4 2025
 roleAtTime: QA Engineer
 scope: The platform's first evaluation judge for generated text, and its redesign.
 stack: ["Python", "DeepEval", "G-Eval", "Claude API", "Gemini API", "GitHub Actions"]
-mine: The judge design, the diagnosis that it was structurally unreliable, the redesign, and the calibration protocol that has gated every judge since.
+mine: The judge design, the diagnosis that it was structurally unreliable, the redesign, and the calibration protocol later judges are being moved to.
 notMine: The health content team annotated every calibration example and wrote the clinical substance of the criteria; the judgement encoded in them is theirs.
 metrics: ["judge_calibration_set", "judge_rewrite_rule", "geval_calibration_set", "judge_agreement_geval"]
 tags: ["LLM-as-a-judge", "AI evaluation", "Calibration", "Design failure"]
@@ -19,7 +19,7 @@ dateModified: 2026-08-12
 lastReviewed: 2026-08-12
 related:
   - url: /work/ai-evaluation-framework/
-    why: "these four constraints applied at scale"
+    why: "the framework the RAGAS judge runs in, and its partial move to PASS/FAIL"
   - url: /work/production-evaluation-pipeline/
     why: "the same judge running on real conversations"
   - url: /writing/your-validation-script-shares-the-bug/
@@ -32,7 +32,7 @@ related:
 
 - I built the platform's first LLM-as-a-judge using the same model family that generated the answers it graded. It looked like an evaluation system. It was closer to a mirror.
 - The redesign fixed four things at once: an independent judge model, binary PASS/FAIL per dimension instead of an uncalibrated 1–10 score, temperature 0, and calibration against a human-annotated set under one explicit rule: {% metric "judge_rewrite_rule" %}.
-- Those four constraints became the starting point for every judge built afterwards: the RAGAS configuration, the DeepEval criteria, and the production monitoring judge.
+- Those four constraints became the standard later judges are being moved to: the RAGAS configuration, the DeepEval criteria, and the production monitoring judge.
 
 ## The problem
 
@@ -92,7 +92,7 @@ The fix was to split the criterion into the three things it had been collapsing:
 
 That generalises. When judge and human disagree, the first hypothesis should be that the criterion is ambiguous, not that the judge is weak. An underspecified criterion produces inter-annotator disagreement too, and measuring only judge-versus-human hides it. Which is why the annotation protocol resolves disagreement explicitly (majority vote on binary items, discussion to consensus on rubric items) rather than averaging it away.
 
-Two mechanics carried into everything built afterwards. **Model-family separation as a standing rule:** three distinct families now sit in the evaluation path (the generator, the RAGAS judge, the G-Eval judge), so a failure mode one judge shares a blind spot with is likely visible to another. **Verdict comparability:** the production monitoring judge and the golden-dataset judge stay pinned to identical model versions, because otherwise a shift in the production FAIL rate is ambiguous between "quality changed" and "the judge changed".
+Two mechanics now hold across the newer judges. **Model-family separation as a standing rule:** three distinct families now sit in the evaluation path (the generator, the RAGAS judge, the G-Eval judge), so a failure mode one judge shares a blind spot with is likely visible to another. **Verdict comparability:** the production monitoring judge and the golden-dataset judge stay pinned to identical model versions, because otherwise a shift in the production FAIL rate is ambiguous between "quality changed" and "the judge changed".
 
 The judge configuration itself is small: a model, a temperature, a criteria file, and a runner that routes each case by its declared domain type. The engineering is not the interesting part. The interesting part is that every choice inside it is written somewhere a clinician can disagree with it.
 
@@ -100,7 +100,7 @@ The judge configuration itself is small: a model, a temperature, a criteria file
 
 - Agreement on Tone Appropriateness moved {% metric "judge_agreement_geval" %} after the criterion was decomposed: the same judge, re-specified.
 - The redesigned Smart Snippets judge cleared the calibration rule against {% metric "judge_calibration_set" %} before it gated anything.
-- Judge independence, binary verdicts, a calibration set and deterministic temperature became the starting point for the RAGAS configuration, the DeepEval criteria and the production monitoring judge.
+- Judge independence, binary verdicts, a calibration set and deterministic temperature became the standard the RAGAS configuration, the DeepEval criteria and the production monitoring judge are each being moved to.
 
 I have no measurement of the original judge's error rate, and I will not invent one. The finding was that its scores were uninterpretable by design, not inaccurate by some quantity I could report.
 
