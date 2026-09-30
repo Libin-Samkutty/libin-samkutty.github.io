@@ -18,7 +18,7 @@
       "summary": "Sole QA on a multi-region digital health AI platform. I own quality strategy, release governance, the evaluation frameworks and the data platform function across six-plus concurrent AI product lines.",
       "highlights": [
         "Own the production evaluation pipeline that samples live traffic and judges it against clinical safety and quality criteria.",
-        "Own the golden-dataset evaluation framework across four country programs and three distinct generation architectures.",
+        "Own the golden-dataset evaluation framework across four country programs on two generation architectures, designed to extend to a third without a new codebase.",
         "Scrum Master since April 2025, concurrently with the QA and analytics ownership."
       ],
       "note": "A title promotion with continuous scope, not a new mandate. Most of the work that justified it was built during the preceding role and is credited there."

@@ -91,7 +91,7 @@
 
   "architectureNote": {
     "short": "Six country programs, three generation architectures. Only India Maternal Health is RAG.",
-    "long": "The platform runs six country programs across three different generation architectures. Retrieval-augmented generation is used in exactly one of them — India Maternal Health. The three HPV programs use intent classification with curated snippet generation and a semantic cache; the three family planning programs use a dispatcher over a journey graph. This matters for evaluation because you cannot measure context precision on a system that never retrieves anything. Most of the work below is about building one evaluation framework across all three without pretending they are the same system.",
+    "long": "The platform runs six country programs across three different generation architectures. Retrieval-augmented generation is used in exactly one of them — India Maternal Health. The three HPV programs use intent classification with curated snippet generation and a semantic cache; the three family planning programs use a dispatcher over a journey graph. This matters for evaluation because you cannot measure context precision on a system that never retrieves anything. Most of the work below is about one evaluation framework built so a new architecture is a new field value and a dataset, not a new codebase; today it runs against two of the three — the RAG program and the three snippet programs — and the family-planning dispatcher has none yet.",
     "canonicalPost": "/writing/dont-call-it-rag/"
   }
 }
