@@ -1,4 +1,4 @@
-Regenerated: Footer loses Colophon/Feed, /about/ aside drops Open to, /resume/ Open Source trimmed to four
-Commit:      fada99998b1985c47116285f9d8dc8bb10013772
-Ref:         refs/heads/feature/about-humanize-and-colophon-removal
-Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/35529464863
+Regenerated: Intentional content changes: reworded nightly_eval_cost label/basis in metrics.json, expanded resume bullet, rewrote styleguide evidence label, and rebuilt the ai-evaluation-framework case study (071cd836) — page heights grew, matching the new prose. See PR #37 for the failing diffs.
+Commit:      041d9bfd32ebdc2588caedc0a1d04c499956deb3
+Ref:         refs/heads/fix/ai-evaluation-framework-review-findings
+Run:         https://github.com/Libin-Samkutty/libin-samkutty.github.io/actions/runs/36688127371
