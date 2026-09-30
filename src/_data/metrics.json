@@ -439,7 +439,7 @@
       "value": { "from": 71, "to": 88 },
       "display": "71% → 88% agreement with human annotators",
       "confidence": "exact",
-      "basis": "Tone Appropriateness criterion, measured against a 30-example annotated calibration set before and after adding concrete PASS/FAIL example pairs.",
+      "basis": "Tone Appropriateness criterion, before and after it was split into three sub-criteria: conversational register, jargon avoidance, and warmth. Agreement is counted per annotator-item pair: three annotators each scored all 30 calibration examples, giving 90 pairs, and the judge's verdict matched 64 of them before the split and 79 after. The disagreements that drove the split were read on the 20 training examples only, so the 10 validation examples did not inform it. Both figures are pooled across all 30 examples, not reported on the validation half alone.",
       "asOf": "2025-12-01",
       "attribution": "co-designed",
       "credit": "the health content team, who annotated the calibration set",
